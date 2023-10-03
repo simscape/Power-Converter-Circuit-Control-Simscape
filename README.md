@@ -1,4 +1,4 @@
-# Power Converter Circuit and Control Design With Simscape
+# Power Converter Circuit and Control Design with Simscape
 Power converters are basic building block for various electrification applications 
 such as motor drives, chargers, automobile, aerospace, distributed generation,
 renewables, battery energy storage systems, and consumer appliances.
@@ -41,7 +41,7 @@ the rate of 1 Hz/second. GFM converter must be able to operate in these tough fr
 * Clone the repository and add it to your MATLAB&reg; path.
 * Open GridFormingConverterWithSimscape.prj to get started.
 * To open the example, use the project shortcut buttons in the toolstrip.
-* Requires MATLAB R2022b or later.
+* Requires MATLAB R2023a or later.
 
 Copyright 2023 The MathWorks, Inc. 
 
