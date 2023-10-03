@@ -10,6 +10,7 @@ current capacity. These challenges cannot be solved with traditional grid-follow
 control based on grid measurements and phase locked loops. 
 A better alternative to the traditional grid-following converters are grid-forming (GFM)
 converters.
+[![View Power Converter Circuit and Control Design with Simscape on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://in.mathworks.com/matlabcentral/fileexchange/131783-power-converter-circuit-and-control-design-with-simscape)
 
 ## Description and Performance Evaluation
 Grid-forming converters offer the inherent benefits of traditional 
