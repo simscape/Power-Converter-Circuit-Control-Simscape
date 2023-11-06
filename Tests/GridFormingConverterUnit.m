@@ -1,25 +1,31 @@
-
 classdef GridFormingConverterUnit < matlab.unittest.TestCase
     % This MATLAB unit test is used to run all the codes used in the
     % Design and Analysis of Grid-Forming Converter (GFM) example.
 
-    % Test for the GridFormingConverter example model
+    % Copyright 2023 The MathWorks, Inc.
+
     methods (Test)
-        function GFMModelSimulate(~)
-            close all
-            bdclose all
-            mdl = "GridFormingConverter";
-            load_system(mdl)
-            sim(mdl);
-            close all
-            bdclose all
+
+        function GFMSimulateModel(testCase)
+            % Test for the GridFormingConverter example model
+
+            % Load system and add teardown
+            modelname = "GridFormingConverter";
+            load_system(modelname)
+            testCase.addTeardown(@()close_system(modelname, 0));
+
+            % Simulate model
+            sim(modelname);
         end
 
-        %  Test for the GridFormingConverterMain plot Script
-        % Running all test conditions in the GFM model
-        function GFMRunPlotGridFormingConverter(~)
-            mdl = "GridFormingConverter";
-            load_system(mdl)
+        function GFMRunPlotGridFormingConverter(testCase)
+            %  Test for the GridFormingConverterMain plot Script
+            % Running all test conditions in the GFM model
+
+            % Load model and add teardown
+            modelname = "GridFormingConverter";
+            load_system(modelname)
+            testCase.addTeardown(@()close_system(modelname, 0));
 
             % Configure for default test scenario
             % Select the active power control method
@@ -95,15 +101,16 @@ classdef GridFormingConverterUnit < matlab.unittest.TestCase
             testCondition.testCondition = 'Permanent three-phase fault';
             % Calling the plot function
             outputTable = PlotGridFormingConverter(testCondition,1); %#ok<*NASGU>;
-            close all
-            bdclose all
         end
 
-        % Test for the PlotInertiaConstantEffects MATLAB function
+        function GFMRunPlotInertiaConstantEffect(testCase)
+            % Test for the PlotInertiaConstantEffects MATLAB function
 
-        function GFMRunPlotInertiaConstantEffect(~)
-            mdl = "GridFormingConverter";
-            load_system(mdl)
+            % Load model and add teardown
+            modelname = "GridFormingConverter";
+            load_system(modelname)
+            testCase.addTeardown(@()close_system(modelname, 0));
+
             % Configure for default test scenario
             % Select the active power control method
             testCondition.activePowerMethod = 'Virtual Synchronous Machine';
@@ -119,17 +126,17 @@ classdef GridFormingConverterUnit < matlab.unittest.TestCase
             inertiaConstantArray = [0.1 0.4 1 3];
             % Calling the plot function
             outValue = PlotInertiaConstantEffects(inertiaConstantArray, testCondition,1);
-            close all
-            bdclose all
+
         end
 
-        % Test for the GFMRunPlotFaultCurrentVoltageEffects MATLAB function
+        function GFMRunPlotFaultCurrentVoltageEffects(testCase)
+            % Test for the GFMRunPlotFaultCurrentVoltageEffects MATLAB function
 
-        function GFMRunPlotFaultCurrentVoltageEffects(~)
-            close all
-            bdclose all
-            mdl = "GridFormingConverter";
-            load_system(mdl)
+            % Load model and add teardown
+            modelname = "GridFormingConverter";
+            load_system(modelname)
+            testCase.addTeardown(@()close_system(modelname, 0));
+
             % Configure for default test scenario
             % Select the active power control method
             testCondition.activePowerMethod = 'Virtual Synchronous Machine';
@@ -146,14 +153,18 @@ classdef GridFormingConverterUnit < matlab.unittest.TestCase
             faultImpedanceArray = [0.05 0.1 0.25 0.4]; % Three phase fault impedance
             % Calling the plot function
             outValue = PlotFaultCurrentVoltageEffects(faultImpedanceArray, testCondition,1);
-            close all
-            bdclose all
+
         end
 
-        % Test for the GFMRunPlotDampingEffects MATLAB function
-        function GFMRunPlotDampingEffects(~)
-            mdl = "GridFormingConverter";
-            load_system(mdl)
+        
+        function GFMRunPlotDampingEffects(testCase)
+            % Test for the GFMRunPlotDampingEffects MATLAB function
+
+            % Load model and add teardown
+            modelname = "GridFormingConverter";
+            load_system(modelname)
+            testCase.addTeardown(@()close_system(modelname, 0));
+
             % Configure for default test scenario
             % Select the active power control method
             testCondition.activePowerMethod = 'Virtual Synchronous Machine';
@@ -170,14 +181,19 @@ classdef GridFormingConverterUnit < matlab.unittest.TestCase
 
             % Calling the plot function
             outValue = PlotDampingEffects(dampingArray, testCondition,1);
-            close all
-            bdclose all
+
         end
 
-        % Test for the GFMRunPlotCompareFaultRideThroughMethod MATLAB function
-        function GFMRunPlotCompareFaultRideThroughMethod(~)
-            mdl = "GridFormingConverter";
-            load_system(mdl)
+        
+        function GFMRunPlotCompareFaultRideThroughMethod(testCase)
+            % Test for the GFMRunPlotCompareFaultRideThroughMethod MATLAB
+            % function.
+
+            % Load system and add teardown
+            modelname = "GridFormingConverter";
+            load_system(modelname)
+            testCase.addTeardown(@()close_system(modelname, 0));
+
             % Configure for default test scenario
             % Select the active power control method
             testCondition.activePowerMethod = 'Virtual Synchronous Machine';
@@ -192,10 +208,9 @@ classdef GridFormingConverterUnit < matlab.unittest.TestCase
             testCondition.testCondition = 'Permanent three-phase fault';
             % Calling the plot function
             outTable = PlotCompareFaultRideThroughMethod(testCondition, 1);
-            close all
-            bdclose all
-        end
-    end
-end
 
-% Copyright 2023 The MathWorks, Inc.
+        end
+
+    end
+
+end

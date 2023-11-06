@@ -1,7 +1,8 @@
 classdef GridFormingConverterSystem < matlab.unittest.TestCase
-    % Copyright 2023 The MathWorks, Inc.
-
     % System level test for GridFormingConverter.slx
+
+    % Copyright 2023 The MathWorks, Inc.
+    
     properties
         model = 'GridFormingConverter';
         simIn;

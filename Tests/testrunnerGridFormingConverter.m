@@ -1,36 +1,35 @@
+%% Script to run unit tests
+% This script runs tests for component-level and system-level tests.
+% Note that tests for detailed model applications are not run
+% to avoid long-running tests.
+
 % Copyright 2023 The MathWorks, Inc.
 
-
-% Create test suite for MATLAB unit test and system level test
-fprintf('*** Creating test suite ***')
+relStr = matlabRelease().Release;
+disp("This is MATLAB " + relStr + ".");
 
 topFolder = currentProject().RootFolder;
 
-% MATLAB unit test for running all the example codes
-% Unit test
-suite1 = matlab.unittest.TestSuite.fromFile(fullfile(topFolder,"Tests", "GridFormingConverterUnit.m")); 
-% System level verification test
-suite2 = matlab.unittest.TestSuite.fromFile(fullfile(topFolder,"Tests", "GridFormingConverterSystem.m"));
-suite = [suite1 suite2];
+%% Create test suite
+% Test suite for unit test
+suite = matlab.unittest.TestSuite.fromFile(fullfile(topFolder,"Tests", "GridFormingConverterUnit.m")); 
 
-% Create test runner
+%% Create test runner
 runner = matlab.unittest.TestRunner.withTextOutput(...
     'OutputDetail',matlab.unittest.Verbosity.Detailed);
 
-% Set up the report for results
-runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat('testResults.xml'));
-
+%% Set up JUnit style test results
+runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(...
+    fullfile(topFolder, "Tests", "GFM_TestResults_"+relStr+".xml")));
 
 %% MATLAB Code Coverage Report
-
-coverageReportFolder = fullfile(topFolder, "coverage-GFMCodeCoverage");
-if not(isfolder(coverageReportFolder))
+coverageReportFolder = fullfile(topFolder, "coverage-GFMCodeCoverage" + relStr);
+if ~isfolder(coverageReportFolder)
     mkdir(coverageReportFolder)
 end
 
 coverageReport = matlab.unittest.plugins.codecoverage.CoverageReport( ...
-    coverageReportFolder, ...
-    MainFile = "GFMCoverageReport.html" );
+    coverageReportFolder, MainFile = "GFMCoverageReport" + relStr + ".html" );
 
 plugin = matlab.unittest.plugins.CodeCoveragePlugin.forFile( ...
     [ ...
@@ -42,10 +41,7 @@ plugin = matlab.unittest.plugins.CodeCoveragePlugin.forFile( ...
 
 addPlugin(runner, plugin)
 
-
-% Run tests
+%% Run tests
 results = run(runner, suite);
 out = assertSuccess(results);
 disp(out);
-
-%disp(results.assertSuccess);
