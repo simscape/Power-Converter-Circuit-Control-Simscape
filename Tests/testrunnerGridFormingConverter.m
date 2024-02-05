@@ -18,7 +18,7 @@ suite = matlab.unittest.TestSuite.fromFile(fullfile(topFolder,"Tests", "GridForm
 runner = matlab.unittest.TestRunner.withTextOutput(...
     'OutputDetail',matlab.unittest.Verbosity.Detailed);
 
-%% Set up JUnit style test results
+%% Set up test results
 runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(...
     fullfile(topFolder, "Tests", "GFM_TestResults_"+relStr+".xml")));
 
