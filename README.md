@@ -43,7 +43,7 @@ the rate of 1 Hz/second. GFM converter must be able to operate in these tough fr
 
 ## Setup
 * Clone the repository and add it to your MATLAB&reg; path.
-* Open GridFormingConverterWithSimscape.prj to get started.
+* Open PowerConverterCircuitAndControlDesignWithSimscape.prj to get started.
 * To open the example, use the project shortcut buttons in the toolstrip.
 * Requires MATLAB R2025b.
 
