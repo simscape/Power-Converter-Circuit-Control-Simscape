@@ -50,9 +50,10 @@ for i = 1:length(testList)
 
     % Setting up the test conditions
     run('GridFormingConverterTestCondition.mlx');
-
+   
     % Setting up the simulation test condition
     simIn = setVariable(simIn,'testCondition',testCondition);
+    simIn = setModelParameter(simIn,StopTime=num2str(simulationTime));
 
     % Running the simulation
     outData = sim(simIn);
@@ -157,6 +158,7 @@ if nargin>2
         outputTable = outputTableTemp;
     end
 end
+format default
 disp('Steady State Grid-Forming Converter Output Measurement in pu');
 disp(outputTable);
 end
@@ -216,7 +218,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(2,2,2)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -227,7 +229,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(2,2,3)
     plot(timeArrayVabc,Vabc, 'LineWidth',2);
@@ -237,7 +239,7 @@ if plotFlag>0
     title('GFM Output Voltage');
     xlim([timeArrayVabc(end)*0.99,timeArrayVabc(end)]);
     box on
-    hold all
+    hold on
 
     subplot(2,2,4)
     plot(timeArrayIabc,Iabc, 'LineWidth',2);
@@ -247,7 +249,7 @@ if plotFlag>0
     title('GFM Output Current')
     xlim([timeArrayIabc(end)*0.99,timeArrayIabc(end)]);
     box on
-    hold all
+    hold on
     figTitle = 'Normal GFM Operation';
     figureTitle(figTitle,outValue);
 end
@@ -298,7 +300,7 @@ if plotFlag>0
 
     subplot(2,2,1)
     plot(timeArrayPref,Pref, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayPmeas(end)]);
@@ -306,7 +308,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
     legend('Pref','Pmeas');
 
     subplot(2,2,2)
@@ -317,7 +319,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
     subplot(2,2,3)
     timeStart = disturbanceTime-2*1/50; % s
     timeEnd = disturbanceTime+12*1/50; % s
@@ -330,7 +332,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(2,2,4)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -340,7 +342,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Change in Active Power Reference';
     figureTitle(figTitle,outValue);
@@ -398,11 +400,11 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(2,2,2)
     plot(timeArrayQref,Qref, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayQmeas(end)]);
@@ -410,7 +412,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
     legend('Qref','Qmeas');
 
     subplot(2,2,3)
@@ -425,7 +427,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(2,2,4)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -435,7 +437,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Change in Reactive Power Reference';
     figureTitle(figTitle,outValue);
@@ -493,7 +495,7 @@ if plotFlag>0
     ylabel('Grid Voltage (pu)');
     title('GFM Grid Internal Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -503,7 +505,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -513,7 +515,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -527,7 +529,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -537,7 +539,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
     figTitle = 'Change in Grid Internal Voltage';
     figureTitle(figTitle,outValue);
 end
@@ -597,7 +599,7 @@ if plotFlag>0
 
     subplot(3,2,1)
     plot(timeArrayPloadref,Ploadref, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayPload,Pload, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayPload(end)]);
@@ -606,11 +608,11 @@ if plotFlag>0
     title('Local Load Active Power');
     legend('Pref', 'Pmeas');
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayQloadref,Qloadref, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayQload,Qload, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayQload(end)]);
@@ -619,7 +621,7 @@ if plotFlag>0
     title('Local Load Reactive Power');
     legend('Qref', 'Qmeas');
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -629,7 +631,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -639,7 +641,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -653,7 +655,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -663,7 +665,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Change in Local Load Power';
     figureTitle(figTitle,outValue);
@@ -722,7 +724,7 @@ if plotFlag>0
 
     subplot(3,2,1)
     plot(timeArrayGridFreq,gridFreq, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayGridFreq,freq, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayGridFreq(end)]);
@@ -732,7 +734,7 @@ if plotFlag>0
     legend('Grid','GFM');
     ylim([min(gridFreq)-2,max(gridFreq)+2]);
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayPdamping,Pdamping, 'LineWidth',2);
@@ -743,7 +745,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('Damping Power');
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -753,7 +755,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -764,7 +766,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -778,7 +780,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -788,7 +790,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Small Change (0.5Hz) in Grid Frequency with 1Hz/s';
     figureTitle(figTitle,outValue);
@@ -848,7 +850,7 @@ if plotFlag>0
 
     subplot(3,2,1)
     plot(timeArrayGridFreq,gridFreq, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayGridFreq,freq, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayGridFreq(end)]);
@@ -858,7 +860,7 @@ if plotFlag>0
     legend('Grid','GFM');
     ylim([min(gridFreq)-2,max(gridFreq)+2]);
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayPdamping,Pdamping, 'LineWidth',2);
@@ -868,7 +870,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('Damping Power');
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -878,7 +880,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -888,7 +890,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -902,7 +904,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -912,7 +914,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Large Change (2Hz) in Grid Frequency with 2Hz/s';
     figureTitle(figTitle,outValue);
@@ -972,7 +974,7 @@ if plotFlag>0
 
     subplot(3,2,1)
     plot(timeArrayGridFreq,gridFreq, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayGridFreq,freq, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayGridFreq(end)]);
@@ -982,7 +984,7 @@ if plotFlag>0
     legend('Grid','GFM');
     ylim([min(gridFreq)-2,max(gridFreq)+2]);
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayPdamping,Pdamping, 'LineWidth',2);
@@ -992,7 +994,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('Damping Power');
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -1002,7 +1004,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -1012,7 +1014,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -1026,7 +1028,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1036,7 +1038,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Full Change in Grid Frequency +2Hz with 2Hz/s and -5Hz with 1Hz/s';
     figureTitle(figTitle,outValue);
@@ -1106,7 +1108,7 @@ if plotFlag>0
     ylabel('Phase (degree)');
     title('Grid Phase Angle');
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayGridFreq,freq, 'LineWidth',2);
@@ -1117,7 +1119,7 @@ if plotFlag>0
     title('GFM Frequency');
     ylim([min(gridFreq)-2,max(gridFreq)+2]);
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPdamping,Pdamping, 'LineWidth',2);
@@ -1127,11 +1129,11 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('Damping Power');
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayPmeas(end)]);
@@ -1140,7 +1142,7 @@ if plotFlag>0
     title('GFM Active and Reactive Power Output')
     legend('Pmeas','Qmeas')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -1154,7 +1156,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1164,7 +1166,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = '10 Degree Change in Grid Phase Angle';
     figureTitle(figTitle,outValue);
@@ -1234,7 +1236,7 @@ if plotFlag>0
     ylabel('Phase (degree)');
     title('Grid Phase Angle');
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayGridFreq,freq, 'LineWidth',2);
@@ -1245,7 +1247,7 @@ if plotFlag>0
     title('GFM Frequency');
     ylim([min(gridFreq)-2,max(gridFreq)+2]);
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPdamping,Pdamping, 'LineWidth',2);
@@ -1255,11 +1257,11 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('Damping Power');
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
-    hold all
+    hold on
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
     grid on
     xlim([disturbanceTime*0.8 timeArrayPmeas(end)]);
@@ -1268,7 +1270,7 @@ if plotFlag>0
     title('GFM Active and Reactive Power Output')
     legend('Pmeas','Qmeas')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -1282,7 +1284,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1292,7 +1294,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = '60 Degree Change in Grid Phase Angle';
     figureTitle(figTitle,outValue);
@@ -1349,7 +1351,7 @@ if plotFlag>0
     ylabel('Fault Trigger)');
     title('Fault Trigger Signal');
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayIgd,Is, 'LineWidth',2);
@@ -1359,7 +1361,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('Fault Current');
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -1369,7 +1371,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -1379,7 +1381,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2/50; % s
@@ -1393,7 +1395,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('Voltage at Fault')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1403,7 +1405,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('Current at Fault')
     box on
-    hold all
+    hold on
     figTitle = 'Permanent Three-Phase Fault';
     figureTitle(figTitle,outValue);
 end
@@ -1459,7 +1461,7 @@ if plotFlag>0
     ylabel('Fault Trigger)');
     title('Fault Trigger Signal');
     box on
-    hold all
+    hold on
 
     subplot(3,4,3:4)
     plot(timeArrayIgd,Is, 'LineWidth',2);
@@ -1469,7 +1471,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('Fault Current');
     box on
-    hold all
+    hold on
 
     subplot(3,4,5:6)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -1479,7 +1481,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,4,7:8)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -1489,7 +1491,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,4,9)
     timeStart = disturbanceTime-2/50; % s
@@ -1503,7 +1505,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('Voltage at Fault')
     box on
-    hold all
+    hold on
 
     subplot(3,4,11)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1513,7 +1515,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('Current at Fault')
     box on
-    hold all
+    hold on
 
     subplot(3,4,10)
     timeStart = disturbanceTime+2-2/50; % s
@@ -1527,7 +1529,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('Voltage After Fault')
     box on
-    hold all
+    hold on
 
     subplot(3,4,12)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1537,7 +1539,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('Current After Fault')
     box on
-    hold all
+    hold on
 
     figTitle = 'Temporary Three-Phase Fault';
     figureTitle(figTitle,outValue);
@@ -1600,7 +1602,7 @@ if plotFlag>0
     ylabel('Trip Signal (pu)');
     title('Grid Circuit Breaker Trip Signal');
     box on
-    hold all
+    hold on
 
     subplot(3,2,2)
     plot(timeArrayFreq,freq, 'LineWidth',2);
@@ -1610,7 +1612,7 @@ if plotFlag>0
     ylabel('Frequency (Hz)');
     title('GFM Frequency');
     box on
-    hold all
+    hold on
 
     subplot(3,2,3)
     plot(timeArrayPmeas,Pmeas, 'LineWidth',2);
@@ -1620,7 +1622,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Active Power')
     box on
-    hold all
+    hold on
 
     subplot(3,2,4)
     plot(timeArrayQmeas,Qmeas, 'LineWidth',2);
@@ -1630,7 +1632,7 @@ if plotFlag>0
     ylabel('Power (pu)');
     title('GFM Output Reactive Power ')
     box on
-    hold all
+    hold on
 
     subplot(3,2,5)
     timeStart = disturbanceTime-2*1/50; % s
@@ -1644,7 +1646,7 @@ if plotFlag>0
     ylabel('Voltage (pu)');
     title('GFM Output Voltage')
     box on
-    hold all
+    hold on
 
     subplot(3,2,6)
     plot(timeArrayIabc,Iabc,'LineWidth',1);
@@ -1654,7 +1656,7 @@ if plotFlag>0
     ylabel('Current (pu)');
     title('GFM Output Current')
     box on
-    hold all
+    hold on
 
     figTitle = 'Islanding Condition';
     figureTitle(figTitle,outValue);
