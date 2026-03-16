@@ -1,6 +1,6 @@
 function blkStruct = slblocks
-% This function specifies that the library, defined below, should appear in
-% the Library Browser with the name defined below
+% This function specifies the library defined below, it should appear in
+% the Library Browser with the given name
 Browser.Library = "ConverterLibrary";
 Browser.Name = "Simscape Power Converter Components";
 blkStruct.Browser = Browser;
