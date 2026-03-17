@@ -10,8 +10,8 @@ converter configurations and control techniques.
 ## 📖 Table of Contents
 
 - Overview
-- [Grid-Forming Converter Design](https://viewer.mathworks.com/addons/131783/25.2.1.2/files/ScriptData/GridFormingConverter/SupportingFiles/GridFormingConverterMain.m)  
-- [LLC Resonant Converter Design](https://viewer.mathworks.com/addons/131783/25.2.1.2/files/ScriptData/LLCConverter/SupportingFiles/LLCResonantConverterFullBridgeMain.m)  
+- [Grid-Forming Converter Design](https://viewer.mathworks.com/addons/131783/25.2.1.2/files/ScriptData/GridFormingConverter/Workflow/GridFormingConverterMain.m)  
+- [LLC Resonant Converter Design](https://viewer.mathworks.com/addons/131783/25.2.1.2/files/ScriptData/LLCConverter/Workflow/LLCResonantConverterFullBridgeMain.m)  
 - System Level Design Solution
     - Microgrid Design with Simscape[![View Microgrid Design with Simscape on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/123865-microgrid-design-with-simscape)
     - Renewable Energy Integration Design with Simscape[![View ​Renewable Energy Integration Design with Simscape on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/123870-renewable-energy-integration-design-with-simscape)
