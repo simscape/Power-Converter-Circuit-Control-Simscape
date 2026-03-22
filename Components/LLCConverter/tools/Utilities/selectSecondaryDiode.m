@@ -24,7 +24,8 @@ switch secondaryDiodeChoice
             'RsdiodeOn','GsdiodeOff'},Visibility='off');
         h.getDialogControl("openDiodeMask").Visible = "on";
         h.getDialogControl("applyDiodeParam").Visible = "on"; 
-
+        h.getDialogControl("openDiodeMask").Enabled = "on";
+        h.getDialogControl("applyDiodeParam").Enabled = "on"; 
 
     otherwise
 

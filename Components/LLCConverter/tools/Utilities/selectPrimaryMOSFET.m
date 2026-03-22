@@ -38,7 +38,8 @@ switch primarySwitchChoice
        setVisibilityForMaskParameter(BlockPath=blockPath,ParameterVec={'Cparasitic'},Visibility='on');
        h.getDialogControl("openMOSFETMask").Visible = "on";
        h.getDialogControl("applyMOSFETParam").Visible = "on"; 
-
+       h.getDialogControl("openMOSFETMask").Enabled = "on";
+       h.getDialogControl("applyMOSFETParam").Enabled = "on"; 
     otherwise
         disp('Select the proper primary switch option')
 end
