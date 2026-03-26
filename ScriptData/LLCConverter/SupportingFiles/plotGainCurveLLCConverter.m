@@ -83,7 +83,7 @@ function [magnitude, freqVec, frequencyRange] = plotGainCurveLLCConverter(LLCSpe
                 LLCSpec.qualityFactor = options.QualityFactorVec(j); % Quality factor
                 LLCSpec.k = options.LmLrRatioVec(k); % (Lm+Lr)/Lr ratio
                 [~, LLCDesign]  = designLLCFullBridgeConverter(LLCSpec,DisplayTableFlag=false); % Estimate LLC converter parameters
-                Reffective = 8*RloadVec_Ohm(i).value*(LLCDesign.N1/LLCDesign.N2)^2/(pi^2);
+                Reffective = 8*RloadVec_Ohm(i).value/(pi^2);
                 set_param("GainCurveLLCConverter/Rload", "R", num2str(Reffective));
                 assignin(mdlWks,'LLCDesign',LLCDesign);
 

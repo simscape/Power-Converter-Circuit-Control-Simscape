@@ -28,8 +28,8 @@ wrIdx = find(FreqData>=wr,1);
 
 % Forward Mode
 if isempty(wrIdx) || max(gainData)<gainRange(1)
-    freqRange.fmin = NaN;
-    freqRange.fmax = NaN;
+    freqRange.fminHz = NaN;
+    freqRange.fmaxHz = NaN;
 else
     if  max(gainData(wrIdx:-1:1))>gainRange(2)
         maxGainFminIdx = find(gainData(wrIdx:-1:1)>=gainRange(2),1);
