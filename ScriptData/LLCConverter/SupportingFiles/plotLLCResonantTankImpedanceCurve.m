@@ -71,7 +71,7 @@ function [magnitude, freqVec] = plotLLCResonantTankImpedanceCurve(LLCDesign,opti
     for i = 1:length(options.RloadVec.value)
 
                 count = count+1;
-                Reffective = 8*options.RloadVec(i).value*(LLCDesign.N1/LLCDesign.N2)^2/(pi^2);
+                Reffective = 8*options.RloadVec(i).value/(pi^2);
                 set_param("GainCurveLLCConverter/Rload", "R", num2str(Reffective));
                 assignin(mdlWks,'LLCDesign',LLCDesign);
     
