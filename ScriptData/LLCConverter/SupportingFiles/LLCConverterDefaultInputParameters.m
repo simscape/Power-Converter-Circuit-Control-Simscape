@@ -14,7 +14,7 @@ LLCSpec.Rco = 0.02; % Output filter capacitor ESR resistance (Ohm)
 LLCSpec.R1 = 1e-4; % Transformer primary resistance (Ohm)
 LLCSpec.R2 = 1e-4; % Transformer secondary resistance (Ohm)
 LLCSpec.Rcr = 1e-4; % Resonant capacitor resistance (Ohm)
-LLCSpec.qualityFactor = 0.6; % Quality factor
+LLCSpec.qualityFactor = 0.5; % Quality factor
 LLCSpec.k = 5; % (Lm+Lr)/Lr ratio
 [designTable, LLCDesign]  = designLLCFullBridgeConverter(LLCSpec,DisplayTableFlag=false);
 nominalOutputVoltage = (LLCSpec.minOutputVoltage.value+LLCSpec.maxOutputVoltage.value)/2;
