@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Power Converter Component Library</title>
+    <!--
+    ============================================================
+    COMPONENT LIBRARY TABLE - MathWorks Style
+    ============================================================
+
+    PURPOSE:
+    Lists all custom Simscape components in this project with
+    clickable links to open their Documentation (via web()) or
+    Test Harness (via open_system()) directly in MATLAB.
+
+    HOW TO ADD A NEW COMPONENT:
+    1. Add a new entry to the COMPONENT DATA array in the <script>
+       section at the bottom of this file.
+    2. Each entry is an array with 4 elements:
+       ["ComponentName", "Library", "DocFile.html", "TestHarnessName"]
+    3. The table (including row numbers) is auto-generated from
+       the data array — no manual HTML editing needed.
+
+    EXAMPLE — Adding a component called "My New Block":
+       In the componentData array, add:
+       ["My New Block", "Power Converter", "DocumentationMyNewBlock.html", "TestMyNewBlock"],
+
+    AVAILABLE LIBRARIES:
+    - Grid Forming Converter
+    - LLC Converter
+
+    HYPERLINK BEHAVIOR:
+    - Documentation links call: matlab:web('DocFile.html')
+    - Test Harness links call:  matlab:open_system('TestHarnessName')
+
+    STYLE REFERENCE (matches projectDocumentationPage.html):
+    - Page title:  28px, orange (#c04c0b)
+    - Headings h1: 20px, bold, orange (#c04c0b)
+    - Body text:   12px, dark (#212121)
+    - Links:       blue (#0076a8), hover (#004c6d)
+    - Code block:  12px monospace, gray bg (#f5f5f5), blue left border
+    - Table header: blue bg (#0076a8), white text
+
+    ============================================================
+    -->
+    <style>
+        /* ──────────────────────────────────────────────────────────
+           BASE STYLES (reusable across project documentation pages)
+           ────────────────────────────────────────────────────────── */
+        body { margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #212121; }
+        a { color: #0076a8; text-decoration: none; }
+        a:hover { color: #004c6d; text-decoration: underline; }
+
+        /* ──────────────────────────────────────────────────────────
+           TITLE BAR (fixed, full-width)
+           ────────────────────────────────────────────────────────── */
+        .page-title {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: #fff; border-bottom: 1px solid #e0e0e0;
+            margin: 0; z-index: 200;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .page-title .title-text {
+            font-size: 28px; font-weight: 400; color: #c04c0b;
+            padding: 14px 20px;
+        }
+        .page-title .title-logo { padding: 6px 20px; }
+        .page-title .title-logo img { height: 50px; width: auto; }
+
+        /* ──────────────────────────────────────────────────────────
+           CONTENT AREA
+           ────────────────────────────────────────────────────────── */
+        .content {
+            padding: 90px 40px 30px;
+            max-width: 1100px;
+        }
+        h1 { font-size: 20px; font-weight: 700; color: #c04c0b; margin: 30px 0 8px;
+             border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; }
+        p { margin: 8px 0; line-height: 1.6; color: #212121; }
+        .code {
+            background: #f5f5f5; border-left: 3px solid #0076a8;
+            padding: 10px 14px; margin: 10px 0 20px;
+            font-family: 'Courier New', monospace; font-size: 12px; color: #212121;
+        }
+
+        /* ──────────────────────────────────────────────────────────
+           TABLE STYLES
+           ────────────────────────────────────────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 12px;
+        }
+        th {
+            background: #0076a8;
+            color: #fff;
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 12px;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        tr:hover td { background: #f0f8fc; }
+        td:first-child { font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     TITLE BAR
+     ============================================================ -->
+<div class="page-title">
+    <span class="title-text">Power Converter Component Library</span>
+    <span class="title-logo"><img src="Images/MATLAB_VERSION.png" alt="MATLAB Version"></span>
+</div>
+
+<!-- ============================================================
+     CONTENT
+     ============================================================ -->
+<main class="content">
+
+    <h1>List of Components</h1>
+    <p>
+        The table below lists all custom components available in this project.
+        These components are used for power converter circuit design and control,
+        including LLC resonant converters and grid-forming converters built with Simscape.
+        The combined library (<b>ConverterLibrary</b>) is located in the
+        <code>Components/Utilities</code> folder, while individual component libraries
+        reside in their respective folders under <code>Components/</code>.
+    </p>
+    <p>
+        Click on the <b>Documentation</b> link to view the component documentation,
+        or the <b>Test Harness</b> link to open the component test model.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Component Name</th>
+                <th>Library</th>
+                <th>Documentation</th>
+                <th>Test Harness</th>
+            </tr>
+        </thead>
+        <tbody id="component-table-body">
+        </tbody>
+    </table>
+
+    <p>
+        <br> <br>
+        <i>Copyright 2025 - 2026 The MathWorks, Inc.</i>
+    </p>
+
+</main>
+
+<!-- ============================================================
+     COMPONENT DATA & TABLE GENERATION SCRIPT
+
+     HOW TO ADD A NEW COMPONENT:
+     Append a new entry to the componentData array below.
+     Format: ["ComponentName", "Library", "DocFile.html", "TestHarnessName"]
+
+     - ComponentName: display name shown in the table
+     - Library: top-level library folder name
+     - DocFile.html: documentation HTML filename (opened via web())
+     - TestHarnessName: Simulink model name without .slx (opened via open_system())
+
+     The script auto-generates table rows with correct row numbers
+     and matlab: hyperlinks. No other changes needed.
+     ============================================================ -->
+<script>
+var componentData = [
+    // Format: ["ComponentName", "Library", "DocFile.html", "TestHarnessName"]
+
+    // ── Grid Forming Converter ────────────────────────────────────────────
+    ["Grid-Forming Converter Controller",   "Grid Forming Converter",   "GFMController.html",       "ModelGridFormingController"],
+
+    // ── LLC Converter ─────────────────────────────────────────────────────
+    ["LLC Controller",                      "LLC Converter",            "LLCController.html",       "ModelLLCResonantControllerAndPowerCircuit"],
+    ["LLC Converter Power Circuit",         "LLC Converter",            "LLCPowerCircuit.html",     "ModelLLCResonantControllerAndPowerCircuit"]
+
+    // ── ADD NEW COMPONENTS HERE ────────────────────────────────────────────
+    // ["New Component Name", "Library", "DocFile.html", "TestHarnessName"],
+];
+
+/* ──────────────────────────────────────────────────────────────────────────
+   buildTable()  — Generates table rows from componentData.
+   Called once on page load. Row numbers are auto-incremented.
+   - Documentation links use:  matlab:web('DocFile.html')
+   - Test Harness links use:   matlab:open_system('TestHarnessName')
+   ────────────────────────────────────────────────────────────────────────── */
+function buildTable() {
+    var tbody = document.getElementById('component-table-body');
+    var html = '';
+    for (var i = 0; i < componentData.length; i++) {
+        var name       = componentData[i][0];
+        var library    = componentData[i][1];
+        var docFile    = componentData[i][2];
+        var testModel  = componentData[i][3];
+        html += '<tr>'
+            + '<td>' + (i + 1) + '</td>'
+            + '<td>' + name + '</td>'
+            + '<td>' + library + '</td>'
+            + '<td><a href="matlab:web(\'' + docFile + '\')">' + docFile + '</a></td>'
+            + '<td><a href="matlab:open_system(\'' + testModel + '\')">' + testModel + '</a></td>'
+            + '</tr>';
+    }
+    tbody.innerHTML = html;
+}
+
+buildTable();
+</script>
+
+</body>
+</html>
