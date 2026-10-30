@@ -1,0 +1,43 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:d="http://www.mathworks.com/blockgraphics" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg_5" width="99.9" height="216" viewBox="8.1 9 99.9 216" d:options="Foreground:PortStyled;Background:Transparent;StrokeScaling:PortStyled;StrokeScalingOnResize:NonScaling;LineExtension:On;Resize:FitToBlock;Frame:Off;Clipping:None;PreAdjustStrokeWidth:Normalized;Port:Auto Majority">
+	<title>
+		Fig file converted by fig2lat	</title>
+	<defs>
+		<style>
+			.sA {
+				fill: #000000;
+			fillrule: evenodd;
+			stroke-miterlimit: 20;}
+			.sC {
+				fill: #000000;
+			fillrule: evenodd;
+			stroke: #000000;
+			stroke-width: 0.9;
+			stroke-miterlimit: 20;}
+			.sB {
+				fill: none;
+			stroke: #000000;
+			stroke-width: 0.9;
+			stroke-miterlimit: 20;}
+					</style>
+	</defs>
+	<g id="layer_5" title="layer_0" ie-ports="left:1,top:0,right:2,bottom:0">
+		<path id="path_6" class="sA" d=" M 21.15,116.55 L 22.05,116.55 L 22.05,117.45 L 21.15,117.45 L 21.15,116.55 Z"/>
+		<path id="path_7" class="sB" d=" M 8.1,117 L 21.6,117"/>
+		<path id="path_8" class="sB" d=" M 21.6,79.2 L 21.6,154.8"/>
+		<path id="path_9" class="sB" d=" M 37.8,79.2 L 37.8,154.8"/>
+		<path id="path_10" class="sB" d=" M 37.8,90 L 64.8,90"/>
+		<path id="path_11" class="sB" d=" M 64.8,90 L 64.8,63"/>
+		<path id="path_12" class="sB" d=" M 64.8,63 L 108,63"/>
+		<path id="path_13" class="sB" d=" M 37.8,144 L 64.8,144"/>
+		<path id="path_14" class="sB" d=" M 64.8,133.2 L 64.8,171"/>
+		<path id="path_15" class="sB" d=" M 64.8,171 L 108,171"/>
+		<path id="path_16" class="sB" d=" M 37.8,117 L 64.8,117"/>
+		<path id="path_17" class="sB" d=" M 64.8,117 L 64.8,133.2"/>
+		<path id="path_18" class="sC" d:visible="diode_param == 'ee.enum.semiconductors.protectionDiode.nodynamics' || diode_param == 'ee.enum.semiconductors.protectionDiode.chargedynamics'" d=" M 81,130.5 L 108,130.5 L 94.5,108.9 L 81,130.5 Z"/>
+		<path id="path_19" class="sB" d:visible="diode_param == 'ee.enum.semiconductors.protectionDiode.nodynamics' || diode_param == 'ee.enum.semiconductors.protectionDiode.chargedynamics'" d=" M 81,108.9 L 108,108.9"/>
+		<path id="path_20" class="sB" d:visible="diode_param == 'ee.enum.semiconductors.protectionDiode.nodynamics' || diode_param == 'ee.enum.semiconductors.protectionDiode.chargedynamics'" d=" M 94.5,108.9 L 94.5,63"/>
+		<path id="path_21" class="sB" d:visible="diode_param == 'ee.enum.semiconductors.protectionDiode.nodynamics' || diode_param == 'ee.enum.semiconductors.protectionDiode.chargedynamics'" d=" M 94.5,171 L 94.5,130.5"/>
+		<path id="path_22" class="sB" d=" M 54,100.8 L 37.8,117 L 54,133.2"/>
+	</g>
+</svg>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Info File="ScriptData/Utilities/ShortCutToPowerConverterHTML.m" GroupUUID="679fe50c-4ed0-45d0-931a-47ac585c1737" Icon="" Name="Power Converter Repository Main" Type="StartUp" Visible="1">
+    <Extension Name="StartUpPrev" Value="HEAD"/>
+</Info>

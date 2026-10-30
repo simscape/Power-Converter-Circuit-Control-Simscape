@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2640 1840" width="2640" height="1840">
+  <rect width="2640" height="1840" fill="#FFFFFF"/>
+  <rect x="80" y="80" width="2480" height="1680" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="12" rx="30"/>
+
+  <!-- Interleaved boost PFC with diode freewheeling, drawn on a 264 x 184 block.
+       AC input -> diode bridge -> two boost phases in parallel -> Co -> DC output.
+       Pre-charge branch across the top: Rpc -> Dpc.
+       The two dc rails sit exactly on the dc output port rows, 470 and 1370, so both output leads are one
+       straight segment. The ac input enters on those same two rows and turns to its bridge tap row as a
+       matched mirror pair of Ls about y = 920, the axis the bridge rows are derived from. Phase 2 hangs
+       below phase 1 on its own row, and both coils hump downwards: the band above the high rail belongs to
+       the pre-charge branch, and reversing phase 2's coil would put its name in phase 1's name row.
+       Phase 2's row is kept 150 clear of the output capacitor's upper plate, which is fixed on the mid axis
+       by the two rails - two horizontals that close on each other read as one wire broken in the middle. -->
+
+  <!-- AC line in on the P port row, turning down to the first bridge leg's tap -->
+  <polyline points="0,470 280,470 280,740 520,740" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- AC return in on the N port row, its L the mirror image of the line's about the axis -->
+  <polyline points="0,1370 280,1370 280,1100 450,1100" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 450,1100 A 70,70 0 0,1 590,1100" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polyline points="590,1100 820,1100" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Diode bridge between the two dc rails -->
+  <line x1="520" y1="470" x2="520" y2="1370" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="465,665 575,665 520,555" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="459.5" y1="555" x2="580.5" y2="555" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <polygon points="465,1285 575,1285 520,1175" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="459.5" y1="1175" x2="580.5" y2="1175" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="520" cy="740" r="15" fill="#3369C9"/>
+  <line x1="820" y1="470" x2="820" y2="1370" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="765,665 875,665 820,555" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="759.5" y1="555" x2="880.5" y2="555" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <polygon points="765,1285 875,1285 820,1175" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="759.5" y1="1175" x2="880.5" y2="1175" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="820" cy="1100" r="15" fill="#3369C9"/>
+  <!-- DC- rail straight from the bridge to the - port -->
+  <line x1="520" y1="1370" x2="2640" y2="1370" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- Bridge dc+ node, and the branch down to phase 2 -->
+  <line x1="520" y1="470" x2="1070" y2="470" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="950" y1="470" x2="950" y2="850" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="950" cy="470" r="15" fill="#3369C9"/>
+  <!-- Phase 1 along the dc+ rail: L1 -> switching node -> D1 -> the + port -->
+  <path d="M 1070,470 C 1091.6,534 1128.4,534 1150,470 C 1171.6,534 1208.4,534 1230,470 C 1251.6,534 1288.4,534 1310,470" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1310" y1="470" x2="2640" y2="470" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <text x="1100" y="664" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">L</text>
+  <text x="1147.66" y="673.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <polygon points="1695,415 1695,525 1805,470" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1805" y1="409.5" x2="1805" y2="530.5" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <!-- Named well clear of the bar overhang, not of the triangle, or the two touch -->
+  <text x="1720" y="670" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="1776.32" y="679.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <circle cx="1500" cy="470" r="15" fill="#3369C9"/>
+  <!-- Both channels sit below phase 2's row, so neither crosses that wire -->
+  <line x1="1335" y1="1075" x2="1335" y2="1285" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1294" y1="1075" x2="1294" y2="1285" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1174" y1="1180" x2="1294" y2="1180" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1335" y1="1075" x2="1500" y2="1075" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1335" y1="1180" x2="1500" y2="1180" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1335" y1="1285" x2="1500" y2="1285" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1500" y1="470" x2="1500" y2="1075" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1500" y1="1180" x2="1500" y2="1370" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1407,1152 1407,1208 1335,1180" fill="#3369C9" stroke="none"/>
+  <text x="1373.26" y="1045" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">Q</text>
+  <text x="1433.94" y="1054.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <circle cx="1500" cy="1370" r="15" fill="#3369C9"/>
+  <!-- Phase 2 below it: L2 -> switching node -> D2, hopping the phase 1 switch -->
+  <line x1="950" y1="850" x2="1070" y2="850" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 1070,850 C 1091.6,914 1128.4,914 1150,850 C 1171.6,914 1208.4,914 1230,850 C 1251.6,914 1288.4,914 1310,850" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1100" y="1044" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">L</text>
+  <text x="1147.66" y="1053.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <!-- 120 clear of the hop either side, or a coil hump and the hop read as one more hump -->
+  <polyline points="1310,850 1430,850" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 1430,850 A 70,70 0 0,1 1570,850" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- One unbroken wire under D2, because a diode draws no leads of its own -->
+  <polyline points="1570,850 2180,850" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="1975,795 1975,905 2085,850" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="2085" y1="789.5" x2="2085" y2="910.5" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <!-- D2 is named above its row, because the band below it carries Q2's gate structure -->
+  <text x="2000" y="720" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="2056.32" y="729.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <circle cx="1900" cy="850" r="15" fill="#3369C9"/>
+  <!-- Q2 gated the same way as Q1, which needs its whole gate structure clear of Q1's leg -->
+  <line x1="1735" y1="1075" x2="1735" y2="1285" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1694" y1="1075" x2="1694" y2="1285" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1574" y1="1180" x2="1694" y2="1180" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1735" y1="1075" x2="1900" y2="1075" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1735" y1="1180" x2="1900" y2="1180" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1735" y1="1285" x2="1900" y2="1285" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1900" y1="850" x2="1900" y2="1075" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1900" y1="1180" x2="1900" y2="1370" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1807,1152 1807,1208 1735,1180" fill="#3369C9" stroke="none"/>
+  <!-- Both switch names on one row, placed the same way, so the pair reads as a pair -->
+  <text x="1773.26" y="1045" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">Q</text>
+  <text x="1833.94" y="1054.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <circle cx="1900" cy="1370" r="15" fill="#3369C9"/>
+  <!-- Output bus joining the two phases, and the capacitor across the two rails -->
+  <line x1="2180" y1="470" x2="2180" y2="850" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="2180" cy="470" r="15" fill="#3369C9"/>
+  <line x1="2350" y1="470" x2="2350" y2="890" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="2250" y1="890" x2="2450" y2="890" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2250" y1="950" x2="2450" y2="950" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2350" y1="950" x2="2350" y2="1370" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="2350" cy="470" r="15" fill="#3369C9"/>
+  <circle cx="2350" cy="1370" r="15" fill="#3369C9"/>
+  <!-- Beside the lead above the plates, not centred on it: centred, the lead splits the text -->
+  <text x="2410" y="790" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="2466.32" y="799.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">o</text>
+  <!-- Pre-charge branch, bridge dc+ leg to the output bus, in the band above the rail -->
+  <polyline points="820,470 820,310 930,310" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="820" cy="470" r="15" fill="#3369C9"/>
+  <polyline points="930,310 950,262 990,358 1030,262 1070,358 1110,262 1150,358 1170,310" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="950" y="218" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">R</text>
+  <text x="1006.32" y="227.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">pc</text>
+  <line x1="1170" y1="310" x2="1280" y2="310" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1280,262 1280,358 1376,310" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1376" y1="257.2" x2="1376" y2="362.8" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1268" y="218" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="1324.32" y="227.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">pc</text>
+  <polyline points="1376,310 2180,310 2180,470" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="2180" cy="470" r="15" fill="#3369C9"/>
+  <!-- All four power names below their own leads: the branch owns the band above the rail -->
+  <text x="126" y="611.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">P</text>
+  <text x="126" y="1511.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">N</text>
+  <text x="2445.67" y="611.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">+</text>
+  <text x="2475.04" y="1511.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">-</text>
+  <text x="604.487" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">G</text>
+  <text x="1800.42" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">meas</text>
+</svg>

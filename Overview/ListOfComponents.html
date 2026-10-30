@@ -10,8 +10,8 @@
 
     PURPOSE:
     Lists all custom Simscape components in this project with
-    clickable links to open their Documentation (via web()) or
-    Test Harness (via open_system()) directly in MATLAB.
+    clickable links to open their Documentation (through web()) or
+    Test Harness (through open_system()) directly in MATLAB.
 
     HOW TO ADD A NEW COMPONENT:
     1. Add a new entry to the COMPONENT DATA array in the <script>
@@ -19,19 +19,20 @@
     2. Each entry is an array with 4 elements:
        ["ComponentName", "Library", "DocFile.html", "TestHarnessName"]
     3. The table (including row numbers) is auto-generated from
-       the data array — no manual HTML editing needed.
+       the data array - no manual HTML editing needed.
 
-    EXAMPLE — Adding a component called "My New Block":
+    EXAMPLE - Adding a component called "My New Block":
        In the componentData array, add:
        ["My New Block", "Power Converter", "DocumentationMyNewBlock.html", "TestMyNewBlock"],
 
-    AVAILABLE LIBRARIES:
-    - Grid Forming Converter
-    - LLC Converter
+    LIBRARY COLUMN:
+    The folder path the block occupies in ConverterLibrary, for example
+    "Power Converter Plant / Soft-Switching Converters".
 
     HYPERLINK BEHAVIOR:
     - Documentation links call: matlab:web('DocFile.html')
     - Test Harness links call:  matlab:open_system('TestHarnessName')
+    - An empty TestHarnessName renders as a dash, not as a dead link.
 
     STYLE REFERENCE (matches projectDocumentationPage.html):
     - Page title:  28px, orange (#c04c0b)
@@ -125,16 +126,15 @@
 
     <h1>List of Components</h1>
     <p>
-        The table below lists all custom components available in this project.
-        These components are used for power converter circuit design and control,
-        including LLC resonant converters and grid-forming converters built with Simscape.
-        The combined library (<b>ConverterLibrary</b>) is located in the
-        <code>Components/Utilities</code> folder, while individual component libraries
-        reside in their respective folders under <code>Components/</code>.
+        The table lists the custom components in this project: the power stages and controllers of
+        the resonant, power factor correction and non-isolated DC-DC converters, the grid-forming
+        inverter controller, the PWM generators, and the semiconductor device models they use. The
+        library <b>ConverterLibrary</b>, <code>Components/ConverterLibrary.slx</code>, holds every
+        component listed below.
     </p>
     <p>
-        Click on the <b>Documentation</b> link to view the component documentation,
-        or the <b>Test Harness</b> link to open the component test model.
+        To open the documentation of a component, which the <b>Help</b> button on the block mask also
+        opens, click its <b>Documentation</b> link. To open its test model, click its <b>Test Harness</b> link.
     </p>
 
     <table>
@@ -177,19 +177,44 @@
 var componentData = [
     // Format: ["ComponentName", "Library", "DocFile.html", "TestHarnessName"]
 
-    // ── Grid Forming Converter ────────────────────────────────────────────
-    ["Grid-Forming Converter Controller",   "Grid Forming Converter",   "GFMController.html",       "ModelGridFormingController"],
+    // ── Power Converter Plant ─────────────────────────────────────────────
+    ["Non-Isolated DC-DC Converter",        "Power Converter Plant / Non-Isolated DC-DC Converters",        "NonIsolatedDCDC.html",              "NonIsolatedDCDCTestHarnessPlant"],
+    ["Boost PFC Converter",                 "Power Converter Plant / Power Factor Correction Converters",   "BoostPFC.html",                     "BoostPFCTestHarnessPlant"],
+    ["Interleaved Boost PFC Converter",     "Power Converter Plant / Power Factor Correction Converters",   "InterleavedBoostPFC.html",          "InterleavedBoostPFCTestHarnessPlant"],
+    ["Totem-Pole Boost PFC Converter",      "Power Converter Plant / Power Factor Correction Converters",   "TotemPoleBoostPFC.html",            "TotemPoleBoostPFCTestHarnessPlant"],
+    ["CLLC Converter",                      "Power Converter Plant / Soft-Switching Converters",            "CLLCPowerCircuit.html",             "CLLCTestHarnessPlant"],
+    ["DAB Converter",                       "Power Converter Plant / Soft-Switching Converters",            "DABConverter.html",                 "DABTestHarnessPlant"],
+    ["LLC Converter",                       "Power Converter Plant / Soft-Switching Converters",            "LLCConverterPlant.html",            "LLCTestHarnessFullBridge"],
 
-    // ── LLC Converter ─────────────────────────────────────────────────────
-    ["LLC Controller",                      "LLC Converter",            "LLCController.html",       "ModelLLCResonantControllerAndPowerCircuit"],
-    ["LLC Converter Power Circuit",         "LLC Converter",            "LLCPowerCircuit.html",     "ModelLLCResonantControllerAndPowerCircuit"]
+    // ── Controller ────────────────────────────────────────────────────────
+    ["Grid-Forming Converter Controller",   "Controller / Inverter-Based Resources",                        "GFMController.html",                "ModelGridFormingController"],
+    ["Non-Isolated DC-DC Controller",       "Controller / Non-Isolated DC-DC Converters",                   "NonIsolatedDCDCController.html",    "ModelNonIsolatedDCDCController"],
+    ["Boost PFC Controller",                "Controller / Power Factor Correction Converters",              "BoostPFCController.html",           "ModelBoostPFCController"],
+    ["Interleaved Boost PFC Controller",    "Controller / Power Factor Correction Converters",              "InterleavedBoostPFCController.html", "ModelInterleavedBoostPFCController"],
+    ["Totem-Pole Boost PFC Controller",     "Controller / Power Factor Correction Converters",              "TotemPoleBoostPFCController.html",  "ModelTotemPoleBoostPFCController"],
+    ["CLLC Controller",                     "Controller / Soft-Switching Converters",                       "CLLCController.html",               "ModelCLLCController"],
+    ["DAB Controller (SPS)",                "Controller / Soft-Switching Converters",                       "DABController.html",                "ModelDABController"],
+    ["LLC Voltage Controller",              "Controller / Soft-Switching Converters",                       "LLCController.html",                "ModelLLCController"],
+
+    // ── PWM Generators ────────────────────────────────────────────────────
+    ["CLLC PWM Generator",                  "Controller / PWM Generators",                                  "CLLCPWMGenerator.html",             "ModelPWMGenerators"],
+    ["Complementary PWM Generator",         "Controller / PWM Generators",                                  "ComplementaryPWMGenerator.html",    "ModelPWMGenerators"],
+    ["DAB PWM Generator",                   "Controller / PWM Generators",                                  "DABPWMGenerator.html",              "ModelPWMGenerators"],
+    ["Full Bridge PWM Generator",           "Controller / PWM Generators",                                  "FullBridgePWMGenerator.html",       "ModelPWMGenerators"],
+    ["Half Bridge PWM Generator",           "Controller / PWM Generators",                                  "HalfBridgePWMGenerator.html",       "ModelPWMGenerators"],
+    ["LLC PWM Generator",                   "Controller / PWM Generators",                                  "LLCPWMGenerator.html",              "ModelPWMGenerators"],
+
+    // ── Semiconductor Devices ─────────────────────────────────────────────
+    ["Diode Model",                         "Components",                                                   "DiodeModel.html",                   "DiodeBuckSimulinkDevice"],
+    ["IGBT Model",                          "Components",                                                   "IGBTModel.html",                    "IGBTBuckSimulinkDevice"],
+    ["MOSFET Model",                        "Components",                                                   "MOSFET_Thermal_Model.html",         "MOSFETBuckSimulinkDevice"]
 
     // ── ADD NEW COMPONENTS HERE ────────────────────────────────────────────
     // ["New Component Name", "Library", "DocFile.html", "TestHarnessName"],
 ];
 
 /* ──────────────────────────────────────────────────────────────────────────
-   buildTable()  — Generates table rows from componentData.
+   buildTable()  - Generates table rows from componentData.
    Called once on page load. Row numbers are auto-incremented.
    - Documentation links use:  matlab:web('DocFile.html')
    - Test Harness links use:   matlab:open_system('TestHarnessName')
@@ -202,12 +227,17 @@ function buildTable() {
         var library    = componentData[i][1];
         var docFile    = componentData[i][2];
         var testModel  = componentData[i][3];
+        // A component without a test harness shows a dash, so the table never
+        // offers a link that opens nothing.
+        var harnessCell = testModel
+            ? '<a href="matlab:open_system(\'' + testModel + '\')">' + testModel + '</a>'
+            : '-';
         html += '<tr>'
             + '<td>' + (i + 1) + '</td>'
             + '<td>' + name + '</td>'
             + '<td>' + library + '</td>'
             + '<td><a href="matlab:web(\'' + docFile + '\')">' + docFile + '</a></td>'
-            + '<td><a href="matlab:open_system(\'' + testModel + '\')">' + testModel + '</a></td>'
+            + '<td>' + harnessCell + '</td>'
             + '</tr>';
     }
     tbody.innerHTML = html;

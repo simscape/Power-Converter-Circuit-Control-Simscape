@@ -15,6 +15,8 @@ function outValue = plotInertiaConstantEffects(inertiaConstantArray, testConditi
     testCondition.SCR = testConditionSelected.SCR;
     
     % Input the test condition data
+    % GridFormingConverterTestCondition sets simulationTime and disturbanceTime.
+    simulationTime = []; disturbanceTime = [];
     run('GridFormingConverterTestCondition');
     
     
@@ -24,7 +26,7 @@ function outValue = plotInertiaConstantEffects(inertiaConstantArray, testConditi
     legendPlot = cell(1,length(inertiaConstantArray));
     
     if plotFlag>0
-        figure('Name', 'GridFormingConverterIntertiaEffect');
+        resultFigure = figure('Name', 'GridFormingConverterIntertiaEffect');
         set(gcf, 'Position',  [400, 300, 800, 700]);
         axisDatasetting(gcf);
     end
@@ -86,6 +88,8 @@ function outValue = plotInertiaConstantEffects(inertiaConstantArray, testConditi
     
         if plotFlag>0
             % Plotting the result
+            % A simulation can leave another figure current.
+            figure(resultFigure);
     
             subplot(3,2,1:2)
             if i <2
@@ -122,6 +126,7 @@ function outValue = plotInertiaConstantEffects(inertiaConstantArray, testConditi
     outputTable=table(Inertia,ActivePower,ReactivePower,Voltage,Current,FrequencyHz);
     
     if plotFlag >0
+        figure(resultFigure);
         hold on
         subplot(3,2,1:2)
         grid on

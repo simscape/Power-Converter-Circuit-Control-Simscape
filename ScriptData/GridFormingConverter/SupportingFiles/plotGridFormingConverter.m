@@ -49,6 +49,8 @@ for i = 1:length(testList)
     testCondition.testCondition = testList{i};
 
     % Setting up the test conditions
+    % GridFormingConverterTestCondition sets simulationTime.
+    simulationTime = [];
     run('GridFormingConverterTestCondition');
    
     % Setting up the simulation test condition
@@ -201,7 +203,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 
 if plotFlag>0
@@ -291,7 +293,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -385,7 +387,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -480,7 +482,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -590,7 +592,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -715,7 +717,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -841,7 +843,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -965,7 +967,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -1093,7 +1095,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -1221,7 +1223,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result
@@ -1337,7 +1339,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 if plotFlag>0
     % Plotting the result
     figure('Name', 'GridFormingConverterPermanentFault');
@@ -1447,7 +1449,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 if plotFlag>0
     % Plotting the result
     figure('Name', 'GridFormingConverterTemporaryFault');
@@ -1586,7 +1588,7 @@ outValue.Q = Qmeas(end);
 outValue.F = freq(end);
 outValue.V = Vgd(end);
 outValue.I = Is(end);
-outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
 
 if plotFlag>0
     % Plotting the result

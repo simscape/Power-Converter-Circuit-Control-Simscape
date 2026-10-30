@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3740 2330" width="3740" height="2330">
+  <rect width="3740" height="2330" fill="#FFFFFF"/>
+  <rect x="80" y="80" width="3580" height="2170" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="12" rx="30"/>
+
+  <!-- Bidirectional CLLC resonant converter, drawn on a 374 x 233 block.
+       Primary bridge -> C1 -> transformer with Lm across the primary -> C2 -> secondary bridge -> Co.
+       Each dc rail is drawn on its own port row, y = 600 and y = 1750, so every power lead is one straight
+       segment out to the block edge. Every row between the rails is mirrored about y = 1175: switch rows
+       y = 835 and y = 1515, tank and return rows y = 1005 and y = 1345. The four legs are mirrored about
+       x = 1760, the midpoint between the bridges, and the transformer spans the two tank rows so every wire
+       from a bridge to a winding is one straight segment.
+       The tank is drawn as a chain of equal gaps, not as a positional mirror: the primary side carries the
+       magnetizing branch and the secondary side does not, so mirroring the columns leaves the secondary
+       holding room for a component it has not got.
+       The two gate inputs and the measurement output sit on the top edge and are deliberately left without
+       leads.
+       All seven port names are drawn here, each beside its own port, because the block turns Simulink's own
+       port labels off: Simulink centres those on the port row, across the lead. -->
+
+  <!-- Primary rails, each running straight out of its own block port -->
+  <line x1="0" y1="600" x2="1020" y2="600" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="0" y1="1750" x2="1020" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <!-- Primary bridge, the outer leg tapped into the tank and the inner leg returning it -->
+  <line x1="412.75" y1="766.75" x2="412.75" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="386.1" y1="766.75" x2="386.1" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="308.1" y1="835" x2="386.1" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="412.75" y1="766.75" x2="520" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="412.75" y1="835" x2="520" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="412.75" y1="903.25" x2="520" y2="903.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="520" y1="600" x2="520" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="520" y1="835" x2="520" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="459.55,816.8 459.55,853.2 412.75,835" fill="#3369C9" stroke="none"/>
+  <polyline points="520,766.75 600,766.75 600,799.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="600,870.75 600,903.25 520,903.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="572.7,870.75 627.3,870.75 600,799.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="569.97" y1="799.25" x2="630.03" y2="799.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="198.274" y="789.955" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="250.3" y="799.315" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <line x1="412.75" y1="1446.75" x2="412.75" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="386.1" y1="1446.75" x2="386.1" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="308.1" y1="1515" x2="386.1" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="412.75" y1="1446.75" x2="520" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="412.75" y1="1515" x2="520" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="412.75" y1="1583.25" x2="520" y2="1583.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="520" y1="1005" x2="520" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="520" y1="1515" x2="520" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="459.55,1496.8 459.55,1533.2 412.75,1515" fill="#3369C9" stroke="none"/>
+  <polyline points="520,1446.75 600,1446.75 600,1479.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="600,1550.75 600,1583.25 520,1583.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="572.7,1550.75 627.3,1550.75 600,1479.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="569.97" y1="1479.25" x2="630.03" y2="1479.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="198.274" y="1469.95" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="250.3" y="1479.31" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">3</text>
+  <circle cx="520" cy="1005" r="10.125" fill="#3369C9"/>
+  <line x1="912.75" y1="766.75" x2="912.75" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="886.1" y1="766.75" x2="886.1" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="808.1" y1="835" x2="886.1" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="912.75" y1="766.75" x2="1020" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="912.75" y1="835" x2="1020" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="912.75" y1="903.25" x2="1020" y2="903.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1020" y1="600" x2="1020" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1020" y1="835" x2="1020" y2="1345" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="959.55,816.8 959.55,853.2 912.75,835" fill="#3369C9" stroke="none"/>
+  <polyline points="1020,766.75 1100,766.75 1100,799.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="1100,870.75 1100,903.25 1020,903.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="1072.7,870.75 1127.3,870.75 1100,799.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="1069.97" y1="799.25" x2="1130.03" y2="799.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="698.274" y="789.955" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="750.3" y="799.315" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <line x1="912.75" y1="1446.75" x2="912.75" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="886.1" y1="1446.75" x2="886.1" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="808.1" y1="1515" x2="886.1" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="912.75" y1="1446.75" x2="1020" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="912.75" y1="1515" x2="1020" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="912.75" y1="1583.25" x2="1020" y2="1583.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1020" y1="1345" x2="1020" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1020" y1="1515" x2="1020" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="959.55,1496.8 959.55,1533.2 912.75,1515" fill="#3369C9" stroke="none"/>
+  <polyline points="1020,1446.75 1100,1446.75 1100,1479.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="1100,1550.75 1100,1583.25 1020,1583.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="1072.7,1550.75 1127.3,1550.75 1100,1479.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="1069.97" y1="1479.25" x2="1130.03" y2="1479.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="698.274" y="1469.95" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="750.3" y="1479.31" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">4</text>
+  <circle cx="1020" cy="1345" r="10.125" fill="#3369C9"/>
+  <circle cx="520" cy="600" r="10.125" fill="#3369C9"/>
+  <circle cx="520" cy="1750" r="10.125" fill="#3369C9"/>
+  <!-- Primary tap into the first resonant capacitor, hopping the inner leg -->
+  <line x1="520" y1="1005" x2="974.5" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <path d="M 974.5,1005 A 45.5,45.5 0 0,1 1065.5,1005" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1065.5" y1="1005" x2="1180" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1180" y1="1005" x2="1250.5" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1250.5" y1="940" x2="1250.5" y2="1070" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="1289.5" y1="940" x2="1289.5" y2="1070" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="1289.5" y1="1005" x2="1360" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <text x="1227.94" y="900" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="1284.26" y="909.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <line x1="1360" y1="1005" x2="1760" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <!-- Magnetizing inductance across the transformer primary -->
+  <line x1="1560" y1="1005" x2="1560" y2="1075" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <path d="M 1560,1075 C 1506.67,1093 1506.67,1123.67 1560,1141.67 C 1506.67,1159.67 1506.67,1190.33 1560,1208.33 C 1506.67,1226.33 1506.67,1257 1560,1275" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="1560" y1="1275" x2="1560" y2="1345" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <circle cx="1560" cy="1005" r="10.125" fill="#3369C9"/>
+  <circle cx="1560" cy="1345" r="10.125" fill="#3369C9"/>
+  <text x="1374.56" y="1195" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">L</text>
+  <text x="1422.22" y="1204.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">m</text>
+  <!-- Transformer, spanning the two tank rows so every winding terminal is met straight -->
+  <path d="M 1760,1005 C 1828,1005 1828,1073 1760,1073 C 1828,1073 1828,1141 1760,1141 C 1828,1141 1828,1209 1760,1209 C 1828,1209 1828,1277 1760,1277 C 1828,1277 1828,1345 1760,1345" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <path d="M 1960,1005 C 1892,1005 1892,1073 1960,1073 C 1892,1073 1892,1141 1960,1141 C 1892,1141 1892,1209 1960,1209 C 1892,1209 1892,1277 1960,1277 C 1892,1277 1892,1345 1960,1345" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="1845.72" y1="960.73" x2="1845.72" y2="1389.27" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="1874.28" y1="960.73" x2="1874.28" y2="1389.27" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <circle cx="1749.37" cy="1019.17" r="14.175" fill="#3369C9"/>
+  <circle cx="1970.63" cy="1019.17" r="14.175" fill="#3369C9"/>
+  <text x="1822.27" y="920.73" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">T</text>
+  <text x="1869.93" y="930.09" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <text x="1779.82" y="1485.43" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">n : 1</text>
+  <line x1="1020" y1="1345" x2="1760" y2="1345" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <!-- Secondary winding into the second resonant capacitor, hopping the inner leg -->
+  <line x1="1960" y1="1005" x2="2160" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2160" y1="1005" x2="2230.5" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2230.5" y1="940" x2="2230.5" y2="1070" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="2269.5" y1="940" x2="2269.5" y2="1070" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="2269.5" y1="1005" x2="2340" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <text x="2207.94" y="900" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="2264.26" y="909.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <line x1="2340" y1="1005" x2="2454.5" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <path d="M 2454.5,1005 A 45.5,45.5 0 0,1 2545.5,1005" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2545.5" y1="1005" x2="3000" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="1960" y1="1345" x2="2500" y2="1345" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <!-- Secondary bridge, mirrored so the two bridges read as one grid -->
+  <line x1="3107.25" y1="766.75" x2="3107.25" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="3133.9" y1="766.75" x2="3133.9" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="3211.9" y1="835" x2="3133.9" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3107.25" y1="766.75" x2="3000" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3107.25" y1="835" x2="3000" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3107.25" y1="903.25" x2="3000" y2="903.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3000" y1="600" x2="3000" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3000" y1="835" x2="3000" y2="1005" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="3060.45,816.8 3060.45,853.2 3107.25,835" fill="#3369C9" stroke="none"/>
+  <polyline points="3000,766.75 2920,766.75 2920,799.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="2920,870.75 2920,903.25 3000,903.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="2892.7,870.75 2947.3,870.75 2920,799.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="2889.97" y1="799.25" x2="2950.03" y2="799.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="3241.9" y="789.955" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="3293.93" y="799.315" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">5</text>
+  <line x1="3107.25" y1="1446.75" x2="3107.25" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="3133.9" y1="1446.75" x2="3133.9" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="3211.9" y1="1515" x2="3133.9" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3107.25" y1="1446.75" x2="3000" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3107.25" y1="1515" x2="3000" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3107.25" y1="1583.25" x2="3000" y2="1583.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3000" y1="1005" x2="3000" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3000" y1="1515" x2="3000" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="3060.45,1496.8 3060.45,1533.2 3107.25,1515" fill="#3369C9" stroke="none"/>
+  <polyline points="3000,1446.75 2920,1446.75 2920,1479.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="2920,1550.75 2920,1583.25 3000,1583.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="2892.7,1550.75 2947.3,1550.75 2920,1479.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="2889.97" y1="1479.25" x2="2950.03" y2="1479.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="3241.9" y="1469.95" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="3293.93" y="1479.31" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">7</text>
+  <circle cx="3000" cy="1005" r="10.125" fill="#3369C9"/>
+  <line x1="2607.25" y1="766.75" x2="2607.25" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="2633.9" y1="766.75" x2="2633.9" y2="903.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="2711.9" y1="835" x2="2633.9" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2607.25" y1="766.75" x2="2500" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2607.25" y1="835" x2="2500" y2="835" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2607.25" y1="903.25" x2="2500" y2="903.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2500" y1="600" x2="2500" y2="766.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2500" y1="835" x2="2500" y2="1345" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="2560.45,816.8 2560.45,853.2 2607.25,835" fill="#3369C9" stroke="none"/>
+  <polyline points="2500,766.75 2420,766.75 2420,799.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="2420,870.75 2420,903.25 2500,903.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="2392.7,870.75 2447.3,870.75 2420,799.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="2389.97" y1="799.25" x2="2450.03" y2="799.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="2741.9" y="789.955" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="2793.93" y="799.315" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">6</text>
+  <line x1="2607.25" y1="1446.75" x2="2607.25" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="2633.9" y1="1446.75" x2="2633.9" y2="1583.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="2711.9" y1="1515" x2="2633.9" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2607.25" y1="1446.75" x2="2500" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2607.25" y1="1515" x2="2500" y2="1515" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2607.25" y1="1583.25" x2="2500" y2="1583.25" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2500" y1="1345" x2="2500" y2="1446.75" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2500" y1="1515" x2="2500" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <polygon points="2560.45,1496.8 2560.45,1533.2 2607.25,1515" fill="#3369C9" stroke="none"/>
+  <polyline points="2500,1446.75 2420,1446.75 2420,1479.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="2420,1550.75 2420,1583.25 2500,1583.25" fill="none" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="2392.7,1550.75 2447.3,1550.75 2420,1479.25" fill="none" stroke="#3369C9" stroke-width="16.2" stroke-linejoin="round"/>
+  <line x1="2389.97" y1="1479.25" x2="2450.03" y2="1479.25" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <text x="2741.9" y="1469.95" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">S</text>
+  <text x="2793.93" y="1479.31" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">8</text>
+  <circle cx="2500" cy="1345" r="10.125" fill="#3369C9"/>
+  <circle cx="3000" cy="600" r="10.125" fill="#3369C9"/>
+  <circle cx="3000" cy="1750" r="10.125" fill="#3369C9"/>
+  <!-- Secondary rails out to their own block ports, with the filter capacitor across them -->
+  <line x1="2500" y1="600" x2="3740" y2="600" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="2500" y1="1750" x2="3740" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3430" y1="600" x2="3430" y2="1155.5" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <line x1="3365" y1="1155.5" x2="3495" y2="1155.5" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="3365" y1="1194.5" x2="3495" y2="1194.5" stroke="#3369C9" stroke-width="16.2" stroke-linecap="round"/>
+  <line x1="3430" y1="1194.5" x2="3430" y2="1750" stroke="#3369C9" stroke-width="13.5" stroke-linecap="round"/>
+  <circle cx="3430" cy="600" r="10.125" fill="#3369C9"/>
+  <circle cx="3430" cy="1750" r="10.125" fill="#3369C9"/>
+  <text x="3520" y="1205" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="3576.32" y="1214.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">o</text>
+  <text x="126" y="546.45" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">P1</text>
+  <text x="126" y="1887.79" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">N1</text>
+  <text x="3470.91" y="546.45" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">P2</text>
+  <text x="3464.47" y="1887.79" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">N2</text>
+  <text x="499.724" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Gpri</text>
+  <text x="1723.69" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Meas</text>
+  <text x="2976.91" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Gsec</text>
+</svg>

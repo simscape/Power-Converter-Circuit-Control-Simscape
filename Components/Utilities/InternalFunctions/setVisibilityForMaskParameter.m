@@ -1,7 +1,7 @@
 function setVisibilityForMaskParameter(options)
-%
-%   setVisibilityForMaskParameter(options) sets the visibility of specified mask
-%   parameters for a Simulink block mask.
+%SETVISIBILITYFORMASKPARAMETER Show or hide parameters on a Simulink block mask.
+%   setVisibilityForMaskParameter(options) sets the visibility of the named mask
+%   parameters on a Simulink block mask.
 %
 %   Input Arguments:
 %   ----------------
@@ -16,7 +16,7 @@ function setVisibilityForMaskParameter(options)
 %       opts.BlockPath = 'myModel/myBlock';
 %       opts.ParameterVec = {'Gain', 'Offset'};
 %       opts.Visibility = 'off';
-%       setVisibilityMaskParameter(opts);
+%       setVisibilityForMaskParameter(opts);
 
 % Copyright 2025-2026 The MathWorks, Inc.
 
@@ -26,8 +26,17 @@ arguments (Input)
     options.Visibility char
 end
 maskHandle = Simulink.Mask.get(options.BlockPath);
-for i=1:length( options.ParameterVec)
-  maskHandle.Parameters(find(string({maskHandle.Parameters.Name}) == ...
-      options.ParameterVec{i})).Visible = options.Visibility;
+parameterNames = string({maskHandle.Parameters.Name});
+for i = 1:numel(options.ParameterVec)
+  parameterIndex = find(parameterNames == options.ParameterVec{i}, 1);
+  if isempty(parameterIndex)
+    continue
+  end
+  % Write only when the visibility changes. Assigning the value a parameter
+  % already holds still counts as modifying the block, which throws
+  % Simulink:Libraries:LockViolation on a locked library and dirties a clean model.
+  if ~strcmp(maskHandle.Parameters(parameterIndex).Visible, options.Visibility)
+    maskHandle.Parameters(parameterIndex).Visible = options.Visibility;
+  end
 end
 end

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 230" width="420" height="230">
+  <rect width="420" height="230" fill="#FFFFFF"/>
+  <rect x="30" y="12" width="360" height="205" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="1" rx="4"/>
+
+  <!-- 2-Phase Interleaved Boost PFC with Synchronous MOSFET:
+       Bridge -> branch to L1 (y=70) + L2 (y=35)
+       Each phase: L -> junction -> Q_sync (to DC+out), Q_main (to DC-)
+       Shared output Co -->
+
+  <!-- AC input terminals -->
+  <circle cx="15" cy="100" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="15" cy="155" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Bridge: Left leg x=50, Right leg x=90 -->
+  <line x1="15" y1="100" x2="50" y2="100" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="50" y1="50" x2="50" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="90" y1="50" x2="90" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="50" y1="50" x2="90" y2="50" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="50" y1="190" x2="90" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Bridge diodes -->
+  <polygon points="42,86 58,86 50,72" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="42" y1="72" x2="58" y2="72" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="42,176 58,176 50,162" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="42" y1="162" x2="58" y2="162" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="82,86 98,86 90,72" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="82" y1="72" x2="98" y2="72" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="82,176 98,176 90,162" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="82" y1="162" x2="98" y2="162" stroke="#0072BD" stroke-width="2.5"/>
+
+  <circle cx="50" cy="100" r="2" fill="#0072BD"/>
+  <line x1="15" y1="155" x2="43" y2="155" stroke="#0072BD" stroke-width="2.5"/>
+  <path d="M 43,155 A 7,7 0 0,1 57,155" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="57" y1="155" x2="90" y2="155" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="90" cy="155" r="2" fill="#0072BD"/>
+
+  <!-- DC+ from bridge to branch node -->
+  <line x1="90" y1="50" x2="120" y2="50" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="120" cy="50" r="2" fill="#0072BD"/>
+  <line x1="120" y1="50" x2="120" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- === PHASE 1 at y=70 (half-bridge: Q1a high-side, Q1b low-side, midpoint=junction1) === -->
+  <line x1="120" y1="70" x2="135" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <path d="M 135,70 C 139,58 146,58 150,70 C 154,58 161,58 165,70 C 169,58 176,58 180,70" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="180" y1="70" x2="195" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="148" y="56" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">L<tspan font-size="6" dy="1">1</tspan></text>
+  <circle cx="195" cy="70" r="2" fill="#0072BD"/>
+
+  <!-- Q1a sync MOSFET (high-side): junction1 to DC+ output -->
+  <!-- Horizontal MOSFET: gate above, channel bar horizontal -->
+  <line x1="195" y1="70" x2="210" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- Gate above at y=52 -->
+  <line x1="222" y1="48" x2="222" y2="56" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="212" y1="56" x2="232" y2="56" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="212" y1="60" x2="232" y2="60" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="215" y1="60" x2="215" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="222" y1="60" x2="222" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="218.5,65 225.5,65 222,58" fill="#0072BD"/>
+  <line x1="229" y1="60" x2="229" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="210" y1="70" x2="330" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="213" y="44" font-family="Arial" font-size="8" font-weight="bold" fill="#0072BD">Q<tspan font-size="5" dy="1">1a</tspan></text>
+
+  <!-- Q1b main MOSFET (low-side): junction1 to DC- (centered: y=117-143, center=130) -->
+  <line x1="195" y1="70" x2="195" y2="119" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="163" y1="130" x2="175" y2="130" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="175" y1="117" x2="175" y2="143" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="179" y1="117" x2="179" y2="143" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="179" y1="119" x2="195" y2="119" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="179" y1="130" x2="195" y2="130" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="190,126.5 190,133.5 182,130" fill="#0072BD"/>
+  <line x1="179" y1="141" x2="195" y2="141" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- Middle stub (source) connects down to DC- -->
+  <line x1="195" y1="130" x2="195" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="199" y="132" font-family="Arial" font-size="8" font-weight="bold" fill="#0072BD">Q<tspan font-size="5" dy="1">1b</tspan></text>
+  <circle cx="195" cy="190" r="2" fill="#0072BD"/>
+
+  <!-- === PHASE 2 at y=35 === -->
+  <line x1="120" y1="50" x2="120" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="120" y1="35" x2="135" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <path d="M 135,35 C 139,23 146,23 150,35 C 154,23 161,23 165,35 C 169,23 176,23 180,35" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="180" y1="35" x2="255" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="148" y="21" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">L<tspan font-size="6" dy="1">2</tspan></text>
+  <circle cx="255" cy="35" r="2" fill="#0072BD"/>
+
+  <!-- Q2a sync MOSFET (high-side): junction2 to DC+ output -->
+  <line x1="255" y1="35" x2="270" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="282" y1="17" x2="282" y2="21" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="272" y1="21" x2="292" y2="21" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="272" y1="25" x2="292" y2="25" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="275" y1="25" x2="275" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="282" y1="25" x2="282" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="278.5,30 285.5,30 282,23" fill="#0072BD"/>
+  <line x1="289" y1="25" x2="289" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="270" y1="35" x2="305" y2="35" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="305" y1="35" x2="305" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="305" cy="70" r="2" fill="#0072BD"/>
+  <text x="274" y="15" font-family="Arial" font-size="8" font-weight="bold" fill="#0072BD">Q<tspan font-size="5" dy="1">2a</tspan></text>
+
+  <!-- Q2b main MOSFET (low-side): junction2 to DC- (centered: y=117-143, center=130) -->
+  <line x1="255" y1="35" x2="255" y2="119" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="223" y1="130" x2="235" y2="130" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="235" y1="117" x2="235" y2="143" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="239" y1="117" x2="239" y2="143" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="239" y1="119" x2="255" y2="119" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="239" y1="130" x2="255" y2="130" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="250,126.5 250,133.5 242,130" fill="#0072BD"/>
+  <line x1="239" y1="141" x2="255" y2="141" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- Middle stub (source) connects down to DC- -->
+  <line x1="255" y1="130" x2="255" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="259" y="132" font-family="Arial" font-size="8" font-weight="bold" fill="#0072BD">Q<tspan font-size="5" dy="1">2b</tspan></text>
+  <circle cx="255" cy="190" r="2" fill="#0072BD"/>
+
+  <!-- DC- rail -->
+  <line x1="90" y1="190" x2="395" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Output Capacitor Co (centered: plates y=127/133, center=130) -->
+  <circle cx="355" cy="70" r="2" fill="#0072BD"/>
+  <line x1="330" y1="70" x2="395" y2="70" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="355" y1="70" x2="355" y2="127" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="345" y1="127" x2="365" y2="127" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="345" y1="133" x2="365" y2="133" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="355" y1="133" x2="355" y2="190" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="355" cy="190" r="2" fill="#0072BD"/>
+  <text x="369" y="133" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">C<tspan font-size="6" dy="1">o</tspan></text>
+
+  <!-- Output terminals -->
+  <circle cx="405" cy="70" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="405" cy="190" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+</svg>

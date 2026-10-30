@@ -16,15 +16,17 @@ function outValue = plotFaultCurrentVoltageEffects(faultImpedanceArray, testCond
     % Defining function output variable
     outValue = struct('P',0,'Q',0,'F',0,'V',0,'I',0);
     legendFault = cell(1,length(faultImpedanceArray));
+    % GridFormingConverterTestCondition sets simulationTime and disturbanceTime.
+    simulationTime = []; disturbanceTime = [];
     run('GridFormingConverterTestCondition');
     
     if plotFlag>0
-        figure('Name', 'GridFormingConverterThreePhaseFault');
+        resultFigure = figure('Name', 'GridFormingConverterThreePhaseFault');
         set(gcf, 'Position',  [400, 300, 800, 700]);
         axisDatasetting(gcf);
     end
     
-    % Defining simulink simulation input
+    % Defining Simulink simulation input
     simIn = Simulink.SimulationInput('GridFormingConverter');
 
     for i = 1:length(faultImpedanceArray)
@@ -71,6 +73,8 @@ function outValue = plotFaultCurrentVoltageEffects(faultImpedanceArray, testCond
     
         if plotFlag>0
             % Plotting the result
+            % A simulation can leave another figure current.
+            figure(resultFigure);
     
             subplot(3,2,1:2)
             plot(timeFaultSignal,faultSignal, 'LineWidth',2);
@@ -104,6 +108,7 @@ function outValue = plotFaultCurrentVoltageEffects(faultImpedanceArray, testCond
     
     % Comparing with standard
     if plotFlag>0
+        figure(resultFigure);
         hold on
         subplot(3,2,1:2)
         xlim([disturbanceTime*0.8 simulationTime]);

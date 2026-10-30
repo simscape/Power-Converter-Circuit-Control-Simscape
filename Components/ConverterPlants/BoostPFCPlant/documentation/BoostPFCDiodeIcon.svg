@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2640 1760" width="2640" height="1760">
+  <rect width="2640" height="1760" fill="#FFFFFF"/>
+  <rect x="80" y="80" width="2480" height="1600" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="12" rx="30"/>
+
+  <!-- Boost PFC with diode freewheeling, drawn on a 264 x 176 block.
+       AC input -> diode bridge -> L -> switching node -> D -> Co -> DC output.
+       Switching node -> Q -> DC-. Pre-charge branch across the top: Rpc -> Dpc.
+       The two dc rails sit exactly on the dc output port rows, 430 and 1330, so both output leads are one
+       straight segment the whole width of the icon. The ac input enters on those same two rows, because
+       that is where its own ports are, and turns to its bridge tap row as a matched mirror pair of Ls
+       about y = 880 - the axis every row below is derived from, so the bridge reads as one mirror pair.
+       The band above the high rail belongs to the pre-charge branch, so the inductor humps down into the
+       circuit and the two positive port names go below their own leads rather than above them. -->
+
+  <!-- AC line in on the P port row, turning down to the first bridge leg's tap -->
+  <polyline points="0,430 280,430 280,700 520,700" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- AC return in on the N port row, its L the mirror image of the line's about the axis -->
+  <polyline points="0,1330 280,1330 280,1060 450,1060" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 450,1060 A 70,70 0 0,1 590,1060" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polyline points="590,1060 820,1060" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Diode bridge between the two dc rails -->
+  <line x1="520" y1="430" x2="520" y2="1330" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="465,625 575,625 520,515" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="459.5" y1="515" x2="580.5" y2="515" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <polygon points="465,1245 575,1245 520,1135" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="459.5" y1="1135" x2="580.5" y2="1135" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="520" cy="700" r="15" fill="#3369C9"/>
+  <line x1="820" y1="430" x2="820" y2="1330" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="765,625 875,625 820,515" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="759.5" y1="515" x2="880.5" y2="515" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <polygon points="765,1245 875,1245 820,1135" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="759.5" y1="1135" x2="880.5" y2="1135" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="820" cy="1060" r="15" fill="#3369C9"/>
+  <!-- DC+ rail: bridge -> L -> switching node -> D -> output node -> the + port -->
+  <line x1="520" y1="430" x2="1000" y2="430" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 1000,430 C 1025.2,504.667 1068.13,504.667 1093.33,430 C 1118.53,504.667 1161.47,504.667 1186.67,430 C 1211.87,504.667 1254.8,504.667 1280,430" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1280" y1="430" x2="2640" y2="430" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- The coil humps into the circuit, because the band above the rail carries the branch -->
+  <text x="1030" y="634.667" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">L</text>
+  <!-- A diode draws no leads of its own, so the rail runs unbroken underneath it -->
+  <polygon points="1565,375 1565,485 1675,430" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1675" y1="369.5" x2="1675" y2="490.5" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <!-- Named well clear of the bar overhang, not of the triangle, or the two touch -->
+  <text x="1590" y="630" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <circle cx="1420" cy="430" r="15" fill="#3369C9"/>
+  <!-- DC- rail straight from the bridge to the - port -->
+  <line x1="520" y1="1330" x2="2640" y2="1330" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- Boost switch Q from the switching node to DC-, its channel on the mirror axis -->
+  <line x1="1255" y1="775" x2="1255" y2="985" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1214" y1="775" x2="1214" y2="985" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1094" y1="880" x2="1214" y2="880" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1255" y1="775" x2="1420" y2="775" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1255" y1="880" x2="1420" y2="880" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1255" y1="985" x2="1420" y2="985" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1420" y1="430" x2="1420" y2="775" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1420" y1="880" x2="1420" y2="1330" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1327,852 1327,908 1255,880" fill="#3369C9" stroke="none"/>
+  <text x="1480" y="910" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">Q</text>
+  <circle cx="1420" cy="1330" r="15" fill="#3369C9"/>
+  <!-- Output capacitor Co across the two dc rails -->
+  <line x1="2100" y1="430" x2="2100" y2="850" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="2000" y1="850" x2="2200" y2="850" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2000" y1="910" x2="2200" y2="910" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2100" y1="910" x2="2100" y2="1330" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="2100" cy="430" r="15" fill="#3369C9"/>
+  <circle cx="2100" cy="1330" r="15" fill="#3369C9"/>
+  <text x="2250" y="910" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="2306.32" y="919.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">o</text>
+  <!-- Pre-charge branch, bridge dc+ leg to the capacitor node, in the band above the rail -->
+  <polyline points="820,430 820,300 930,300" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="820" cy="430" r="15" fill="#3369C9"/>
+  <polyline points="930,300 950,252 990,348 1030,252 1070,348 1110,252 1150,348 1170,300" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="950" y="212" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">R</text>
+  <text x="1006.32" y="221.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">pc</text>
+  <line x1="1170" y1="300" x2="1280" y2="300" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1280,252 1280,348 1376,300" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1376" y1="247.2" x2="1376" y2="352.8" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1268" y="212" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="1324.32" y="221.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">pc</text>
+  <polyline points="1376,300 2100,300 2100,430" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="2100" cy="430" r="15" fill="#3369C9"/>
+  <!-- All four power names below their own leads: the branch owns the band above the rail -->
+  <text x="126" y="571.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">P</text>
+  <text x="126" y="1471.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">N</text>
+  <text x="2445.67" y="571.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">+</text>
+  <text x="2475.04" y="1471.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">-</text>
+  <text x="604.487" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">G</text>
+  <text x="1800.42" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">meas</text>
+</svg>

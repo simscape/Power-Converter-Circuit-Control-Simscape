@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLLC Converter - Bidirectional CLLC resonant converter power stage</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>CLLC Converter</h1>
+<p class="subtitle">Bidirectional CLLC resonant converter power stage</p>
+<div class="library-path">ConverterLibrary / Power Converter Plant / Soft-Switching Converters / CLLC Converter</div>
+<div class="library-path">ConverterPlantLibrary / Soft-Switching Converters / CLLC Converter</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#export">Export to Unmasked Subsystem</a></li>
+    <li><a href="#harness">Plant Test Harness</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<div class="block-icon">
+  <img src="CLLCConverterIcon.svg" alt="CLLC resonant converter power stage">
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>CLLC Converter</strong> block models a bidirectional CLLC resonant power stage: two
+full bridges coupled by a transformer, with a resonant capacitor and a leakage inductance on each
+side of it. Two independent four-element gate vectors drive the two bridges.</p>
+
+<p>The circuit contains:</p>
+<ul>
+  <li><strong>Primary bridge</strong> - four switches, A1, A2, B1 and B2.</li>
+  <li><strong>Primary resonant elements</strong> - the capacitor C1 with its series resistance, and
+      the leakage inductance L<sub>lk1</sub>.</li>
+  <li><strong>Transformer</strong>, with the magnetizing inductance L<sub>m</sub> and the turns
+      N1 and N2.</li>
+  <li><strong>Secondary resonant elements</strong> - the capacitor C2 with its series resistance, and
+      the leakage inductance L<sub>lk2</sub>.</li>
+  <li><strong>Secondary bridge</strong> - four switches, A1, A2, B1 and B2. Power flow is
+      bidirectional.</li>
+  <li><strong>Output filter</strong> - the capacitor C<sub>o</sub> with its series resistance.</li>
+</ul>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Description</th></tr>
+  <tr><td><strong class="port-electrical">P1</strong></td><td>Positive primary side DC terminal.</td></tr>
+  <tr><td><strong class="port-electrical">N1</strong></td><td>Negative primary side DC terminal.</td></tr>
+  <tr><td><strong class="port-electrical">P2</strong></td><td>Positive secondary side DC terminal.</td></tr>
+  <tr><td><strong class="port-electrical">N2</strong></td><td>Negative secondary side DC terminal.</td></tr>
+</table>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">Gpri</strong></td><td>4</td><td>Primary bridge gate vector.</td></tr>
+  <tr><td><strong class="port-signal">Gsec</strong></td><td>4</td><td>Secondary bridge gate vector.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<p>Both vectors use the same element order, and it is the same order in both model options.</p>
+<div class="gate-map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 210" width="460" height="210" role="img" aria-label="Full-bridge gate vector element map">
+<rect x="0" y="0" width="460" height="210" fill="#FFFFFF"/>
+<line x1="20" y1="24" x2="440" y2="24" stroke="#333333" stroke-width="2"/>
+<line x1="20" y1="186" x2="440" y2="186" stroke="#333333" stroke-width="2"/>
+<text x="24" y="18" font-family="Segoe UI, Arial" font-size="11" fill="#666666">+</text>
+<text x="24" y="200" font-family="Segoe UI, Arial" font-size="11" fill="#666666">&#8722;</text>
+<line x1="135.0" y1="24" x2="135.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="92.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="135.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">A1</text>
+<text x="135.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="201.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(1)</text>
+<rect x="92.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="135.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">A2</text>
+<text x="135.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="201.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(2)</text>
+<text x="135.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Leg A</text>
+<line x1="365.0" y1="24" x2="365.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="322.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="365.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">B1</text>
+<text x="365.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="431.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(3)</text>
+<rect x="322.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="365.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">B2</text>
+<text x="365.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="431.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(4)</text>
+<text x="365.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Leg B</text>
+</svg>
+</div>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>Gpri(1)</code>, <code>Gsec(1)</code></td><td><code>MOSFETA1</code></td><td>Leg A high side.</td></tr>
+  <tr><td><code>Gpri(2)</code>, <code>Gsec(2)</code></td><td><code>MOSFETA2</code></td><td>Leg A low side.</td></tr>
+  <tr><td><code>Gpri(3)</code>, <code>Gsec(3)</code></td><td><code>MOSFETB1</code></td><td>Leg B high side.</td></tr>
+  <tr><td><code>Gpri(4)</code>, <code>Gsec(4)</code></td><td><code>MOSFETB2</code></td><td>Leg B low side.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Elements 1 and 4 form one diagonal of the bridge and elements 2 and 3 form
+  the other. The CLLC PWM Generator block produces both vectors in this order.
+</div>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">Meas</strong></td><td>bus, 10 elements</td><td>Measurement bus, in three sub-buses: <code>Inverter</code>, <code>ResonantTank</code> and <code>Rectifier</code>.</td></tr>
+</table>
+
+<h4>Measurement Bus Order</h4>
+<table class="port-table">
+  <tr><th>Element</th><th>Bus element</th><th>Measurement</th></tr>
+  <tr><td>1</td><td><code>Inverter.Vin [V]</code></td><td>Primary side DC voltage.</td></tr>
+  <tr><td>2</td><td><code>Inverter.Iin [A]</code></td><td>Primary side DC current.</td></tr>
+  <tr><td>3</td><td><code>ResonantTank.Ip [A]</code></td><td>Primary resonant current.</td></tr>
+  <tr><td>4</td><td><code>ResonantTank.Vp [V]</code></td><td>Primary bridge output voltage.</td></tr>
+  <tr><td>5</td><td><code>ResonantTank.Is [A]</code></td><td>Secondary resonant current.</td></tr>
+  <tr><td>6</td><td><code>ResonantTank.Vs [A]</code></td><td>Secondary bridge voltage.</td></tr>
+  <tr><td>7</td><td><code>Rectifier.Iout [A]</code></td><td>Secondary side DC current.</td></tr>
+  <tr><td>8</td><td><code>Rectifier.IL [A]</code></td><td>Secondary winding current.</td></tr>
+  <tr><td>9</td><td><code>Rectifier.Vout [V]</code></td><td>Secondary side DC voltage.</td></tr>
+  <tr><td>10</td><td><code>Rectifier.Vac [V]</code></td><td>Secondary bridge AC voltage.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Select an element by its full name, for example
+  <code>Meas.ResonantTank.Ip</code>. The order above is the order a Bus to Vector conversion
+  produces. Element 6 is a voltage; its <code>[A]</code> label is a naming defect in the bus, not a
+  current.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3>Model option</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Circuit used</th></tr>
+  <tr><td>Simplified</td><td>Flat circuit with eight Ideal Semiconductor Switch blocks. The device dropdowns are hidden and the mask parameters set all eight switches.</td></tr>
+  <tr><td>Detailed</td><td>Variant subsystems for the primary and the secondary bridge, each with its own device dropdown.</td></tr>
+</table>
+
+<h3>Bridge device dropdowns, Detailed only</h3>
+<table class="variant-table">
+  <tr><th>Dropdown</th><th>Options</th><th>Configured through</th></tr>
+  <tr><td><code>PrimaryDeviceOption</code></td><td>Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask parameters for the ideal switch. For the MOSFET, set one device on its own dialog and use <span class="btn-label">Apply parameters to all primary switches</span>.</td></tr>
+  <tr><td><code>SecondaryDeviceOption</code></td><td>Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask parameters for the ideal switch. For the MOSFET, set one device on its own dialog and use <span class="btn-label">Apply parameters to all secondary switches</span>.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the current dropdown
+selections. The <strong>Shown when</strong> column gives the selections that reveal each one.</p>
+
+<h3>CLLC converter parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>modelOption</code></td><td>Model option</td><td>Simplified (default) | Detailed</td><td>Always</td></tr>
+<tr><td><code>C1</code></td><td>Primary resonant capacitance (C1)</td><td><code>6.9269e-7</code> F</td><td>Always</td></tr>
+<tr><td><code>Rcr1</code></td><td>Primary resonant capacitor ESR (Rcr1)</td><td><code>0.001</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>C2</code></td><td>Secondary resonant capacitance (C2)</td><td><code>7.487e-7</code> F</td><td>Always</td></tr>
+<tr><td><code>Rcr2</code></td><td>Secondary resonant capacitor ESR (Rcr2)</td><td><code>0.001</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Co</code></td><td>Secondary output capacitance (Co)</td><td><code>1.0667e-3</code> F</td><td>Always</td></tr>
+<tr><td><code>Rco</code></td><td>Secondary output capacitance ESR (Rco)</td><td><code>0.02</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Vco</code></td><td>Initial output capacitor voltage</td><td><code>350</code> V</td><td>Always</td></tr>
+</table>
+
+<h3>Transformer</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>Llk1</code></td><td>Primary leakage inductance (Llk1)</td><td><code>3.6568e-6</code> H</td><td>Always</td></tr>
+<tr><td><code>R1</code></td><td>Primary resistance (R1)</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Llk2</code></td><td>Secondary leakage inductance (Llk2)</td><td><code>3.3829e-6</code> H</td><td>Always</td></tr>
+<tr><td><code>R2</code></td><td>Secondary resistance (R2)</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Lm</code></td><td>Magnetizing inductance (Lm)</td><td><code>5.4852e-5</code> H</td><td>Always</td></tr>
+<tr><td><code>N1</code></td><td>Transformer primary number of turns (N1)</td><td><code>30</code></td><td>Always</td></tr>
+<tr><td><code>N2</code></td><td>Transformer secondary number of turns (N2)</td><td><code>29</code></td><td>Always</td></tr>
+</table>
+
+<h3>Primary semiconductor switch</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>PrimaryDeviceOption</code></td><td>Select the primary switching device</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>PrimaryRon</code></td><td>On-state resistance</td><td><code>0.0001</code> Ohm</td><td><code>PrimaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>PrimaryGoff</code></td><td>Off-state conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>PrimaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>PrimaryVth</code></td><td>Threshold voltage</td><td><code>2.5</code> V</td><td><code>PrimaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>PrimaryVbodydiodeOn</code></td><td>Body diode forward voltage</td><td><code>0.6</code> V</td><td><code>PrimaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>PrimaryRbodydiodeOn</code></td><td>Body diode on-resistance</td><td><code>0.0001</code> Ohm</td><td><code>PrimaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>PrimaryGbodydiodeOff</code></td><td>Body diode off-conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>PrimaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>PrimaryCparasitic</code></td><td>MOSFET parasitic capacitance</td><td><code>2e-10</code> F</td><td><code>modelOption</code> = Detailed and <code>PrimaryDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>PrimarySimTemp</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>modelOption</code> = Detailed and <code>PrimaryDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+</table>
+
+<h3>Secondary semiconductor switch</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>SecondaryDeviceOption</code></td><td>Select the secondary switching device</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>SecondaryRon</code></td><td>On-state resistance</td><td><code>0.0001</code> Ohm</td><td><code>SecondaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>SecondaryGoff</code></td><td>Off-state conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>SecondaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>SecondaryVth</code></td><td>Threshold voltage</td><td><code>2.5</code> V</td><td><code>SecondaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>SecondaryVbodydiodeOn</code></td><td>Body diode forward voltage</td><td><code>0.6</code> V</td><td><code>SecondaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>SecondaryRbodydiodeOn</code></td><td>Body diode on-resistance</td><td><code>0.0001</code> Ohm</td><td><code>SecondaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>SecondaryGbodydiodeOff</code></td><td>Body diode off-conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>SecondaryDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>SecondaryCparasitic</code></td><td>MOSFET parasitic capacitance</td><td><code>2e-10</code> F</td><td><code>modelOption</code> = Detailed and <code>SecondaryDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>SecondarySimTemp</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>modelOption</code> = Detailed and <code>SecondaryDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+</table>
+
+<h2 id="export">Export to Unmasked Subsystem</h2>
+
+<p>The <span class="btn-label">Export to Unmasked Subsystem</span> button writes the
+CLLC Converter circuit to a new model with no mask, alongside a parameter file that reproduces
+every mask value. Use it to inspect or edit the circuit beyond what the mask exposes.</p>
+
+<table>
+  <tr><th>File written to the current folder</th><th>Contents</th></tr>
+  <tr><td><code>CLLC_exported_&lt;timestamp&gt;.slx</code></td><td>The unmasked circuit. Its <code>PreLoadFcn</code> runs the parameter file.</td></tr>
+  <tr><td><code>CLLC_exported_&lt;timestamp&gt;_params.m</code></td><td>Assigns the structure <code>CLLC</code> in the base workspace. Every block parameter of the exported model references a field of this structure.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The export keeps the variant subsystems, so the exported model still holds
+  every device choice and still honors the choice the mask had when you exported it.
+</div>
+
+<h2 id="harness">Plant Test Harness</h2>
+
+<p>The <strong>CLLC Converter</strong> block has an open-loop test harness,
+<code>CLLCTestHarnessPlant.slx</code>, in the <code>test</code> folder of <code>CLLCConverterPlant</code>. The harness holds this
+block, the PWM generator blocks that drive its gate port, the input source, the load and a scope on
+the measurement bus. It carries no controller: constant reference blocks set the operating point, so
+the harness exercises the power stage on its own.</p>
+
+<table class="variant-table">
+  <tr><th>Block</th><th>Role in the harness</th></tr>
+  <tr><td><code>CLLC Converter Power Circuit</code></td><td>This block, taken from <code>ConverterPlantLibrary</code>, at the mask values the shipped converter model uses.</td></tr>
+  <tr><td><code>CLLC PWM Generator</code></td><td>CLLC PWM Generator from <code>ConverterLibrary</code>, which drives both <strong>Gpri</strong> and <strong>Gsec</strong>. Every mask value is the value the CLLC Converter Controller sets on its own copy of this generator.</td></tr>
+  <tr><td><code>Frequency Reference</code></td><td>Constant 1. The generator takes its commanded frequency per unit of <code>Fbase</code>, which is <code>CLLCDesign.resonantFreq</code>, so 1 runs the bridge at the resonant frequency.</td></tr>
+  <tr><td><code>Secondary Current Select</code>, <code>Secondary Current Delay</code></td><td><code>ResonantTank.Is [A]</code> off the measurement bus, delayed one major step by a Memory block. The generator times the synchronous rectifier from that current, so the delay keeps the gate path out of an algebraic loop.</td></tr>
+  <tr><td><code>Vin</code>, <code>Rload</code></td><td>DC voltage source <code>inputVoltage</code> and the load resistance the converter model ships with.</td></tr>
+  <tr><td><code>Measurement</code>, <code>Scope</code></td><td>The measurement subsystem of the converter model, unchanged, which forms the tank, input and output traces from the measurement bus.</td></tr>
+</table>
+
+<p>Opening the harness runs <code>CLLCConverterDefaultInputParameters</code> through its <code>PreLoadFcn</code>, so every
+design and controller structure the generator masks read is in the base workspace before the first
+simulation. The solver is <code>ode23t</code>, as in the converter model the harness was taken
+from.</p>
+
+<p>The stop time is 10 ms.</p>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../CombinedLLCConverterPlant/documentation/LLCConverterPlant.html">LLC Converter</a> |
+  <a href="../../DABConverterPlant/documentation/DABConverter.html">DAB Converter</a> |
+  <a href="../../../Controllers/CLLCConverterController/documentation/CLLCController.html">CLLC Controller</a> |
+  <a href="../../../Controllers/PWMGenerators/documentation/CLLCPWMGenerator.html">CLLC PWM Generator</a>
+</p>
+
+</body>
+</html>

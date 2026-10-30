@@ -18,6 +18,7 @@
 %     freqRespModelName      - Name of the Simulink model (string/char)
 %     switchingFrequency     - Switching frequency (simscape.Value or numeric, Hz)
 %     inputVoltage           - Input voltage (simscape.Value or numeric, V)
+%     primaryBridgeOption    - Primary inverter, "Full-Bridge" or "Half-Bridge" (string/char)
 %     frequencyVector        - Frequency vector for estimation (simscape.Value or numeric, Hz)
 %     Rload                  - Load resistance (simscape.Value or numeric, Ohm)
 %     numberPeriod           - Number of periods for each frequency (numeric vector)
@@ -33,6 +34,8 @@
 %     - Requires Simulink Control Design Toolbox.
 %     - The model must be parameterized to accept the variables as set above.
 %     - Make sure to configure linearization points (input/output) in the model.
+%     - The primary inverter of the model is set by primaryBridgeTopologyFactor, which this
+%       script derives from primaryBridgeOption.
 
 
 % Copyright 2025-2026 The MathWorks, Inc.
@@ -64,12 +67,24 @@ inputVoltage_V          = convert(inputVoltage,"V");
 frequencyVector_Hz = convert(frequencyVector,"Hz") ;
 Rload_Ohm = convert(Rload, "Ohm");
 
-% Minimum number of period
+% Primary inverter topology factor read by the model
+primaryBridgeTopologyFactor = llcPrimaryBridgeTopologyFactor(primaryBridgeOption);
+
+% The resonant tank parameters come from LLCDesign, which is sized for the primary inverter in
+% LLCSpec. A mismatch means the linearized plant is not the converter that was designed.
+if exist("LLCSpec", "var") && isfield(LLCSpec, "LLCModelOption") && ...
+        string(LLCSpec.LLCModelOption) ~= string(primaryBridgeOption)
+    warning("PlotLLCFrequencyResponse:primaryBridgeMismatch", ...
+        "primaryBridgeOption is ""%s"" and the design in LLCSpec.LLCModelOption is ""%s"".", ...
+        string(primaryBridgeOption), string(LLCSpec.LLCModelOption));
+end
+
+% Minimum number of periods
 numberPeriod(numberPeriod<7) = 7; 
 
 steadyStateTime_s = convert(steadyStateTime, "s");
 
-% Finding statedy state operating point at switching frequency
+% Finding steady state operating point at switching frequency
 freqOffsetPU = (switchingFrequency_Hz.value-LLCDesign.resonantFreq)/LLCDesign.resonantFreq;
 op = findop(freqRespModelName,steadyStateTime_s.value);
 

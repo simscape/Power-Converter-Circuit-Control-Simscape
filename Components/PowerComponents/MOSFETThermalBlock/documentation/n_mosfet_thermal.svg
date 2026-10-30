@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:d="http://www.mathworks.com/blockgraphics" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg_5" width="1100" height="1290" viewBox="0 0 1100 1290" d:options="Background:Transparent">
+	<title>
+		N-channel MOSFET with a thermal port	</title>
+	<g id="layer_4" title="layer_0">
+		<g id="group_21">
+			<title>
+				Layer 1			</title>
+			<ellipse id="svg_2" fill="none" stroke="#3369C9" stroke-width="12" cx="600" cy="630" rx="250" ry="250"/>
+			<path id="svg_4" fill="none" stroke="#3369C9" stroke-width="12" d=" M 0,320 L 60,320 L 60,630 L 457,630"/>
+			<path id="svg_6" fill="none" stroke="#3369C9" stroke-width="12" d=" M 457,488 L 457,772"/>
+			<path id="svg_7" fill="none" stroke="#3369C9" stroke-width="12" d=" M 529,488 L 529,772"/>
+			<path id="svg_8" fill="none" stroke="#3369C9" stroke-width="12" d=" M 529,522 L 672,522"/>
+			<path id="svg_9" fill="none" stroke="#3369C9" stroke-width="12" d=" M 672,522 L 672,320 L 1100,320"/>
+			<path id="svg_11" fill="none" stroke="#3369C9" stroke-width="12" d=" M 529,736 L 672,736"/>
+			<path id="svg_12" fill="none" stroke="#3369C9" stroke-width="12" d=" M 672,736 L 672,970 L 1100,970"/>
+			<path id="svg_14" fill="none" stroke="#3369C9" stroke-width="12" d=" M 529,630 L 672,630"/>
+			<path id="svg_15" fill="none" stroke="#3369C9" stroke-width="12" d=" M 672,630 L 672,736"/>
+			<path id="svg_16" fill="none" stroke="#3369C9" stroke-width="12" d=" M 636,559 L 564,630 L 636,701"/>
+			<g id="svg_25" d:options="Port:L1;">
+				<g id="Cylinder">
+					<path id="part_1" fill="none" stroke="#E9631E" stroke-width="12" d=" M 366,910 L 570,910 C 583,910 594,937 594,970 C 594,1003 583,1030 570,1030 L 366,1030"/>
+					<ellipse id="part_2" fill="none" stroke="#E9631E" stroke-width="12" cx="366" cy="970" rx="24" ry="60"/>
+				</g>
+				<path id="svg_20" fill="none" stroke="#E9631E" stroke-width="12" d=" M 0,970 L 342,970"/>
+			</g>
+		</g>
+	</g>
+</svg>

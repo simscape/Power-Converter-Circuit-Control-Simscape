@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IGBT Model - IGBT with a Simulink loss and thermal path</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>IGBT Model</h1>
+<p class="subtitle">IGBT with a Simulink loss and thermal path</p>
+<div class="library-path">ConverterLibrary / Components / IGBT Model</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<div class="block-icon">
+  <img src="n_igbt_thermal.svg" alt="IGBT with a thermal port" style="height: 160px; width: auto;">
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>IGBT Model</strong> block models an ideal switching IGBT with a thermal port.
+Conduction loss, switching loss and anti-parallel diode loss are evaluated in Simulink. The total loss
+is injected as heat into a junction thermal mass. The junction connects through the junction to
+case thermal resistance to port <strong>A</strong>, and the junction temperature feeds back into the loss tables.</p>
+
+<p>The gate is a physical port. Drive it with a controlled voltage source, or with the gate voltage
+levels a PWM generator block produces, and set the gate-emitter threshold to a value between the OFF
+and ON levels.</p>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Description</th></tr>
+  <tr><td><strong class="port-electrical">G</strong></td><td>Gate.</td></tr>
+  <tr><td><strong class="port-electrical">C</strong></td><td>Collector.</td></tr>
+  <tr><td><strong class="port-electrical">E</strong></td><td>Emitter.</td></tr>
+  <tr><td><strong class="port-electrical">A</strong></td><td>Ambient, or case, thermal port.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Port <strong>A</strong> is a thermal conserving port. Connect it to a
+  Thermal Reference block, a Temperature Source block or a thermal network. The junction temperature
+  is computed inside the block and is not exposed as a port.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3>Anti-parallel diode</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>Inbuilt diode</td><td>The block carries the anti-parallel diode. Its forward characteristic and its loss table are set on this dialog and its loss heats the IGBT junction.</td></tr>
+  <tr><td>External diode</td><td>The block carries no diode. Connect a separate diode across C and E, and its loss is counted in that device.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<h3>IGBT conduction parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>Vth</code></td><td>Threshold voltage</td><td><code>0.5</code> V</td><td>Always</td></tr>
+<tr><td><code>Von_data</code></td><td>On-state voltage, Vce(Tj,Ice)</td><td><code>[ 0 1.1 1.3 1.45 1.75 2.25 2.7; 0 1 1.15 1.35 1.7 2.35 3 ]</code> V</td><td>Always</td></tr>
+<tr><td><code>Tj</code></td><td>Temperature vector, Tj</td><td><code>[ 298.15 398.15 ]</code> K</td><td>Always</td></tr>
+<tr><td><code>Iout_data</code></td><td>Collector-emitter current vector, Ice</td><td><code>0.1*[ 0 10 50 100 200 400 600 ]</code> A</td><td>Always</td></tr>
+<tr><td><code>VfIGBT</code></td><td>Forward voltage, Vf</td><td><code>0.8</code> V</td><td>Always</td></tr>
+<tr><td><code>Ron</code></td><td>On-state resistance, Ron</td><td><code>0.001</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Goff</code></td><td>Off-state conductance, Goff</td><td><code>1e-5</code> 1/Ohm</td><td>Always</td></tr>
+</table>
+
+<h3>IGBT switching parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>Iout_data_loss</code></td><td>Collector-emitter current vector, Ice</td><td><code>0.1*[ 0 10 50 100 200 400 600 ]</code> A</td><td>Always</td></tr>
+<tr><td><code>Tj_loss</code></td><td>Temperature vector, Tj</td><td><code>[ 298.15 398.15 ]</code> K</td><td>Always</td></tr>
+<tr><td><code>Eoff_data</code></td><td>Switch-off loss, Eoff(Tj,Ids)</td><td><code>0.1*[ 0 2.1e-4 1.07e-3 2.14e-3 4.29e-3 9.86e-3 1.714e-2; 0 4.3e-4 1.97e-3 3.86e-3 7.71e-3 1.543e-2 2.271e-2 ]</code> J</td><td>Always</td></tr>
+<tr><td><code>Eon_data</code></td><td>Switch-on loss, Eon(Tj,Ids)</td><td><code>0.1*[ 0 2.9e-4 1.43e-3 2.86e-3 5.71e-3 1.314e-2 2.286e-2; 0 5.7e-4 2.63e-3 5.14e-3 1.029e-2 2.057e-2 3.029e-2 ]</code> J</td><td>Always</td></tr>
+<tr><td><code>Voff</code></td><td>Off-state voltage</td><td><code>300</code> V</td><td>Always</td></tr>
+<tr><td><code>Soft_Switching_Flag</code></td><td>Soft-Switching Application</td><td><code>on</code></td><td>Always</td></tr>
+</table>
+
+<h3>Anti-parallel diode parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>Tj_diode</code></td><td>Temperature vector</td><td><code>[25, 125]+273.15</code> K</td><td><code>diodeOption</code> = Inbuilt diode</td></tr>
+<tr><td><code>If_data</code></td><td>Current vector</td><td><code>[.1, .2, .5, 1, 2, 4, 7, 10]</code> A</td><td><code>diodeOption</code> = Inbuilt diode</td></tr>
+<tr><td><code>Vf_data</code></td><td>Diode voltage, Vf(Tj,Id)</td><td><code>[.9, 1.15, 1.25, 1.5, 1.75, 2.17, 2.6, 2.85; .58, .68, .75, 1.1, 1.38, 1.77, 2.27, 2.7]</code> V</td><td><code>diodeOption</code> = Inbuilt diode</td></tr>
+<tr><td><code>diodeOption</code></td><td>Anti-parallel diode</td><td>Inbuilt diode (default) | External diode</td><td>Always</td></tr>
+<tr><td><code>diodeVf</code></td><td>Diode forward voltage, Vf</td><td><code>0.8</code> V</td><td><code>diodeOption</code> = Inbuilt diode</td></tr>
+<tr><td><code>diodeRon</code></td><td>Diode on-state resistance, Ron</td><td><code>0.001</code> Ohm</td><td><code>diodeOption</code> = Inbuilt diode</td></tr>
+<tr><td><code>diodeGoff</code></td><td>Diode off-state conductance, Goff</td><td><code>1e-5</code> 1/Ohm</td><td><code>diodeOption</code> = Inbuilt diode</td></tr>
+</table>
+
+<h3>Thermal parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>thermal_resistance</code></td><td>Junction-case resistance</td><td><code>0.3</code> K/W</td><td>Always</td></tr>
+<tr><td><code>thermal_mass</code></td><td>Junction thermal mass</td><td><code>0.001</code> J/K</td><td>Always</td></tr>
+<tr><td><code>Tj0</code></td><td>Initial temperature</td><td><code>300</code> K</td><td>Always</td></tr>
+</table>
+
+<h2 id="seealso">See Also</h2>
+
+<p><a href="../../DiodeThermalBlock/documentation/DiodeModel.html">Diode Model</a> |
+<a href="../../MOSFETThermalBlock/documentation/MOSFET_Thermal_Model.html">MOSFET Model</a></p>
+
+</body>
+</html>

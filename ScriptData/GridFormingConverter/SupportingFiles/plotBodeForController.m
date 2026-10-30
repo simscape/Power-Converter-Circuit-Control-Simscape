@@ -1,193 +1,105 @@
 function marginTable = plotBodeForController(controllerName,plotFlag)
 % Copyright 2023 The MathWorks, Inc.
 
-switch controllerName
-    case 'VdController'
-        marginTable = vdControllerBode(plotFlag);
-    case 'VqController'
-        marginTable = vqControllerBode(plotFlag);
-    case 'IdController'
-        marginTable = idControllerBode(plotFlag);
-    case 'IqController'
-        marginTable = iqControllerBode(plotFlag);
-    otherwise
-        error('Choose the proper controller name')
+% Controller loops. Each row: loop name, error Sum (open-loop input), measured signal
+% (open-loop output), loop-break gain and whether the loop is a current loop.
+loopList = {
+    'VdController', 'Vderror', 'Vd LPF', 'ForVdBodePlot', false;
+    'VqController', 'Vqerror', 'Vq LPF', 'ForVqBodePlot', false;
+    'IdController', 'Iderror', 'Id',     'ForIdBodePlot', true;
+    'IqController', 'Iqerror', 'Iq',     'ForIqBodePlot', true};
+
+% Select the loop by name
+selectedLoop = find(strcmp(loopList(:,1),controllerName));
+if isempty(selectedLoop)
+    error('Choose the proper controller name')
 end
+
+modelName = 'GridFormingConverter';
+steadyStateTime = 2.5; % s, Time at which the operating point is taken
+
+% Simulating the model once to steady state, then linearizing the loop at this operating point
+operatingPointOptions = findopOptions('DisplayReport','off');
+operatingPoint = findop(modelName,steadyStateTime,operatingPointOptions);
+marginTable = controllerBode(modelName,operatingPoint,loopList(selectedLoop,:),plotFlag);
 disp('Grid Forming Converter controller Gain and Phase margin');
 disp(marginTable);
 end
 
 
-function marginTable = vdControllerBode(plotFlag)
-% Linearizing the Vd controller open loop system
+function marginTable = controllerBode(modelName,operatingPoint,loopData,plotFlag)
+% Linearizing one controller open loop system at the operating point
 
-inputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Vderror'];
-inputPort = 1;
-inputType = 'openinput';
+[controllerName, errorBlock, measuredBlock, loopBreakBlock, isCurrentLoop] = loopData{:};
+controllerPath = [modelName '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/'];
+powerMeasurementPath = [modelName '/Grid-Forming Converter/Grid-Forming Converter Control/Measurement/Power Measurement (Three-Phase)'];
 
-outputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Vd LPF'];
-outputPort = 1;
-outputType = 'openoutput';
+% Creating linearization points: the loop is opened at its error Sum and its measured signal
+io(1) = linio([controllerPath errorBlock],1,'openinput');
+io(2) = linio([controllerPath measuredBlock],1,'openoutput');
+io(3) = linio([controllerPath loopBreakBlock],1,'loopbreak');
 
-loopBreakBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/ForVdBodePlot'];
-loopBreakPort = 1;
-loopBreakType = 'loopbreak';
-
-% Creating linearization points
-io(1) = linio(inputBlock,inputPort,inputType);
-io(2) = linio(outputBlock,outputPort,outputType);
-io(3) = linio(loopBreakBlock,loopBreakPort,loopBreakType);
-
-% Setting the linearization points into the model
-setlinio('GridFormingConverter',io);
-
-% Linearizing the model
-systemModel = linearize('GridFormingConverter',io,2.5); % Finding open loop system statespace model
-titleInput = 'Vd Controller Open Loop Bode Plot';
-
-% Plotting gain and phase margin
-marginTable = plottingGainAndPhaseCurve(systemModel,titleInput,plotFlag);
-marginTable.Controller = 'Vd Controller';
-marginTable = movevars(marginTable,"Controller",'Before',"GainCrossOverFreqInHz");
-
+% Opening the outer loops, so that the Bode plot shows this loop alone. The active and
+% reactive power measurement outputs open the power control loops.
+io(end+1) = linio(powerMeasurementPath,1,'loopbreak');
+io(end+1) = linio(powerMeasurementPath,2,'loopbreak');
+if isCurrentLoop
+    % The voltage loops are the outer loops of the current loops
+    io(end+1) = linio([controllerPath 'ForVdBodePlot'],1,'loopbreak');
+    io(end+1) = linio([controllerPath 'ForVqBodePlot'],1,'loopbreak');
 end
 
-function marginTable = vqControllerBode(plotFlag)
-% Linearizing the Vq controller open loop system
-
-inputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Vqerror'];
-inputPort = 1;
-inputType = 'openinput';
-
-outputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Vq LPF'];
-outputPort = 1;
-outputType = 'openoutput';
-
-loopBreakBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/ForVqBodePlot'];
-loopBreakPort = 1;
-loopBreakType = 'loopbreak';
-
-% Creating linearization points
-io(1) = linio(inputBlock,inputPort,inputType);
-io(2) = linio(outputBlock,outputPort,outputType);
-io(3) = linio(loopBreakBlock,loopBreakPort,loopBreakType);
-
-% Setting the linearization points into the model
-setlinio('GridFormingConverter',io);
-
-% Linearizing the model
-systemModel = linearize('GridFormingConverter',io,1.6); % Finding open loop system statespace model
-% Model parameters taken from base workspace
-titleInput = 'Vq Controller Open Loop Bode Plot';
+% Linearizing the model at the operating point
+systemModel = linearize(modelName,operatingPoint,io); % Finding open loop system statespace model
+loopLabel = strrep(controllerName,'Controller',' Controller');
+titleInput = [loopLabel ' Open Loop Bode Plot'];
 
 % Plotting gain and phase margin
 marginTable = plottingGainAndPhaseCurve(systemModel,titleInput,plotFlag);
-marginTable.Controller = 'Vq Controller';
+marginTable.Controller = string(loopLabel);
 marginTable = movevars(marginTable,"Controller",'Before',"GainCrossOverFreqInHz");
-end
-
-function marginTable = idControllerBode(plotFlag)
-% Linearizing the Id controller open loop system
-inputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Iderror'];
-inputPort = 1;
-inputType = 'openinput';
-
-outputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Id'];
-outputPort = 1;
-outputType = 'openoutput';
-
-loopBreakBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/ForIdBodePlot'];
-loopBreakPort = 1;
-loopBreakType = 'loopbreak';
-
-% Creating linearization points
-io(1) = linio(inputBlock,inputPort,inputType);
-io(2) = linio(outputBlock,outputPort,outputType);
-io(3) = linio(loopBreakBlock,loopBreakPort,loopBreakType);
-
-% Setting the linearization points into the model
-setlinio('GridFormingConverter',io);
-
-% Linearizing the model
-systemModel = linearize('GridFormingConverter',io,1.6); % Finding open loop system statespace model
-titleInput = 'Id Controller Open Loop Bode Plot';
-
-% Plotting gain and phase margin
-marginTable = plottingGainAndPhaseCurve(systemModel,titleInput,plotFlag);
-marginTable.Controller = 'Id Controller';
-marginTable = movevars(marginTable,"Controller",'Before',"GainCrossOverFreqInHz");
-
-end
-
-function marginTable = iqControllerBode(plotFlag)
-% Linearizing the Iq controller open loop system
-inputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Iqerror'];
-inputPort = 1;
-inputType = 'openinput';
-
-outputBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/Iq'];
-outputPort = 1;
-outputType = 'openoutput';
-
-loopBreakBlock = ['GridFormingConverter' '/Grid-Forming Converter/Grid-Forming Converter Control/VoltageCurrentControl/Controller/ForIqBodePlot'];
-loopBreakPort = 1;
-loopBreakType = 'loopbreak';
-
-% Creating linearization points
-io(1) = linio(inputBlock,inputPort,inputType);
-io(2) = linio(outputBlock,outputPort,outputType);
-io(3) = linio(loopBreakBlock,loopBreakPort,loopBreakType);
-
-% Setting the linearization points into the model
-setlinio('GridFormingConverter',io);
-
-% Linearizing the model
-systemModel = linearize('GridFormingConverter',io,2); % Finding open loop system statespace model
-titleInput = 'Iq Controller Open Loop Bode Plot';
-
-% Plotting gain and phase margin
-marginTable = plottingGainAndPhaseCurve(systemModel,titleInput,plotFlag);
-marginTable.Controller = 'Iq Controller';
-marginTable = movevars(marginTable,"Controller",'Before',"GainCrossOverFreqInHz");
-
 end
 
 % Function to plot the bode plot, estimating gain and phase margin
 function marginTable = plottingGainAndPhaseCurve(systemModel, titleInput,plotFlag)
 
-% Finding Bode plot
-[mag,phase,wout] = bode(systemModel);
-bodeMagnitude = reshape(mag,[1,length(mag)]);
-bodePhase = reshape(phase,[1,length(phase)]);
+% Every gain and phase crossover of the loop transfer, with the phase wrapped
+stabilityMargins = allmargin(systemModel);
 
-% Estimating gain margin
-gainIdx = find(bodeMagnitude<=1,1);
-if gainIdx>1
-    gainCrossOverFreq = interp1([bodeMagnitude(gainIdx-1) bodeMagnitude(gainIdx)],...
-        [wout(gainIdx-1) wout(gainIdx)],1);
-    phaseVal = interp1([wout(gainIdx-1) wout(gainIdx)],...
-        [bodePhase(gainIdx-1) bodePhase(gainIdx)],gainCrossOverFreq);
-    phaseMargin = phaseVal+180;
-else
+% Phase margin at the loop's own gain crossover, which is its highest-frequency one
+if isempty(stabilityMargins.PMFrequency)
     gainCrossOverFreq = NaN;
-    phaseMargin = bodePhase(1)+180;
+    phaseMargin = Inf;
+else
+    [gainCrossOverFreq, crossOverIdx] = max(stabilityMargins.PMFrequency);
+    phaseMargin = stabilityMargins.PhaseMargin(crossOverIdx);
 end
 
-% Estimating phase margin
-phaseIdx = find(bodePhase<=-180,1);
-if phaseIdx>1
-    phaseCrossOverFreq = interp1([bodePhase(phaseIdx-1) bodePhase(phaseIdx)],...
-        [wout(phaseIdx-1) wout(phaseIdx)],-180);
-    gainMargin = interp1([wout(phaseIdx-1) wout(phaseIdx)],...
-        [bodeMagnitude(phaseIdx-1) bodeMagnitude(phaseIdx)],phaseCrossOverFreq);
+% Gain margin at the first phase crossover above the gain crossover, Inf when there is none
+aboveCrossOver = stabilityMargins.GMFrequency > gainCrossOverFreq;
+if any(aboveCrossOver)
+    gainMarginsAbove = stabilityMargins.GainMargin(aboveCrossOver);
+    [~, firstIdx] = min(stabilityMargins.GMFrequency(aboveCrossOver));
+    gainMargin = gainMarginsAbove(firstIdx);
 else
-    gainMargin = 20*log10(bodeMagnitude(1)); % in dB
+    gainMargin = Inf;
 end
 
 % Storing the data in a table
 GainMarginIndB = 20*log10(gainMargin);
 PhaseMarginInDeg = phaseMargin;
 GainCrossOverFreqInHz = gainCrossOverFreq/(2*pi);
+
+% Bode data in Hz. The phase is shifted by whole turns so that it lies in (-360, 0] deg at the
+% gain crossover, where the margin is read.
+[mag,phase,wout] = bode(systemModel);
+bodeMagnitude = reshape(mag,[1,length(mag)]);
+bodePhase = reshape(phase,[1,length(phase)]);
+frequencyHz = wout/(2*pi);
+if isfinite(gainCrossOverFreq)
+    phaseAtCrossOver = interp1(wout, bodePhase, gainCrossOverFreq);
+    bodePhase = bodePhase - 360*ceil(phaseAtCrossOver/360);
+end
 
 annotGainMargin = sprintf('Gain Margin = %0.2f dB',GainMarginIndB);
 annotPhaseMargin = sprintf('Phase Margin = %0.2f degrees',PhaseMarginInDeg);
@@ -198,9 +110,12 @@ if plotFlag>0
     figure('Name','GridFormingConverterControllerBodePlot');
 
     hsubplot = subplot(2,1,1);
-    semilogx(wout,20*log10(bodeMagnitude),'LineWidth',2);
+    semilogx(frequencyHz,20*log10(bodeMagnitude),'LineWidth',2);
     hold on
-    xlabel('Frequency (rad/s)','FontSize',12);
+    if isfinite(GainCrossOverFreqInHz)
+        xline(GainCrossOverFreqInHz,'k--','Gain crossover');
+    end
+    xlabel('Frequency (Hz)','FontSize',12);
     ylabel('Magnitude (dB)','FontSize',12);
     title('Magnitude Bode Plot','FontSize',13);
     grid on
@@ -210,9 +125,13 @@ if plotFlag>0
     annotation('textbox',dim,'String',annotGainMargin,'FitBoxToText','on');
 
     hsubplot = subplot(2,1,2);
-    semilogx(wout,bodePhase,'LineWidth',2);
+    semilogx(frequencyHz,bodePhase,'LineWidth',2);
     hold on
-    xlabel('Frequency (rad/s)','FontSize',12);
+    if isfinite(GainCrossOverFreqInHz)
+        xline(GainCrossOverFreqInHz,'k--');
+        yline(-180,'k:');
+    end
+    xlabel('Frequency (Hz)','FontSize',12);
     ylabel('Phase (deg)','FontSize',12);
     title('Phase Bode Plot','FontSize',13);
     grid on
@@ -224,4 +143,3 @@ if plotFlag>0
     sgtitle(titleInput,'FontSize',13);
 end
 end
-

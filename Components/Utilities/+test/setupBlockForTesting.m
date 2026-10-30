@@ -1,8 +1,10 @@
 function newBlockPath = setupBlockForTesting(model, currentBlock, referenceBlockPath)
-% The function gets all the connections tthen replaces the existing block
-% with the reference block and tries to reconnect those connections.
-% Please make sure the block is coonected to a port directly and does not
-% have a three-way connection.
+%SETUPBLOCKFORTESTING Replace a block with a reference block and rewire it.
+%   newBlockPath = setupBlockForTesting(model, currentBlock, referenceBlockPath)
+%   records the connections of currentBlock, replaces it with the block at
+%   referenceBlockPath, and reconnects the recorded connections.
+%
+%   Connect the block directly to a port, with no three-way connection.
 %
 % Copyright 2025 The MathWorks, Inc.
 
@@ -60,12 +62,12 @@ for i = 1:length(OutputConnections)
     end
 end
 
-% Delete un-connected lines
+% Delete unconnected lines
 delete_line(find_system(model,'FindAll','on','Type','line','Connected','off'));
 end
 
 function TF = isConnected(portType, portConnectivity)
-% Check if the inoput port is connected.
+% Check if the input port is connected.
 
 portConnectivityType = {portConnectivity.Type};
 [present, index] = ismember(portType, portConnectivityType);

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1780" width="2400" height="1780">
+  <rect width="2400" height="1780" fill="#FFFFFF"/>
+  <rect x="80" y="80" width="2240" height="1620" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="12" rx="30"/>
+
+  <!-- Totem-pole boost PFC with a diode slow leg, drawn on a 240 x 178 block.
+       AC input -> L -> fast leg midpoint, AC return -> slow leg midpoint, Co -> DC output.
+       The two dc rails sit exactly on the dc output port rows, 440 and 1340, so both output leads run to
+       their ports as one straight segment. The ac input enters on those same two rows and turns to its own
+       leg's midpoint as a matched mirror pair of Ls about y = 890, each reaching 120.
+       
+       Every horizontal gap is budgeted from the clearance the device symbol or the label at its end actually
+       needs, which is what took 40 block pixels of empty wire out of the width. A vertical MOSFET reaches
+       266 units sideways past its own leg on the gate side and its name reaches 289 on the other, so an
+       apparently empty run either side of a leg is mostly symbol: the visible blanks were the four this
+       narrowing removed, from the coil to the fast leg, from the slow leg to the capacitor, and from the
+       capacitor and the ac turn out to their own block edges.
+       
+       Both midpoints have to sit near mid height, and the ports do not, which is the whole difficulty of
+       this icon: 120 is the largest reach the four devices leave. Any more and the fast leg's low-side
+       device has nowhere to go, because the ac return crosses that leg below its midpoint and the device
+       has to fit between the crossing and the low rail.
+       
+       The symbols are drawn at 0.8 with the line weight left at full, because moving the rails onto the
+       port rows took 360 units of height out of the circuit: at full size a high-side device's own body
+       diode lands 55 units under the rail and the two read as one double line. The stroke stays at 20, which
+       is 2 block pixels, the weight the whole PFC and DC-DC family draws at. -->
+
+  <!-- Both dc rails straight from the fast leg to their own ports -->
+  <line x1="950" y1="440" x2="2400" y2="440" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="950" y1="1340" x2="2400" y2="1340" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- Fast leg: Q1 high side, Q2 low side, each with its body diode -->
+  <line x1="818" y1="521" x2="818" y2="689" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="779.6" y1="521" x2="779.6" y2="689" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="683.6" y1="605" x2="779.6" y2="605" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="818" y1="521" x2="950" y2="521" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="818" y1="605" x2="950" y2="605" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="818" y1="689" x2="950" y2="689" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="950" y1="440" x2="950" y2="521" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="950" y1="605" x2="950" y2="770" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="875.6,582.6 875.6,627.4 818,605" fill="#3369C9" stroke="none"/>
+  <polyline points="950,521 1050,521 1050,561" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="1050,649 1050,689 950,689" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="1016.4,649 1083.6,649 1050,561" fill="none" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1013.04" y1="561" x2="1086.96" y2="561" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1150" y="635" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">Q</text>
+  <text x="1210.68" y="644.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <!-- Q2 sits low in its own span, so the ac return crosses the leg above it, not through it -->
+  <line x1="818" y1="1116" x2="818" y2="1284" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="779.6" y1="1116" x2="779.6" y2="1284" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="683.6" y1="1200" x2="779.6" y2="1200" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="818" y1="1116" x2="950" y2="1116" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="818" y1="1200" x2="950" y2="1200" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="818" y1="1284" x2="950" y2="1284" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="950" y1="770" x2="950" y2="1116" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="950" y1="1200" x2="950" y2="1340" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="875.6,1177.6 875.6,1222.4 818,1200" fill="#3369C9" stroke="none"/>
+  <polyline points="950,1116 1050,1116 1050,1156" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="1050,1244 1050,1284 950,1284" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="1016.4,1244 1083.6,1244 1050,1156" fill="none" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1013.04" y1="1156" x2="1086.96" y2="1156" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1150" y="1230" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">Q</text>
+  <text x="1210.68" y="1239.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <circle cx="950" cy="440" r="15" fill="#3369C9"/>
+  <circle cx="950" cy="1340" r="15" fill="#3369C9"/>
+  <circle cx="950" cy="770" r="15" fill="#3369C9"/>
+  <!-- Slow leg, switching at the line frequency, its low device on the fast leg's row -->
+  <line x1="1600" y1="440" x2="1600" y2="1340" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1556,649 1644,649 1600,561" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1551.6" y1="561" x2="1648.4" y2="561" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <polygon points="1556,1244 1644,1244 1600,1156" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1551.6" y1="1156" x2="1648.4" y2="1156" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1730" y="635" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="1786.32" y="644.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <text x="1730" y="1230" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="1786.32" y="1239.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">2</text>
+  <circle cx="1600" cy="440" r="15" fill="#3369C9"/>
+  <circle cx="1600" cy="1340" r="15" fill="#3369C9"/>
+  <circle cx="1600" cy="1010" r="15" fill="#3369C9"/>
+  <!-- AC line in on the + port row, turning down to the fast leg's midpoint through L -->
+  <polyline points="0,440 220,440 220,770 320,770" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 320,770 C 342.68,702.8 381.32,702.8 404,770 C 426.68,702.8 465.32,702.8 488,770 C 510.68,702.8 549.32,702.8 572,770" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="450" y="642.8" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">L</text>
+  <line x1="572" y1="770" x2="950" y2="770" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- AC return in on the - port row, its L the mirror image of the line's about the axis -->
+  <polyline points="0,1340 220,1340 220,1010 894,1010" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 894,1010 A 56,56 0 0,1 1006,1010" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polyline points="1006,1010 1600,1010" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Output capacitor across the two rails, named outboard of its own plates -->
+  <line x1="2050" y1="440" x2="2050" y2="866" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1970" y1="866" x2="2130" y2="866" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="1970" y1="914" x2="2130" y2="914" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2050" y1="914" x2="2050" y2="1340" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="2050" cy="440" r="15" fill="#3369C9"/>
+  <circle cx="2050" cy="1340" r="15" fill="#3369C9"/>
+  <text x="2170" y="920" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="2226.32" y="929.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">o</text>
+  <text x="126" y="383.2" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">P</text>
+  <text x="126" y="1481.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">N</text>
+  <text x="2205.67" y="383.2" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">+</text>
+  <text x="2235.04" y="1481.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">-</text>
+  <text x="554.487" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">G</text>
+  <text x="1650.42" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">meas</text>
+</svg>

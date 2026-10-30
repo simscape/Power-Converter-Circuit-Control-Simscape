@@ -13,6 +13,8 @@ function outValue = plotDampingEffects(dampingArray, testCondition,plotFlag)
     testCondition.SCR = testConditionSelected.SCR;
     
     % Input the test condition data
+    % GridFormingConverterTestCondition sets simulationTime and disturbanceTime.
+    simulationTime = []; disturbanceTime = [];
     run('GridFormingConverterTestCondition');
     
     
@@ -22,12 +24,12 @@ function outValue = plotDampingEffects(dampingArray, testCondition,plotFlag)
     legendPlot = cell(1,length(dampingArray));
     
     if plotFlag > 0
-        figure('Name', 'GridFormingConverterDampingEffect');
+        resultFigure = figure('Name', 'GridFormingConverterDampingEffect');
         set(gcf, 'Position',  [400, 300, 800, 700]);
         axisDatasetting(gcf);
     end
 
-    % Defining simulink simulation input
+    % Defining Simulink simulation input
     simIn = Simulink.SimulationInput('GridFormingConverter'); 
 
     for i = 1:length(dampingArray)
@@ -84,6 +86,8 @@ function outValue = plotDampingEffects(dampingArray, testCondition,plotFlag)
     
         if plotFlag>0
             % Plotting the result
+            % A simulation can leave another figure current.
+            figure(resultFigure);
     
             subplot(3,2,1:2)
             if i <2
@@ -119,6 +123,7 @@ function outValue = plotDampingEffects(dampingArray, testCondition,plotFlag)
     outputTable=table(Damping,ActivePower,ReactivePower,Voltage,Current,FrequencyHz);
     
     if plotFlag > 0
+        figure(resultFigure);
         hold on
         subplot(3,2,1:2)
         grid on

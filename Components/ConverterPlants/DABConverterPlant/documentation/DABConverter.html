@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAB Converter - Dual active bridge DC-DC converter power stage</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>DAB Converter</h1>
+<p class="subtitle">Dual active bridge DC-DC converter power stage</p>
+<div class="library-path">ConverterLibrary / Power Converter Plant / Soft-Switching Converters / DAB Converter</div>
+<div class="library-path">ConverterPlantLibrary / Soft-Switching Converters / DAB Converter</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#export">Export to Unmasked Subsystem</a></li>
+    <li><a href="#harness">Plant Test Harness</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<div class="block-icon">
+  <img src="DABConverterIcon.svg" alt="Dual active bridge power stage">
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>DAB Converter</strong> block models a dual active bridge DC-DC power stage: two full
+bridges coupled by a high-frequency transformer with a series inductance. Two independent
+four-element gate vectors drive the two bridges, and the phase shift between them sets the direction
+and the amount of power transferred.</p>
+
+<p>The circuit contains:</p>
+<ul>
+  <li><strong>Primary bridge</strong> - four switches, A1, A2, B1 and B2.</li>
+  <li><strong>Series inductance</strong> L<sub>s</sub>, the energy transfer element.</li>
+  <li><strong>High-frequency transformer</strong>, with its turns ratio and winding
+      resistances.</li>
+  <li><strong>Secondary bridge</strong> - four switches, A1, A2, B1 and B2.</li>
+  <li><strong>Output filter</strong> - the capacitor C<sub>o</sub> with its series resistance.</li>
+</ul>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Description</th></tr>
+  <tr><td><strong class="port-electrical">P1</strong></td><td>Positive primary side DC terminal.</td></tr>
+  <tr><td><strong class="port-electrical">N1</strong></td><td>Negative primary side DC terminal.</td></tr>
+  <tr><td><strong class="port-electrical">P2</strong></td><td>Positive secondary side DC terminal.</td></tr>
+  <tr><td><strong class="port-electrical">N2</strong></td><td>Negative secondary side DC terminal.</td></tr>
+</table>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">Gp</strong></td><td>4</td><td>Primary bridge gate vector.</td></tr>
+  <tr><td><strong class="port-signal">Gs</strong></td><td>4</td><td>Secondary bridge gate vector.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<p>Both vectors use the same element order, and it is the same order in both model options.</p>
+<div class="gate-map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 210" width="460" height="210" role="img" aria-label="Full-bridge gate vector element map">
+<rect x="0" y="0" width="460" height="210" fill="#FFFFFF"/>
+<line x1="20" y1="24" x2="440" y2="24" stroke="#333333" stroke-width="2"/>
+<line x1="20" y1="186" x2="440" y2="186" stroke="#333333" stroke-width="2"/>
+<text x="24" y="18" font-family="Segoe UI, Arial" font-size="11" fill="#666666">+</text>
+<text x="24" y="200" font-family="Segoe UI, Arial" font-size="11" fill="#666666">&#8722;</text>
+<line x1="135.0" y1="24" x2="135.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="92.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="135.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">A1</text>
+<text x="135.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="201.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(1)</text>
+<rect x="92.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="135.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">A2</text>
+<text x="135.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="201.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(2)</text>
+<text x="135.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Leg A</text>
+<line x1="365.0" y1="24" x2="365.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="322.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="365.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">B1</text>
+<text x="365.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="431.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(3)</text>
+<rect x="322.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="365.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">B2</text>
+<text x="365.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="431.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(4)</text>
+<text x="365.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Leg B</text>
+</svg>
+</div>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>Gp(1)</code>, <code>Gs(1)</code></td><td><code>MOSFETPriA1</code>, <code>MOSFETSecA1</code></td><td>Leg A high side.</td></tr>
+  <tr><td><code>Gp(2)</code>, <code>Gs(2)</code></td><td><code>MOSFETPriA2</code>, <code>MOSFETSecA2</code></td><td>Leg A low side.</td></tr>
+  <tr><td><code>Gp(3)</code>, <code>Gs(3)</code></td><td><code>MOSFETPriB1</code>, <code>MOSFETSecB1</code></td><td>Leg B high side.</td></tr>
+  <tr><td><code>Gp(4)</code>, <code>Gs(4)</code></td><td><code>MOSFETPriB2</code>, <code>MOSFETSecB2</code></td><td>Leg B low side.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Elements 1 and 4 form one diagonal of the bridge and elements 2 and 3 form
+  the other, so a square wave across the transformer needs 1 and 4 driven together, then 2 and 3.
+  The DAB PWM Generator block produces both vectors in this order.
+</div>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">meas</strong></td><td>bus, 6 elements</td><td>Measurement bus.</td></tr>
+</table>
+
+<h4>Measurement Bus Order</h4>
+<table class="port-table">
+  <tr><th>Element</th><th>Bus element</th><th>Measurement</th></tr>
+  <tr><td>1</td><td><code>Ip [A]</code></td><td>Transformer primary current.</td></tr>
+  <tr><td>2</td><td><code>Is [A]</code></td><td>Transformer secondary current.</td></tr>
+  <tr><td>3</td><td><code>Vin [V]</code></td><td>Primary side DC voltage.</td></tr>
+  <tr><td>4</td><td><code>Vout [V]</code></td><td>Secondary side DC voltage.</td></tr>
+  <tr><td>5</td><td><code>Iin [A]</code></td><td>Primary side DC current.</td></tr>
+  <tr><td>6</td><td><code>Iout [A]</code></td><td>Secondary side DC current.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Select an element by name with a Bus Selector block. The element order
+  above is the order a Bus to Vector conversion produces, so read it before indexing the signal
+  numerically.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3>DAB Converter model option</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Circuit used</th></tr>
+  <tr><td>Simplified</td><td>Flat circuit with eight Ideal Semiconductor Switch blocks. The bridge dropdowns are hidden and the mask edit fields parameterize all eight switches.</td></tr>
+  <tr><td>Detailed</td><td>Variant subsystems for the primary and the secondary bridge, each with its own device dropdown.</td></tr>
+</table>
+
+<h3>Bridge device dropdowns, Detailed only</h3>
+<table class="variant-table">
+  <tr><th>Dropdown</th><th>Options</th><th>Configured through</th></tr>
+  <tr><td><code>switchDeviceOptionPri</code></td><td>Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask edit fields for the ideal switch. For the MOSFET, set one device on its own dialog and use <span class="btn-label">Apply MOSFET Primary Params</span>.</td></tr>
+  <tr><td><code>switchDeviceOptionSec</code></td><td>Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask edit fields for the ideal switch. For the MOSFET, set one device on its own dialog and use <span class="btn-label">Apply MOSFET Secondary Params</span>.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the current dropdown
+selections. The <strong>Shown when</strong> column gives the selections that reveal each one.</p>
+
+<h3>DAB Converter Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>modelOption</code></td><td>Model option</td><td>Simplified (default) | Detailed</td><td>Always</td></tr>
+<tr><td><code>ratedPower</code></td><td>Rated power</td><td><code>10000</code> W</td><td>Always</td></tr>
+<tr><td><code>Vin</code></td><td>Nominal input voltage</td><td><code>750</code> V</td><td>Always</td></tr>
+<tr><td><code>Vout</code></td><td>Nominal output voltage</td><td><code>525</code> V</td><td>Always</td></tr>
+<tr><td><code>Fsw</code></td><td>Switching frequency</td><td><code>100000</code> Hz</td><td>Always</td></tr>
+<tr><td><code>Co</code></td><td>Secondary output capacitance</td><td><code>2.963e-5</code> F</td><td>Always</td></tr>
+<tr><td><code>Rco</code></td><td>Secondary output capacitance ESR</td><td><code>0.001</code> mOhm</td><td>Always</td></tr>
+<tr><td><code>seriesInductorOption</code></td><td>Series inductance</td><td>Use external inductance | Use transformer leakage inductance (default)</td><td>Always</td></tr>
+<tr><td><code>Lr</code></td><td>Series inductance (Lr)</td><td><code>0</code> H</td><td><code>seriesInductorOption</code> = Use external inductance</td></tr>
+<tr><td><code>RLr</code></td><td>Series inductance resistance</td><td><code>0.01</code> Ohm</td><td><code>seriesInductorOption</code> = Use external inductance</td></tr>
+<tr><td><code>Vco</code></td><td>Initial output capacitor voltage</td><td><code>525</code> V</td><td>Always</td></tr>
+</table>
+
+<h3>Transformer</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>turnsRatio</code></td><td>Transformer turns ratio (Np/Ns)</td><td><code>1.4286</code></td><td>Always</td></tr>
+<tr><td><code>Lm</code></td><td>Magnetizing inductance (Lm)</td><td><code>1.4062e-3</code> H</td><td>Always</td></tr>
+<tr><td><code>Llk1</code></td><td>Primary leakage inductance (Llk1)</td><td><code>3.913e-5</code> H</td><td>Always</td></tr>
+<tr><td><code>RLlk1</code></td><td>Primary winding resistance</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Llk2</code></td><td>Secondary leakage inductance (Llk2)</td><td><code>4.7935e-6</code> H</td><td>Always</td></tr>
+<tr><td><code>RLlk2</code></td><td>Secondary winding resistance</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+</table>
+
+<h3>Primary Switch</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>switchDeviceOptionPri</code></td><td>Switch device</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>RdsOnPri</code></td><td>On-state resistance (RdsOn)</td><td><code>0.005</code> Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionPri</code> = Ideal Switch</td></tr>
+<tr><td><code>GdsOffPri</code></td><td>Off-state conductance (GdsOff)</td><td><code>1e-5</code> 1/Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionPri</code> = Ideal Switch</td></tr>
+<tr><td><code>VthPri</code></td><td>Threshold voltage</td><td><code>3</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionPri</code> = Ideal Switch</td></tr>
+<tr><td><code>CossPri</code></td><td>Output capacitance (Coss)</td><td><code>2e-10</code> F</td><td><code>modelOption</code> = Detailed and <code>switchDeviceOptionPri</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>simTempPri</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>switchDeviceOptionPri</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>VfPri</code></td><td>Diode forward voltage (Vf)</td><td><code>0.005</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionPri</code> = Ideal Switch</td></tr>
+<tr><td><code>RdPri</code></td><td>Diode on resistance (Rd)</td><td><code>1</code> mOhm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionPri</code> = Ideal Switch</td></tr>
+<tr><td><code>GdPri</code></td><td>Diode off conductance (Gd)</td><td><code>1e-5</code> 1/Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionPri</code> = Ideal Switch</td></tr>
+</table>
+
+<h3>Secondary Switch</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>switchDeviceOptionSec</code></td><td>Switch device</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>RdsOnSec</code></td><td>On-state resistance (RdsOn)</td><td><code>0.005</code> Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionSec</code> = Ideal Switch</td></tr>
+<tr><td><code>GdsOffSec</code></td><td>Off-state conductance (GdsOff)</td><td><code>1e-5</code> 1/Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionSec</code> = Ideal Switch</td></tr>
+<tr><td><code>VthSec</code></td><td>Threshold voltage</td><td><code>3</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionSec</code> = Ideal Switch</td></tr>
+<tr><td><code>CossSec</code></td><td>Output capacitance (Coss)</td><td><code>2e-10</code> F</td><td><code>modelOption</code> = Detailed and <code>switchDeviceOptionSec</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>simTempSec</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>switchDeviceOptionSec</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>VfSec</code></td><td>Diode forward voltage (Vf)</td><td><code>0.005</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionSec</code> = Ideal Switch</td></tr>
+<tr><td><code>RdSec</code></td><td>Diode on resistance (Rd)</td><td><code>1</code> mOhm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionSec</code> = Ideal Switch</td></tr>
+<tr><td><code>GdSec</code></td><td>Diode off conductance (Gd)</td><td><code>1e-5</code> 1/Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOptionSec</code> = Ideal Switch</td></tr>
+</table>
+
+<h2 id="export">Export to Unmasked Subsystem</h2>
+
+<p>The <span class="btn-label">Export to Unmasked Subsystem</span> button writes the
+DAB Converter circuit to a new model with no mask, alongside a parameter file that reproduces
+every mask value. Use it to inspect or edit the circuit beyond what the mask exposes.</p>
+
+<table>
+  <tr><th>File written to the current folder</th><th>Contents</th></tr>
+  <tr><td><code>DAB_exported_&lt;timestamp&gt;.slx</code></td><td>The unmasked circuit. Its <code>PreLoadFcn</code> runs the parameter file.</td></tr>
+  <tr><td><code>DAB_exported_&lt;timestamp&gt;_params.m</code></td><td>Assigns the structure <code>DAB</code> in the base workspace. Every block parameter of the exported model references a field of this structure.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The export reduces each variant subsystem to its active choice, so the
+  exported model holds only the device choice the mask had when you exported it.
+</div>
+
+<h2 id="harness">Plant Test Harness</h2>
+
+<p>The <strong>DAB Converter</strong> block has an open-loop test harness,
+<code>DABTestHarnessPlant.slx</code>, in the <code>test</code> folder of <code>DABConverterPlant</code>. The harness holds this
+block, the PWM generator blocks that drive its gate port, the input source, the load and a scope on
+the measurement bus. It carries no controller: constant reference blocks set the operating point, so
+the harness exercises the power stage on its own.</p>
+
+<table class="variant-table">
+  <tr><th>Block</th><th>Role in the harness</th></tr>
+  <tr><td><code>DAB Converter</code></td><td>This block, taken from <code>ConverterPlantLibrary</code>, at the mask values the shipped converter model uses.</td></tr>
+  <tr><td><code>DAB PWM Generator</code></td><td>DAB PWM Generator from <code>ConverterLibrary</code>, which drives both <strong>Gp</strong> and <strong>Gs</strong>. Switching frequency and dead time from <code>DABDesign</code>, gate levels from <code>DABController.gateVoltage</code>.</td></tr>
+  <tr><td><code>Phase Shift Reference</code></td><td>Constant <code>DABDesign.dutyRatedNominal*pi</code>. The generator takes the bridge-to-bridge phase shift in radians, and the design stores the rated shift as a fraction of pi.</td></tr>
+  <tr><td><code>Duty Reference</code></td><td>Constant 0.5, a square wave on each bridge leg.</td></tr>
+  <tr><td><code>Vin</code>, <code>Rload</code></td><td>DC source at <code>DABDesign.V1nom</code> and load <code>DABDesign.V2nom^2/DABDesign.ratedPower</code>. The rated phase shift transfers the rated power only into the rated load, so both come from the design rather than from the defaults script.</td></tr>
+  <tr><td><code>Subsystem</code>, <code>Mux</code>, <code>Scope</code></td><td>The measurement subsystem of the converter model, unchanged, which forms the output voltage, current and power from the measurement bus.</td></tr>
+</table>
+
+<p>Opening the harness runs <code>DABDefaultInputParameters</code> through its <code>PreLoadFcn</code>, so every
+design and controller structure the generator masks read is in the base workspace before the first
+simulation. The solver is <code>ode23t</code>, as in the converter model the harness was taken
+from.</p>
+
+<p>The stop time is 15 ms.</p>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../CombinedLLCConverterPlant/documentation/LLCConverterPlant.html">LLC Converter</a> |
+  <a href="../../CLLCConverterPlant/documentation/CLLCPowerCircuit.html">CLLC Converter</a> |
+  <a href="../../NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html">Non-Isolated DC-DC</a> |
+  <a href="../../../Controllers/DABConverterController/documentation/DABController.html">DAB Controller (SPS)</a> |
+  <a href="../../../Controllers/PWMGenerators/documentation/DABPWMGenerator.html">DAB PWM Generator</a>
+</p>
+
+</body>
+</html>

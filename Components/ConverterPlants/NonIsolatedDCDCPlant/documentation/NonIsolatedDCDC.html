@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Non-Isolated DC-DC - Buck, boost or buck-boost converter, with optional synchronous rectification</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Non-Isolated DC-DC</h1>
+<p class="subtitle">Buck, boost or buck-boost converter, with optional synchronous rectification</p>
+<div class="library-path">ConverterLibrary / Power Converter Plant / Non-Isolated DC-DC Converters / Non-Isolated DC-DC Converter</div>
+<div class="library-path">ConverterPlantLibrary / Non-Isolated DC-DC Converters / Non-Isolated DC-DC Converter</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#export">Export to Unmasked Subsystem</a></li>
+    <li><a href="#harness">Plant Test Harness</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>Non-Isolated DC-DC</strong> block models one of six DC-DC power stages, selected by
+the <code>modelOption</code> parameter. The choices are Buck, Synchronous Buck, Boost, Synchronous Boost, Buck-Boost
+and Synchronous Buck-Boost. The gate port is one element wide for the three non-synchronous
+topologies and two elements wide for the three synchronous ones.</p>
+
+<p>Each topology contains a main switch, a freewheeling or rectifying element, the energy storage
+inductor and the output filter capacitor. The non-synchronous topologies use a diode as the
+freewheeling element; the synchronous topologies replace it with a second MOSFET. The inductor block
+is named <code>Lout</code> in the buck topologies, <code>Lin</code> in the boost topologies and
+<code>Lstore</code> in the buck-boost topologies.</p>
+
+<h3>Circuit Topologies</h3>
+<div class="section-circuit">
+  <img src="BuckDiodeIcon.svg" alt="Buck" style="max-width:255px;">
+  <img src="BuckSyncMOSIcon.svg" alt="Synchronous buck" style="max-width:255px;">
+  <img src="BoostDiodeIcon.svg" alt="Boost" style="max-width:255px;">
+</div>
+<div class="section-circuit">
+  <img src="BoostSyncMOSIcon.svg" alt="Synchronous boost" style="max-width:255px;">
+  <img src="BuckBoostDiodeIcon.svg" alt="Buck-boost" style="max-width:255px;">
+  <img src="BuckBoostSyncMOSIcon.svg" alt="Synchronous buck-boost" style="max-width:255px;">
+</div>
+
+<div class="note">
+  <strong>Note:</strong> The two buck-boost topologies invert the output. The <strong>Vout+</strong>
+  terminal shares a node with the input and <strong>Vout-</strong> carries the negative
+  output voltage.
+</div>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Description</th></tr>
+  <tr><td><strong class="port-electrical">Vin+</strong></td><td>Positive input terminal.</td></tr>
+  <tr><td><strong class="port-electrical">Vin-</strong></td><td>Negative input terminal.</td></tr>
+  <tr><td><strong class="port-electrical">Vout+</strong></td><td>Positive output terminal.</td></tr>
+  <tr><td><strong class="port-electrical">Vout-</strong></td><td>Negative output terminal.</td></tr>
+</table>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">G</strong></td><td>1 or 2</td><td>Gate signal. One element for Buck, Boost and Buck-Boost; two elements for the three synchronous topologies.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>G(1)</code></td><td>Main switch</td><td>All six topologies. Labeled S1, Q1 or M1 on the block icons.</td></tr>
+  <tr><td><code>G(2)</code></td><td>Synchronous rectifier MOSFET</td><td>Synchronous topologies only. Labeled Q2 or M3 on the block icons.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The gate width follows <code>modelOption</code>. Changing from a
+  non-synchronous to a synchronous topology changes <strong>G</strong> from one element to two, so
+  the signal driving it has to change with it.
+</div>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">meas</strong></td><td>bus, 5 elements</td><td>Measurement bus.</td></tr>
+</table>
+
+<h4>Measurement Bus Order</h4>
+<table class="port-table">
+  <tr><th>Element</th><th>Bus element</th><th>Measurement</th></tr>
+  <tr><td>1</td><td><code>IL [A]</code></td><td>Inductor current.</td></tr>
+  <tr><td>2</td><td><code>Vout [V]</code></td><td>Output voltage.</td></tr>
+  <tr><td>3</td><td><code>Iin [A]</code></td><td>Input current.</td></tr>
+  <tr><td>4</td><td><code>Vin [V]</code></td><td>Input voltage.</td></tr>
+  <tr><td>5</td><td><code>Iout [A]</code></td><td>Output current.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Select an element by name with a Bus Selector block. The element order
+  above is the order a Bus to Vector conversion produces, so read it before indexing the signal
+  numerically.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3>Topology</h3>
+<p><code>modelOption</code> selects the power stage and, with it, the width of the gate port.</p>
+<table class="variant-table">
+  <tr><th><code>modelOption</code></th><th>Gate width</th><th>Rectifying element</th></tr>
+  <tr><td>Buck</td><td>1</td><td>Freewheeling diode</td></tr>
+  <tr><td>Synchronous Buck</td><td>2</td><td>Low-side MOSFET</td></tr>
+  <tr><td>Boost</td><td>1</td><td>Boost diode</td></tr>
+  <tr><td>Synchronous Boost</td><td>2</td><td>Series MOSFET</td></tr>
+  <tr><td>Buck-Boost</td><td>1</td><td>Diode, inverting output</td></tr>
+  <tr><td>Synchronous Buck-Boost</td><td>2</td><td>MOSFET, inverting output</td></tr>
+</table>
+
+<h3>Device dropdowns</h3>
+<table class="variant-table">
+  <tr><th>Dropdown</th><th>Options</th><th>Configured through</th></tr>
+  <tr><td><code>switchDeviceOption</code></td><td>Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask edit fields for the ideal switch. For the MOSFET, set one device on its own dialog and use <span class="btn-label">Apply parameters to all MOSFET blocks</span>.</td></tr>
+  <tr><td><code>diodeDeviceOption</code></td><td>Ideal Diode, Tabulated Diode</td><td>Mask edit fields for the ideal diode; the device dialog for the tabulated diode. Shown for the three non-synchronous topologies only.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the current dropdown
+selections. The <strong>Shown when</strong> column gives the selections that reveal each one.</p>
+
+<h3>DC-DC Converter Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>modelOption</code></td><td>Topology</td><td>Buck | Synchronous Buck | Boost | Synchronous Boost (default) | Buck-Boost | Synchronous Buck-Boost</td><td>Always</td></tr>
+<tr><td><code>ratedPower</code></td><td>Rated power</td><td><code>1500</code> W</td><td>Always</td></tr>
+<tr><td><code>Vin</code></td><td>Input voltage</td><td><code>200</code> V</td><td>Always</td></tr>
+<tr><td><code>Vout</code></td><td>Output voltage</td><td><code>400</code> V</td><td>Always</td></tr>
+<tr><td><code>Fsw</code></td><td>Switching frequency</td><td><code>100000</code> Hz</td><td>Always</td></tr>
+<tr><td><code>L</code></td><td>Inductance</td><td><code>4.356e-4</code> H</td><td>Always</td></tr>
+<tr><td><code>RL</code></td><td>Inductor resistance</td><td><code>0.05</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>C</code></td><td>Output capacitance</td><td><code>1.8651e-4</code> F</td><td>Always</td></tr>
+<tr><td><code>Rco</code></td><td>Capacitor ESR</td><td><code>0.02</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Vco</code></td><td>Initial output capacitor voltage</td><td><code>320</code> V</td><td>Always</td></tr>
+</table>
+
+<h3>Switch Device</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>switchDeviceOption</code></td><td>Main switch device</td><td>Ideal Switch (default) | MOSFET (Ideal, Switching) with Thermal</td><td>Always</td></tr>
+<tr><td><code>RdsOn</code></td><td>On-state resistance</td><td><code>0.02</code> Ohm</td><td><code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>GdsOff</code></td><td>Off-state conductance</td><td><code>1e-8</code> 1/Ohm</td><td><code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>Vth</code></td><td>Threshold voltage</td><td><code>0.5</code> V</td><td><code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>VfBody</code></td><td>Body diode forward voltage</td><td><code>2.04</code> V</td><td><code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>RdBody</code></td><td>Body diode on resistance</td><td><code>0.004</code> Ohm</td><td><code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>GdBody</code></td><td>Body diode off conductance</td><td><code>1e-6</code> 1/Ohm</td><td><code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>simTemp</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>modelOption</code> = Buck | Boost | Buck-Boost and <code>diodeDeviceOption</code> = Tabulated Diode<br>or <code>switchDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+</table>
+
+<h3>Diode Device</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>diodeDeviceOption</code></td><td>Diode device</td><td>Ideal Diode (default) | Tabulated Diode</td><td>Always</td></tr>
+<tr><td><code>Vf</code></td><td>Diode forward voltage</td><td><code>0.5</code> V</td><td><code>diodeDeviceOption</code> = Ideal Diode</td></tr>
+<tr><td><code>Rd</code></td><td>Diode on resistance</td><td><code>0.01</code> Ohm</td><td><code>diodeDeviceOption</code> = Ideal Diode</td></tr>
+<tr><td><code>Gd</code></td><td>Diode off conductance</td><td><code>1e-8</code> 1/Ohm</td><td><code>diodeDeviceOption</code> = Ideal Diode</td></tr>
+</table>
+
+<h2 id="export">Export to Unmasked Subsystem</h2>
+
+<p>The <span class="btn-label">Export to Unmasked Subsystem</span> button writes the
+Non-Isolated DC-DC circuit to a new model with no mask, alongside a parameter file that reproduces
+every mask value. Use it to inspect or edit the circuit beyond what the mask exposes.</p>
+
+<table>
+  <tr><th>File written to the current folder</th><th>Contents</th></tr>
+  <tr><td><code>NonIsolatedDCDC_exported_&lt;timestamp&gt;.slx</code></td><td>The unmasked circuit. Its <code>PreLoadFcn</code> runs the parameter file.</td></tr>
+  <tr><td><code>NonIsolatedDCDC_exported_&lt;timestamp&gt;_params.m</code></td><td>Assigns the structure <code>NonIsolatedDCDC</code> in the base workspace. Every block parameter of the exported model references a field of this structure.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The export keeps the variant subsystems, so the exported model still holds
+  every device choice and still honors the choice the mask had when you exported it.
+</div>
+
+<h2 id="harness">Plant Test Harness</h2>
+
+<p>The <strong>Non-Isolated DC-DC</strong> block has an open-loop test harness,
+<code>NonIsolatedDCDCTestHarnessPlant.slx</code>, in the <code>test</code> folder of <code>NonIsolatedDCDCPlant</code>. The harness holds this
+block, the PWM generator blocks that drive its gate port, the input source, the load and a scope on
+the measurement bus. It carries no controller: constant reference blocks set the operating point, so
+the harness exercises the power stage on its own.</p>
+
+<table class="variant-table">
+  <tr><th>Block</th><th>Role in the harness</th></tr>
+  <tr><td><code>Non-Isolated DCDC</code></td><td>This block, taken from <code>ConverterPlantLibrary</code>, at the mask values the shipped converter model uses.</td></tr>
+  <tr><td><code>Half Bridge PWM Generator</code></td><td>Half Bridge PWM Generator from <code>ConverterLibrary</code>. Switching frequency, dead time and gate levels from <code>nonIsolatedDCDCController</code>. Its complementary pair reaches the <strong>G</strong> port unchanged, because the generator emits the high-side gate first.</td></tr>
+  <tr><td><code>Duty Reference</code></td><td>Constant duty <code>nonIsolatedDCDCDesign.nominalDuty</code>.</td></tr>
+  <tr><td><code>Vin</code>, <code>Rload</code></td><td>DC voltage source <code>Vin_dc</code> and load resistance <code>Rload_R</code>, both from the defaults script.</td></tr>
+  <tr><td><code>Bus Selector1</code>, <code>Mux</code>, <code>Mux1</code>, <code>Scope</code></td><td><code>Iin [A]</code> with <code>IL [A]</code> on one axis, <code>Vin [V]</code> with <code>Vout [V]</code> on the next, and <code>Iout [A]</code> on the third.</td></tr>
+</table>
+
+<p>Opening the harness runs <code>NonIsolatedDCDCDefaultInputParameters</code> through its <code>PreLoadFcn</code>, so every
+design and controller structure the generator masks read is in the base workspace before the first
+simulation. The solver is <code>ode23t</code>, as in the converter model the harness was taken
+from.</p>
+
+<p>The stop time is 20 ms.</p>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../BoostPFCPlant/documentation/BoostPFC.html">Boost PFC</a> |
+  <a href="../../InterleavedBoostPFCPlant/documentation/InterleavedBoostPFC.html">Interleaved Boost PFC</a> |
+  <a href="../../TotemPoleBoostPFCPlant/documentation/TotemPoleBoostPFC.html">Totem-Pole Boost PFC</a> |
+  <a href="../../DABConverterPlant/documentation/DABConverter.html">DAB Converter</a> |
+  <a href="../../../Controllers/NonIsolatedDCDCController/documentation/NonIsolatedDCDCController.html">Non-Isolated DC-DC Controller</a>
+</p>
+
+</body>
+</html>

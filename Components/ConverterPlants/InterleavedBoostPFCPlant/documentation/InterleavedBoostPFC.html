@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interleaved Boost PFC - Single-phase diode bridge and two-phase interleaved boost PFC power stage</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Interleaved Boost PFC</h1>
+<p class="subtitle">Single-phase diode bridge and two-phase interleaved boost PFC power stage</p>
+<div class="library-path">ConverterLibrary / Power Converter Plant / Power Factor Correction Converters / Interleaved Boost PFC Converter</div>
+<div class="library-path">ConverterPlantLibrary / Power Factor Correction Converters / Interleaved Boost PFC Converter</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#export">Export to Unmasked Subsystem</a></li>
+    <li><a href="#harness">Plant Test Harness</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<div class="block-icon">
+  <img src="InterleavedBoostPFCDiodeIcon.svg" alt="Interleaved boost PFC power stage">
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>Interleaved Boost PFC</strong> block models a single-phase power factor correction
+power stage with two boost phases sharing one rectifier and one output capacitor. A two-element gate
+vector drives the two boost switches.</p>
+
+<p>The circuit contains:</p>
+<ul>
+  <li><strong>Diode rectifier bridge</strong> - four diodes, D1 to D4.</li>
+  <li><strong>Boost phase 1</strong> - L<sub>1</sub>, switch Q<sub>1</sub>, boost diode
+      D<sub>b1</sub>.</li>
+  <li><strong>Boost phase 2</strong> - L<sub>2</sub>, switch Q<sub>2</sub>, boost diode
+      D<sub>b2</sub>.</li>
+  <li><strong>Pre-charge branch</strong> - the resistor R<sub>pc</sub> in series with a diode,
+      bridging the rectified node to the output.</li>
+  <li><strong>Output filter</strong> - the capacitor C<sub>o</sub> with its series resistance.</li>
+</ul>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Description</th></tr>
+  <tr><td><strong class="port-electrical">P</strong></td><td>AC line terminal.</td></tr>
+  <tr><td><strong class="port-electrical">N</strong></td><td>AC neutral terminal.</td></tr>
+  <tr><td><strong class="port-electrical">+</strong></td><td>Positive DC output terminal.</td></tr>
+  <tr><td><strong class="port-electrical">-</strong></td><td>Negative DC output terminal, shared with the rectifier return.</td></tr>
+</table>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">G</strong></td><td>2</td><td>Gate vector for the two boost switches, in every model option.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>G(1)</code></td><td>Q<sub>1</sub></td><td>Phase 1 boost switch.</td></tr>
+  <tr><td><code>G(2)</code></td><td>Q<sub>2</sub></td><td>Phase 2 boost switch.</td></tr>
+</table>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">meas</strong></td><td>bus, 6 elements</td><td>Measurement bus.</td></tr>
+</table>
+
+<h4>Measurement Bus Order</h4>
+<table class="port-table">
+  <tr><th>Element</th><th>Bus element</th><th>Measurement</th></tr>
+  <tr><td>1</td><td><code>IL1 [A]</code></td><td>Phase 1 inductor current.</td></tr>
+  <tr><td>2</td><td><code>IL2 [A]</code></td><td>Phase 2 inductor current.</td></tr>
+  <tr><td>3</td><td><code>Vout [V]</code></td><td>DC output voltage.</td></tr>
+  <tr><td>4</td><td><code>Iin [A]</code></td><td>AC line current at port <strong>P</strong>.</td></tr>
+  <tr><td>5</td><td><code>Vin [V]</code></td><td>AC input voltage.</td></tr>
+  <tr><td>6</td><td><code>Iout [A]</code></td><td>DC output current.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Select an element by name with a Bus Selector block. The element order
+  above is the order a Bus to Vector conversion produces, so read it before indexing the signal
+  numerically.
+</div>
+
+<div class="note">
+  <strong>Note:</strong> The bus element order differs from the single-phase Boost PFC block. Both
+  buses carry the same quantities in a different order.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3>Interleaved Boost PFC model option</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Circuit used</th></tr>
+  <tr><td>Simplified</td><td>Flat circuit with Ideal Semiconductor Switch and Diode blocks. The device dropdowns are hidden and the mask edit fields parameterize every device.</td></tr>
+  <tr><td>Detailed</td><td>Variant subsystems for the boost switches, the boost diodes and the rectifier bridge, each with its own device dropdown.</td></tr>
+</table>
+
+<h3>Device dropdowns, Detailed only</h3>
+<p>Each dropdown applies to both phases at once.</p>
+<table class="variant-table">
+  <tr><th>Dropdown</th><th>Options</th><th>Configured through</th></tr>
+  <tr><td><code>switchDeviceOption</code></td><td>Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask edit fields for the ideal switch. For the MOSFET, set one device on its own dialog and use <span class="btn-label">Apply parameters to all MOSFET blocks</span>.</td></tr>
+  <tr><td><code>diodeDeviceOption</code></td><td>Ideal Diode, Tabulated Diode</td><td>Mask edit fields for the ideal diode. For the tabulated diode, set one device on its own dialog and use <span class="btn-label">Apply parameters to all Diode blocks</span>.</td></tr>
+  <tr><td><code>rectDiodeDeviceOption</code></td><td>Ideal Diode, Tabulated Diode</td><td>Mask edit fields for the ideal diodes. For tabulated diodes, set the first diode on its own dialog and use <span class="btn-label">Apply to All Rectifier Diodes</span>.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the current dropdown
+selections. The <strong>Shown when</strong> column gives the selections that reveal each one.</p>
+
+<h3>Interleaved Boost PFC Converter Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>modelOption</code></td><td>Interleaved Boost PFC model option</td><td>Simplified (default) | Detailed</td><td>Always</td></tr>
+<tr><td><code>ratedPower</code></td><td>Rated power</td><td><code>2000</code> W</td><td>Always</td></tr>
+<tr><td><code>VIn</code></td><td>AC input voltage (RMS)</td><td><code>230</code> V</td><td>Always</td></tr>
+<tr><td><code>FRated</code></td><td>Line frequency</td><td><code>50</code> Hz</td><td>Always</td></tr>
+<tr><td><code>VOut</code></td><td>DC output voltage</td><td><code>400</code> V</td><td>Always</td></tr>
+<tr><td><code>Fsw</code></td><td>Switching frequency</td><td><code>65000</code> Hz</td><td>Always</td></tr>
+<tr><td><code>LBoost</code></td><td>Phase inductance</td><td><code>9.5731e-4</code> H</td><td>Always</td></tr>
+<tr><td><code>RLboost</code></td><td>Inductor resistance</td><td><code>0.03</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>CBoost</code></td><td>Output capacitance</td><td><code>7.9577e-4</code> F</td><td>Always</td></tr>
+<tr><td><code>Rco</code></td><td>Capacitor ESR</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Vco</code></td><td>Initial output capacitor voltage</td><td><code>360</code> V</td><td>Always</td></tr>
+</table>
+
+<h3>Boost Stage Devices</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>switchDeviceOption</code></td><td>Switch model</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>RdsOn</code></td><td>On-state resistance</td><td><code>0.05</code> Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>GdsOff</code></td><td>Off-state conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>Vth</code></td><td>Threshold voltage</td><td><code>3</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>switchDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>simTemp</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>modelOption</code> = Detailed, and any of:<br><code>diodeDeviceOption</code> = Tabulated Diode<br><code>rectDiodeDeviceOption</code> = Tabulated Diode<br><code>switchDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+</table>
+
+<h3>Boost Diode Device</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>diodeDeviceOption</code></td><td>Diode model</td><td>Ideal Diode | Tabulated Diode (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>VfDiode</code></td><td>Forward voltage</td><td><code>0.6</code> V</td><td><code>diodeDeviceOption</code> = Ideal Diode<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>RdDiode</code></td><td>On resistance</td><td><code>0.01</code> Ohm</td><td><code>diodeDeviceOption</code> = Ideal Diode<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>GdDiode</code></td><td>Off conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>diodeDeviceOption</code> = Ideal Diode<br>or <code>modelOption</code> = Simplified</td></tr>
+</table>
+
+<h3>Rectifier Devices</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>rectDiodeDeviceOption</code></td><td>Rectifier diode model</td><td>Ideal Diode | Tabulated Diode (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>VfRect</code></td><td>Forward voltage</td><td><code>0.7</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>rectDiodeDeviceOption</code> = Ideal Diode</td></tr>
+<tr><td><code>RdRect</code></td><td>On resistance</td><td><code>0.01</code> Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>rectDiodeDeviceOption</code> = Ideal Diode</td></tr>
+<tr><td><code>GdRect</code></td><td>Off conductance</td><td><code>1e-5</code> S</td><td><code>modelOption</code> = Simplified<br>or <code>rectDiodeDeviceOption</code> = Ideal Diode</td></tr>
+</table>
+
+<h3>Pre-Charge Circuit Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>VfPreCharge</code></td><td>Forward voltage</td><td><code>0.6</code> V</td><td>Always</td></tr>
+<tr><td><code>RdPreCharge</code></td><td>On resistance</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>GdPreCharge</code></td><td>Off conductance</td><td><code>1e-5</code> 1/Ohm</td><td>Always</td></tr>
+<tr><td><code>RPreCharge</code></td><td>Pre-charge resistance</td><td><code>3</code> Ohm</td><td>Always</td></tr>
+</table>
+
+<h2 id="export">Export to Unmasked Subsystem</h2>
+
+<p>The <span class="btn-label">Export to Unmasked Subsystem</span> button writes the
+Interleaved Boost PFC circuit to a new model with no mask, alongside a parameter file that reproduces
+every mask value. Use it to inspect or edit the circuit beyond what the mask exposes.</p>
+
+<table>
+  <tr><th>File written to the current folder</th><th>Contents</th></tr>
+  <tr><td><code>InterleavedBoostPFC_exported_&lt;timestamp&gt;.slx</code></td><td>The unmasked circuit. Its <code>PreLoadFcn</code> runs the parameter file.</td></tr>
+  <tr><td><code>InterleavedBoostPFC_exported_&lt;timestamp&gt;_params.m</code></td><td>Assigns the structure <code>InterleavedBoostPFC</code> in the base workspace. Every block parameter of the exported model references a field of this structure.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The export keeps the variant subsystems, so the exported model still holds
+  every device choice and still honors the choice the mask had when you exported it.
+</div>
+
+<h2 id="harness">Plant Test Harness</h2>
+
+<p>The <strong>Interleaved Boost PFC</strong> block has an open-loop test harness,
+<code>InterleavedBoostPFCTestHarnessPlant.slx</code>, in the <code>test</code> folder of <code>InterleavedBoostPFCPlant</code>. The harness holds this
+block, the PWM generator blocks that drive its gate port, the input source, the load and a scope on
+the measurement bus. It carries no controller: constant reference blocks set the operating point, so
+the harness exercises the power stage on its own.</p>
+
+<table class="variant-table">
+  <tr><th>Block</th><th>Role in the harness</th></tr>
+  <tr><td><code>Interleaved Boost PFC</code></td><td>This block, taken from <code>ConverterPlantLibrary</code>, at the mask values the shipped converter model uses.</td></tr>
+  <tr><td><code>Interleaved PWM Generator</code></td><td>The two-leg modulator of the Interleaved Boost PFC Controller, masked so that it reads <code>interleavedDesign</code> and <code>interleavedController</code> directly. It emits one gate per leg from one duty input, with the second leg carrier shifted by half a switching period.</td></tr>
+  <tr><td><code>Duty Reference</code></td><td>Constant duty <code>1 - sqrt(2)*interleavedDesign.nomInputVoltage/interleavedDesign.outputVoltage</code>, the boost duty at the peak of the nominal line. Both legs take the same duty.</td></tr>
+  <tr><td><code>Vac</code>, <code>Rload</code></td><td>AC voltage source of amplitude <code>VacAmp</code> at <code>Fline</code>, and the load resistance <code>Rload_R</code>, both from the defaults script.</td></tr>
+  <tr><td><code>Bus Selector</code>, <code>Leg Currents</code>, <code>Scope</code></td><td><code>Vin [V]</code>, <code>Iout [A]</code> and <code>Vout [V]</code> off the measurement bus, with <code>IL1 [A]</code> and <code>IL2 [A]</code> on one axis so that the two legs can be compared.</td></tr>
+</table>
+
+<p>Opening the harness runs <code>InterleavedBoostPFCDefaultInputParameters</code> through its <code>PreLoadFcn</code>, so every
+design and controller structure the generator masks read is in the base workspace before the first
+simulation. The solver is <code>ode23t</code>, as in the converter model the harness was taken
+from.</p>
+
+<div class="note">
+  <strong>Note:</strong> The generator is set to <strong>Fixed-step (discrete)</strong>, which is
+  the mode the Interleaved Boost PFC Controller runs. Both legs then carry the same current.
+</div>
+
+<p>The stop time is 0.1 s, five cycles of the 50 Hz line.</p>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../BoostPFCPlant/documentation/BoostPFC.html">Boost PFC</a> |
+  <a href="../../TotemPoleBoostPFCPlant/documentation/TotemPoleBoostPFC.html">Totem-Pole Boost PFC</a> |
+  <a href="../../NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html">Non-Isolated DC-DC</a> |
+  <a href="../../../Controllers/InterleavedBoostPFCController/documentation/InterleavedBoostPFCController.html">Interleaved Boost PFC Controller</a>
+</p>
+
+</body>
+</html>

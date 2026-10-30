@@ -30,6 +30,11 @@ function lossData = getLLCPowerLossCharacteristics(ModelName,options)
 %       .PercentageLossSummaryTable Table of loss distribution for pie chart
 %
 %   Notes:
+%     - Scope: this function supports only the original unmasked LLC plant, as used by
+%       the "LLCResonantConverterFullBridgeOld" model, because it navigates that plant's
+%       simlog hierarchy by name. For a model whose plant is the masked ConverterLibrary
+%       "LLC Converter" block (such as "LLCResonantConverterFullBridge"), use the
+%       converter-agnostic getConverterPowerLoss instead.
 %     - The model must use 'MOSFET (Ideal, Switching) with Thermal' as the primary
 %       switching device and 'Tabulated Diode' as the secondary rectifier.
 %     - The function requires auxiliary functions: setupLLCConverterModel and
@@ -54,12 +59,15 @@ arguments
 end
 load_system(ModelName);
 
-% This code works for both masked LLC power circuit library block and the
-% unmasked subsystem in the "LLCResonantConverterFullBridge" model
+% Detect which kind of LLC power circuit this model uses. A mask with no parameters
+% means the original unmasked subsystem; a parameterized mask means the masked
+% ConverterLibrary "LLC Converter" block. Only the unmasked plant is supported here,
+% because the loss extraction further down navigates that plant's simlog hierarchy
+% by name (Inverter/MOSFETA1..B2, Rectifier/Diode1..4).
 topLevelBlocks = find_system(ModelName, 'SearchDepth', 1, 'Type', 'block');
 llcPowerCircuit = topLevelBlocks(contains(topLevelBlocks,"LLC Converter Power Circuit"));
 if isempty(llcPowerCircuit)
-    error("Subsystem LLC Converter Power Circuit doesnot exist in the model");
+    error("Subsystem LLC Converter Power Circuit does not exist in the model");
 end
 maskObj = Simulink.Mask.get(llcPowerCircuit{1});
 numMaskParam = length(maskObj.Parameters);
@@ -87,9 +95,16 @@ if numMaskParam==0
     simIn = setupLLCConverterModel(ModelName,MOSFETModel=primaryMOSFETBlock, DiodeModel=secondaryDiodeBlock,...
         Vref=options.Vref, Pload = options.Pload, Vin=options.Vin, SimTime = options.SimTime);
 else
-    % For masked subsystem block
-    primaryMOSFETMaskedLibraryBlock = get_param(llcPowerCircuit{1},"primaryDeviceOption");
-    secondaryDiodeMaskedLibraryBlock = get_param(llcPowerCircuit{1},"secondaryDeviceOption");
+    % Masked ConverterLibrary "LLC Converter" block. Its internal hierarchy differs
+    % (variant subsystems, no Inverter/MOSFETA1..B2 or Rectifier/Diode1..4 blocks), so
+    % the simlog navigation below cannot resolve against it. Fail with a pointer to the
+    % converter-agnostic engine rather than erroring later on an unassigned simIn.
+    error("LLCConverter:getLLCPowerLossCharacteristics:MaskedPlantUnsupported", ...
+        ['Model "%s" uses the masked LLC Converter library block. This function ' ...
+        'supports only the original unmasked plant (see ' ...
+        'LLCResonantConverterFullBridgeOld). For the library-block plant, use:\n' ...
+        '    lossData = getConverterPowerLoss("%s", Converter="LLC", ...)'], ...
+        ModelName, ModelName);
 end
 % Simulation
 simOut = sim(simIn);
@@ -192,8 +207,5 @@ if numMaskParam==0
     set_param(strcat(pathNameDiode,"/Diode2"),"ReferencedSubsystem",currentDiode2);
     set_param(strcat(pathNameDiode,"/Diode3"),"ReferencedSubsystem",currentDiode3);
     set_param(strcat(pathNameDiode,"/Diode4"),"ReferencedSubsystem",currentDiode4);
-else
-    set_param(llcPowerCircuit{1},"primaryDeviceOption",primaryMOSFETMaskedLibraryBlock);
-    set_param(llcPowerCircuit{1},"secondaryDeviceOption",secondaryDiodeMaskedLibraryBlock);
 end
 end

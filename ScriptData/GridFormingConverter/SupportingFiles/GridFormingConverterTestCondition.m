@@ -2,7 +2,7 @@
 %[text:tableOfContents]{"heading":"Table of Contents"}
 %[text] This file sets the required test condition variables as the time-table data. You can change the test variables over the entire simulation time. This time profile input is fed into the model using the from workspace Simulink© block, it allows you to choose the proper interpolation technique,
 %[text] %[text:anchor:H_C67F7C14] ## Simulation and Disturbance Time
-%[text] The example provides two fidelity levels for the GFM converter power circuit: average and two‑level switching. To set the fidelity level, specify `"Average"` or `"Switching"` for the `Converter` name-value argument of the `setGFMConverterModelFidelity` function, respectively. It also set the suitable model sample time.
+%[text] The example provides two fidelity levels for the GFM converter power circuit: average and two‑level switching. To set the fidelity level, specify `"Average"` or `"Switching"` for the `Converter` name-value argument of the `setGFMConverterModelFidelity` function, respectively. It also sets the suitable model sample time.
 
 simulationTime = 8;             % s, Total simulation time
 disturbanceTime = 3;            % s, Time at which disturbance is included

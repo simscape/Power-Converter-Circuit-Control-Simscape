@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAB PWM Generator - Two phase-shifted bridge gate vectors for a dual active bridge</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>DAB PWM Generator</h1>
+<p class="subtitle">Two phase-shifted bridge gate vectors for a dual active bridge</p>
+<div class="library-path">ConverterLibrary / Controller / PWM Generators / DAB PWM Generator</div>
+<div class="library-path">ControllerLibrary / PWM Generators / DAB PWM Generator</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>DAB PWM Generator</strong> block produces the gate vectors of two full bridges
+switching at <code>Fsw</code>. The secondary bridge runs from the same timer shifted by the commanded
+phase shift and wrapped into one period, so a positive <strong>phaseShift</strong> delays the
+secondary bridge with respect to the primary.</p>
+
+<p>Each leg pair carries <code>Tdead</code> between its two devices, and the commanded pulse width is
+limited to <code>Tdead*Fsw</code> to <code>1 - Tdead*Fsw</code>.</p>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">phaseShift</strong></td><td>1</td><td>Phase shift of the secondary bridge, in radians. Positive delays the secondary bridge.</td></tr>
+  <tr><td><strong class="port-signal">pulseWidth</strong></td><td>1</td><td>Pulse width as a fraction of the switching period. Use 0.5 for square-wave single phase shift modulation.</td></tr>
+</table>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">G1</strong></td><td>4</td><td>Primary bridge gate vector.</td></tr>
+  <tr><td><strong class="port-signal">G2</strong></td><td>4</td><td>Secondary bridge gate vector.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<p>Both vectors use the same element order, and it matches the plant inputs <strong>Gp</strong> and
+<strong>Gs</strong>.</p>
+<div class="gate-map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 210" width="460" height="210" role="img" aria-label="Full-bridge gate vector element map">
+<rect x="0" y="0" width="460" height="210" fill="#FFFFFF"/>
+<line x1="20" y1="24" x2="440" y2="24" stroke="#333333" stroke-width="2"/>
+<line x1="20" y1="186" x2="440" y2="186" stroke="#333333" stroke-width="2"/>
+<text x="24" y="18" font-family="Segoe UI, Arial" font-size="11" fill="#666666">+</text>
+<text x="24" y="200" font-family="Segoe UI, Arial" font-size="11" fill="#666666">&#8722;</text>
+<line x1="135.0" y1="24" x2="135.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="92.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="135.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">S1</text>
+<text x="135.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="201.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(1)</text>
+<rect x="92.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="135.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">S2</text>
+<text x="135.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="201.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(2)</text>
+<text x="135.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Leg A</text>
+<line x1="365.0" y1="24" x2="365.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="322.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="365.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">S3</text>
+<text x="365.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="431.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(3)</text>
+<rect x="322.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="365.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">S4</text>
+<text x="365.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="431.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(4)</text>
+<text x="365.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Leg B</text>
+</svg>
+</div>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>1</code></td><td>Leg A high-side device</td><td>First diagonal.</td></tr>
+  <tr><td><code>2</code></td><td>Leg A low-side device</td><td>Second diagonal.</td></tr>
+  <tr><td><code>3</code></td><td>Leg B high-side device</td><td>Second diagonal.</td></tr>
+  <tr><td><code>4</code></td><td>Leg B low-side device</td><td>First diagonal.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Elements 1 and 4 form one conducting diagonal and elements 2 and 3 the other.
+  Elements 1 and 2 are the two devices of one leg, so they are never on together.
+</div>
+
+<div class="note">
+  <strong>Note:</strong> The two bridges have separate gate voltage parameters, so a primary and a
+  secondary device with different gate thresholds are both driven correctly.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3><code>solverMode</code> - Solver mode</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>Variable-step (continuous)</td><td>The internal timer is an integrator. Use it with a continuous or a variable-step solver.</td></tr>
+  <tr><td>Fixed-step (discrete)</td><td>The internal timer is a discrete counter running at <code>Ts</code>. Use it with a fixed-step solver, or to keep the gate edges on a known grid.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the
+current dropdown selections. The <strong>Shown when</strong> column gives the selections that reveal
+each one.</p>
+
+<h3>Solver Settings</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>solverMode</code></td><td>Solver mode</td><td>Variable-step (continuous) (default) | Fixed-step (discrete)</td><td>Always</td></tr>
+<tr><td><code>Ts</code></td><td>Sample time (s)</td><td><code>1e-8</code></td><td><code>solverMode</code> = Fixed-step (discrete)</td></tr>
+</table>
+
+<h3>Switching Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>Fsw</code></td><td>Switching frequency (Hz)</td><td><code>100e3</code></td><td>Always</td></tr>
+<tr><td><code>Tdead</code></td><td>Dead time (s)</td><td><code>100e-9</code></td><td>Always</td></tr>
+</table>
+
+<h3>Gate Drive</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>primaryGateVoltageOn</code></td><td>Primary bridge gate ON voltage (V)</td><td><code>15</code></td><td>Always</td></tr>
+<tr><td><code>primaryGateVoltageOff</code></td><td>Primary bridge gate OFF voltage (V)</td><td><code>0</code></td><td>Always</td></tr>
+<tr><td><code>secondaryGateVoltageOn</code></td><td>Secondary bridge gate ON voltage (V)</td><td><code>15</code></td><td>Always</td></tr>
+<tr><td><code>secondaryGateVoltageOff</code></td><td>Secondary bridge gate OFF voltage (V)</td><td><code>0</code></td><td>Always</td></tr>
+</table>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../DABConverterController/documentation/DABController.html">DAB Controller (SPS)</a> |
+  <a href="../../../ConverterPlants/DABConverterPlant/documentation/DABConverter.html">DAB Converter</a> |
+  <a href="FullBridgePWMGenerator.html">Full Bridge PWM Generator</a>
+</p>
+
+</body>
+</html>

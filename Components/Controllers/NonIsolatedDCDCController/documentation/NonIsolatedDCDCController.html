@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Non-Isolated DC-DC Controller - Per-unit voltage and current control for a buck, boost or buck-boost converter</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Non-Isolated DC-DC Controller</h1>
+<p class="subtitle">Per-unit voltage and current control for a buck, boost or buck-boost converter</p>
+<div class="library-path">ConverterLibrary / Controller / Non-Isolated DC-DC Converters / Non-Isolated DC-DC Controller</div>
+<div class="library-path">ControllerLibrary / Non-Isolated DC-DC Converters / Non-Isolated DC-DC Controller</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>Non-Isolated DC-DC Controller</strong> block regulates the output voltage of the
+<a href="../../../ConverterPlants/NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html">Non-Isolated DC-DC</a> plant. An outer voltage loop produces a current
+reference, an inner current loop produces a duty cycle, and the modulator turns that duty cycle into
+gate signals. A soft-start ramp brings the reference up over <code>softStartTime</code>.</p>
+
+<p>Set <code>modelOption</code> to the same topology as the plant. It selects the duty law and, for
+the three synchronous topologies, adds the complementary gate for the synchronous rectifier.</p>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">Vref</strong></td><td>1</td><td>Output voltage reference, in volts.</td></tr>
+  <tr><td><strong class="port-signal">Vmeas</strong></td><td>1</td><td>Measured output voltage, in volts.</td></tr>
+  <tr><td><strong class="port-signal">Imeas</strong></td><td>1</td><td>Measured inductor current, in amperes.</td></tr>
+  <tr><td><strong class="port-signal">Vin</strong></td><td>1</td><td>Measured input voltage, in volts. Used by the duty law and by the feedforward term.</td></tr>
+</table>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">G</strong></td><td>1 or 2</td><td>Gate signals, or the duty cycle. The width follows the two dropdowns, as below.</td></tr>
+</table>
+
+<h4>Output Width</h4>
+<table class="port-table">
+  <tr><th><code>outputSelect</code></th><th><code>modelOption</code></th><th>Width</th><th>Contents</th></tr>
+  <tr><td>PWM Signal</td><td>Buck, Boost, Buck-Boost</td><td><code>1</code></td><td>Gate signal for the main switch.</td></tr>
+  <tr><td>PWM Signal</td><td>Synchronous Buck, Synchronous Boost, Synchronous Buck-Boost</td><td><code>2</code></td><td>Gate signals for the main switch and the synchronous rectifier.</td></tr>
+  <tr><td>Duty Cycle</td><td>Any</td><td><code>1</code></td><td>Commanded duty cycle, between <code>dutyMin</code> and <code>dutyMax</code>.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>1</code></td><td>Main switch</td><td>Switching frequency.</td></tr>
+  <tr><td><code>2</code></td><td>Synchronous rectifier MOSFET</td><td>Complement of element 1, separated by <code>Tdead</code>. Synchronous topologies only.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The plant input <strong>G</strong> has the same width rule, so a controller
+  and a plant set to the same <code>modelOption</code> connect directly. Change the topology on one
+  and you have to change it on the other.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3><code>modelOption</code> - Topology</h3>
+<p>Selects the duty law that converts the current-loop output into a duty cycle, and whether a second
+gate is produced. Six values: <em>Buck</em>, <em>Synchronous Buck</em>, <em>Boost</em>,
+<em>Synchronous Boost</em>, <em>Buck-Boost</em> and <em>Synchronous Buck-Boost</em>.</p>
+
+<h3><code>loopStructure</code> - Control structure</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>Single loop</td><td>The voltage PI produces the duty cycle directly. The Current Controller parameters and the current reference limits have no effect.</td></tr>
+  <tr><td>Double loop</td><td>The voltage PI produces a current reference, limited to <code>iRefMinPu</code> to <code>iRefMaxPu</code>, and the current PI produces the duty cycle.</td></tr>
+</table>
+
+<h3><code>cntrlSelect</code> - Controller type</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>PI controller (Continuous)</td><td>Continuous-time PI blocks. The modulator uses the variable-step carrier.</td></tr>
+  <tr><td>PI controller (Discrete)</td><td>Discrete-time PI blocks. The loop sample time parameters become visible, and the modulator uses the fixed-step carrier.</td></tr>
+</table>
+
+<h3><code>outputSelect</code> - Output signal</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>PWM Signal</td><td>The block carries the modulator and outputs gate signals at the gate voltage levels. <code>Fsw</code>, <code>Tdead</code> and the gate voltages apply.</td></tr>
+  <tr><td>Duty Cycle</td><td>The block outputs the duty cycle. Supply your own modulator, for example a <a href="../../PWMGenerators/documentation/HalfBridgePWMGenerator.html">Half Bridge PWM Generator</a> block.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the
+current dropdown selections. The <strong>Shown when</strong> column gives the selections that reveal
+each one.</p>
+
+<h3>Converter and Modulator</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>modelOption</code></td><td>Topology</td><td>Buck | Synchronous Buck | Boost | Synchronous Boost (default) | Buck-Boost | Synchronous Buck-Boost</td><td>Always</td></tr>
+<tr><td><code>loopStructure</code></td><td>Control structure</td><td>Single loop | Double loop (default)</td><td>Always</td></tr>
+<tr><td><code>cntrlSelect</code></td><td>Controller type</td><td>PI controller (Continuous) (default) | PI controller (Discrete)</td><td>Always</td></tr>
+<tr><td><code>outputSelect</code></td><td>Output signal</td><td>PWM Signal (default) | Duty Cycle</td><td>Always</td></tr>
+<tr><td><code>VbaseIn</code></td><td>Input voltage base (V)</td><td><code>200</code></td><td>Always</td></tr>
+<tr><td><code>VbaseOut</code></td><td>Output voltage base (V)</td><td><code>400</code></td><td>Always</td></tr>
+<tr><td><code>Pbase</code></td><td>Power base (W)</td><td><code>1500</code></td><td>Always</td></tr>
+<tr><td><code>dutyMax</code></td><td>Maximum duty cycle</td><td><code>0.95</code></td><td>Always</td></tr>
+<tr><td><code>dutyMin</code></td><td>Minimum duty cycle</td><td><code>0.02</code></td><td>Always</td></tr>
+<tr><td><code>Fsw</code></td><td>Switching frequency (Hz)</td><td><code>100000</code></td><td><code>outputSelect</code> = PWM Signal</td></tr>
+<tr><td><code>Tdead</code></td><td>Dead time (s)</td><td><code>1e-07</code></td><td><code>modelOption</code> = Synchronous Buck | Synchronous Boost | Synchronous Buck-Boost and <code>outputSelect</code> = PWM Signal</td></tr>
+<tr><td><code>Ts</code></td><td>Sample time (s)</td><td><code>1e-08</code></td><td><code>cntrlSelect</code> = PI controller (Discrete) and <code>outputSelect</code> = PWM Signal</td></tr>
+<tr><td><code>gateVoltageOn</code></td><td>Gate ON voltage (V)</td><td><code>15</code></td><td><code>outputSelect</code> = PWM Signal</td></tr>
+<tr><td><code>gateVoltageOff</code></td><td>Gate OFF voltage (V)</td><td><code>0</code></td><td><code>outputSelect</code> = PWM Signal</td></tr>
+</table>
+
+<h3>Voltage Controller</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>KpVoltage</code></td><td>Proportional gain (pu)</td><td><code>38</code></td><td>Always</td></tr>
+<tr><td><code>KiVoltage</code></td><td>Integral gain (pu/s)</td><td><code>31415.9265</code></td><td>Always</td></tr>
+<tr><td><code>TsVoltage</code></td><td>Sample time (s)</td><td><code>0.0001</code></td><td><code>cntrlSelect</code> = PI controller (Discrete)</td></tr>
+<tr><td><code>iRefMaxPu</code></td><td>Maximum current reference (pu)</td><td><code>1.5</code></td><td><code>loopStructure</code> = Double loop</td></tr>
+<tr><td><code>iRefMinPu</code></td><td>Minimum current reference (pu)</td><td><code>0</code></td><td><code>loopStructure</code> = Double loop</td></tr>
+<tr><td><code>softStartTime</code></td><td>Soft-start time (s)</td><td><code>0.004</code></td><td>Always</td></tr>
+</table>
+
+<h3>Current Controller</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>KpCurrent</code></td><td>Proportional gain (pu)</td><td><code>0.2566</code></td><td><code>loopStructure</code> = Double loop</td></tr>
+<tr><td><code>KiCurrent</code></td><td>Integral gain (pu/s)</td><td><code>806.0999</code></td><td><code>loopStructure</code> = Double loop</td></tr>
+<tr><td><code>TsCurrent</code></td><td>Sample time (s)</td><td><code>1e-05</code></td><td><code>loopStructure</code> = Double loop and <code>cntrlSelect</code> = PI controller (Discrete)</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> A gain whose prompt ends in <em>(pu)</em> or <em>(pu/s)</em> acts on per-unit
+  signals. The base values in the first group set that scaling, so change a base value and the loops
+  are rescaled with it.
+</div>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../../ConverterPlants/NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html">Non-Isolated DC-DC</a> |
+  <a href="../../PWMGenerators/documentation/HalfBridgePWMGenerator.html">Half Bridge PWM Generator</a> |
+  <a href="../../PWMGenerators/documentation/ComplementaryPWMGenerator.html">Complementary PWM Generator</a> |
+  <a href="../../BoostPFCController/documentation/BoostPFCController.html">Boost PFC Controller</a>
+</p>
+
+</body>
+</html>

@@ -13,6 +13,8 @@ function outputTable = plotCompareFaultRideThroughMethod(testCondition, plotFlag
     testCondition.SCR = testConditionSelected.SCR;
     
     % Input to the test condition data
+    % GridFormingConverterTestCondition sets disturbanceTime.
+    disturbanceTime = [];
     run('GridFormingConverterTestCondition');
 
     % Defining Simulink simulation input
@@ -95,7 +97,7 @@ function outputTable = plotCompareFaultRideThroughMethod(testCondition, plotFlag
     outValue.F = freq(end);
     outValue.V = Vgd(end);
     outValue.I = Is(end);
-    outValue.testOutcome = findTestOutCome(Pmeas, Vgd, freq);
+    outValue.testOutcome = findTestOutcome(Pmeas, Vgd, freq);
     testListCtLimit = testCondition.currentLimitMethodSelected;
     
     TestName = string(testListCtLimit); ActivePower = [outValue.P]'; ReactivePower = [outValue.Q]';

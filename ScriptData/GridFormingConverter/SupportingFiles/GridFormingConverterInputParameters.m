@@ -3,9 +3,9 @@
 %[text] %[text:anchor:H_ECF96EC8] ## Overview
 %[text] This script specifies the design parameters to the `GridFormingConverter SLX model.` 
 %[text] The grid-forming controller contains:
-%[text] - Two active power control method  
+%[text] - Two active power control methods  
 %[text] - Reactive power droop controller
-%[text] - Three current limiting method 
+%[text] - Three current limiting methods 
 %[text] - Voltage controller ($\\left.V\_d \\;\\textrm{and}\\;V\_q \\right)\\;\\;${"editStyle":"visual"}
 %[text] - Current controller ($\\left.I\_d \\;\\textrm{and}\\;I\_q \\right)\\;\\;${"editStyle":"visual"} \
 %[text] %[text:anchor:H_17882C97] ## Grid-Forming Converter Specification
@@ -73,7 +73,7 @@ transformer.SecondaryReactancePU = 0.6*transformer.secondaryRMSVoltage*(transfor
 %[text] %[text:anchor:H_8FBFE26D] ### Transmission Line Parameters
 %[text] A transmission line connects the grid-forming converter transformer to the 11 kV grid.
 TransmissionLine.Length = 2; % km, Transmission line length
-% Trasmission line resistance estimated by assuming copper wire and current density of 3A/mm2 
+% Transmission line resistance estimated by assuming copper wire and current density of 3A/mm2 
 TransmissionLine.R = TransmissionLine.Length*1e3*1.77*1e-8*1e6/(transformer.secondaryCurrentRating/3); % Ohm
 TransmissionLine.L = 5e-3; % H, Transmission line inductance
 %[text] %[text:anchor:H_39C75938] ## GFM Filter Inductor Design
@@ -96,7 +96,7 @@ gridInverter.droopControl.T1 = 0.005; % s, Numerator time constant
 gridInverter.droopControl.sampleTime = 100e-6; % s, Sampling time
 
 gridInverter.freqMeasTimeConst = 150e-3; % s, Frequency measurement time constant
-%[text] %[text:anchor:H_A2DB50D6] #### Virtual Synchrnous Machine (VSM) Active Power Control Parameters 
+%[text] %[text:anchor:H_A2DB50D6] #### Virtual Synchronous Machine (VSM) Active Power Control Parameters 
 gridInverter.vsm.inertiaConstant = 1; % s, Mechanical time constant
 gridInverter.vsm.dampingCoefficent = 1.056; % pu/Hz, Damping coefficient
 gridInverter.vsm.freqDroop  = 10; % pu, W(pu)/Hz(pu) VSM Frequency droop

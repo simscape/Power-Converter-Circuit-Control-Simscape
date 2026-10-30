@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLC Converter Power Circuit - LLC resonant converter power stage</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 { font-size: 24px; font-weight: 700; color: var(--mw-blue); margin-bottom: 4px; }
+    h2 { font-size: 20px; font-weight: 700; color: var(--mw-dark); border-bottom: 2px solid var(--mw-border); padding-bottom: 6px; margin-top: 36px; }
+    h3 { font-size: 16px; font-weight: 700; color: var(--mw-dark); margin-top: 24px; }
+    h4 { font-size: 14px; font-weight: 700; color: var(--mw-dark); margin-top: 16px; }
+    .subtitle { font-size: 16px; color: #555; margin-bottom: 8px; }
+    .library-path { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 13px; color: #666; background: var(--mw-light-bg); padding: 6px 12px; border-radius: 4px; display: inline-block; margin-bottom: 20px; }
+    .block-icon { text-align: center; margin: 20px 0; padding: 16px; background: #FEFEFE; border: 1px solid var(--mw-border); border-radius: 6px; }
+    .block-icon img, .block-icon svg { max-width: 100%; height: auto; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+    th { background: var(--mw-light-bg); font-weight: 600; text-align: left; padding: 8px 12px; border: 1px solid var(--mw-border); }
+    td { padding: 8px 12px; border: 1px solid var(--mw-border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--param-bg); }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 12px; background: var(--mw-light-bg); padding: 2px 5px; border-radius: 3px; }
+    .equation { font-family: "Times New Roman", Times, serif; font-size: 16px; font-style: italic; margin: 12px 0; padding: 12px 20px; background: var(--mw-light-bg); border-left: 3px solid var(--mw-blue); border-radius: 2px; }
+    .note { background: #FFF8E1; border-left: 4px solid var(--mw-orange); padding: 10px 16px; margin: 12px 0; border-radius: 2px; }
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+    .toc { background: var(--mw-light-bg); border: 1px solid var(--mw-border); padding: 16px 24px; border-radius: 6px; margin: 20px 0; }
+    .toc ul { margin: 0; padding-left: 20px; }
+    .toc li { margin: 4px 0; }
+    .toc a { color: var(--mw-blue); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    a { color: var(--mw-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .variant-table td:first-child { font-weight: 600; white-space: nowrap; }
+    .dep-note { font-size: 12px; color: #777; font-style: italic; }
+    .section-circuit { text-align: center; margin: 20px 0; }
+    .btn-label { display: inline-block; background: #E8F4FD; border: 1px solid var(--mw-blue); color: var(--mw-blue); padding: 3px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; }
+    .screenshot { text-align: center; margin: 16px 0; }
+    .screenshot img { max-width: 100%; border: 1px solid var(--mw-border); border-radius: 4px; }
+    .screenshot-caption { font-size: 12px; color: #666; margin-top: 6px; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- 1. BLOCK NAME -->
+<!-- ============================================================ -->
+<h1>LLC Converter Plant</h1>
+<p class="subtitle">LLC resonant converter power stage with selectable half-/full-bridge primary, centre-tap/full-bridge rectifier, and configurable switch and diode fidelity</p>
+<div class="library-path">ConverterLibrary / Power Converter Plant / Soft-Switching Converters / LLC Converter</div>
+
+<!-- ============================================================ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ============================================================ -->
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#circuit">Circuit Topologies</a></li>
+    <li><a href="#variants">Model Variants</a></li>
+    <li><a href="#topology">Internal Structure</a></li>
+    <li><a href="#equations">Equations</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#export">Export to Unmasked Subsystem</a></li>
+    <li><a href="#harness">Plant Test Harness</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- 2. BLOCK ICON -->
+<!-- ============================================================ -->
+<!-- Block icon: multi-icon block - icon switches on llcConverterModel x rectifierOption. -->
+<!-- Per placement rule, each icon appears ONCE under its combination heading in Circuit Topologies below. -->
+<p>The block icon is a circuit schematic that changes with the <strong>LLC Converter model</strong>
+(<code>llcConverterModel</code>: half-bridge or full-bridge primary) and the <strong>rectifier topology</strong>
+(<code>rectifierOption</code>: centre-tap or full bridge). Each shipped icon is shown once under its
+combination heading in <a href="#circuit">Circuit Topologies</a> below.</p>
+
+<!-- ============================================================ -->
+<!-- 3. DESCRIPTION -->
+<!-- ============================================================ -->
+<h2 id="description">Description</h2>
+
+<p>The <strong>LLC Converter Plant</strong> block models the power stage of an LLC series-resonant converter. The primary inverter is selectable (half-bridge or full-bridge) and the secondary rectifier is selectable (centre-tap or full-bridge diode rectifier), giving the family of circuit configurations shown in <a href="#circuit">Circuit Topologies</a>. The converter operates by driving the resonant tank at variable frequency to regulate the output voltage under varying load conditions.</p>
+
+<p>The block comprises three functional sections:</p>
+<ul>
+  <li><strong>Primary Inverter</strong> &mdash; a half-bridge (S<sub>1</sub>, S<sub>2</sub>) or full-bridge (S<sub>1</sub>&ndash;S<sub>4</sub>, legs a and b) that generates a square-wave AC voltage from the DC input bus, selected by <code>llcConverterModel</code>.</li>
+  <li><strong>Resonant Tank</strong> (C<sub>r</sub>, L<sub>r</sub>, L<sub>m</sub>, T<sub>1</sub>) &mdash; series resonant capacitor and inductor with a parallel magnetizing inductance and isolation transformer. The tank shapes the current waveform to enable soft switching (ZVS) of the primary switches.</li>
+  <li><strong>Secondary Rectifier</strong> &mdash; a centre-tap rectifier (D<sub>1</sub>, D<sub>2</sub>) or a full-bridge rectifier (D<sub>1</sub>&ndash;D<sub>4</sub>), selected by <code>rectifierOption</code>, feeding the output filter capacitor C<sub>o</sub>.</li>
+</ul>
+
+<!-- ============================================================ -->
+<!-- 4. CIRCUIT TOPOLOGIES (block's own shipped icons, one per primary x rectifier combination) -->
+<!-- ============================================================ -->
+<h2 id="circuit">Circuit Topologies</h2>
+
+<p>The block selects the primary inverter with <code>llcConverterModel</code> and the secondary rectifier with
+<code>rectifierOption</code>. All configurations share the same resonant tank (series capacitor C<sub>r</sub>,
+series inductance L<sub>r</sub>, magnetizing inductance L<sub>m</sub>) and isolation transformer T<sub>1</sub>,
+and an output filter capacitor C<sub>o</sub>. The schematic the block displays for each combination is its own
+shipped mask icon:</p>
+
+<div class="note">
+  <strong>Note:</strong> The <em>Simplified Half-Bridge</em> model always uses the centre-tap rectifier
+  (it draws the Half-Bridge + Centre-Tap icon regardless of <code>rectifierOption</code>). The two
+  <em>Detailed</em> models honor both rectifier choices, giving the four distinct icons below.
+</div>
+
+<h3>Half-Bridge primary + Centre-Tap rectifier</h3>
+<p>Half-bridge inverter (S<sub>1</sub>, S<sub>2</sub>) driving the resonant tank into a centre-tapped
+secondary with two rectifier diodes (D<sub>1</sub>, D<sub>2</sub>). This is also the icon drawn for the
+<em>Simplified Half-Bridge</em> model.</p>
+<div class="section-circuit">
+  <img src="HalfBridgeLLCCentreTapRectifier.svg" alt="Half-bridge LLC with centre-tap rectifier" style="max-width:560px;">
+</div>
+
+<h3>Half-Bridge primary + Full-Bridge rectifier</h3>
+<p>Half-bridge inverter with a four-diode full-bridge secondary rectifier (D<sub>1</sub>&ndash;D<sub>4</sub>).</p>
+<div class="section-circuit">
+  <img src="HalfBridgeLLCFullBridgeRectifier.svg" alt="Half-bridge LLC with full-bridge rectifier" style="max-width:560px;">
+</div>
+
+<h3>Full-Bridge primary + Centre-Tap rectifier</h3>
+<p>Full-bridge inverter (S<sub>1</sub>&ndash;S<sub>4</sub>, legs a and b) driving a centre-tapped secondary
+with two rectifier diodes (D<sub>1</sub>, D<sub>2</sub>).</p>
+<div class="section-circuit">
+  <img src="FullBridgeLLCCentreTapRectifier.svg" alt="Full-bridge LLC with centre-tap rectifier" style="max-width:560px;">
+</div>
+
+<h3>Full-Bridge primary + Full-Bridge rectifier</h3>
+<p>Full-bridge inverter with a four-diode full-bridge secondary rectifier (D<sub>1</sub>&ndash;D<sub>4</sub>).</p>
+<div class="section-circuit">
+  <img src="FullBridgeLLCFullBridgeRectifier.svg" alt="Full-bridge LLC with full-bridge rectifier" style="max-width:560px;">
+</div>
+
+<!-- ============================================================ -->
+<!-- 5. MODEL VARIANTS -->
+<!-- ============================================================ -->
+<h2 id="variants">Model Variants</h2>
+
+<h3>LLC Converter model (<code>llcConverterModel</code>)</h3>
+<p>Selects the primary inverter topology and model fidelity. Together with the rectifier option below, this determines which of the four <a href="#circuit">circuit topologies</a> is active.</p>
+<table class="variant-table">
+  <tr><th>Option</th><th>Description</th><th>Use Case</th></tr>
+  <tr>
+    <td>Simplified Half-Bridge</td>
+    <td>Half-bridge primary in a flat, HDL-generatable circuit. Always drawn with the centre-tap rectifier icon.</td>
+    <td>HDL code generation, fast fixed-step simulation</td>
+  </tr>
+  <tr>
+    <td>Detailed Half-Bridge</td>
+    <td>Half-bridge primary (S<sub>1</sub>, S<sub>2</sub>) with selectable device fidelity and rectifier topology.</td>
+    <td>Detailed half-bridge LLC design and loss analysis</td>
+  </tr>
+  <tr>
+    <td>Detailed Full-Bridge</td>
+    <td>Full-bridge primary (S<sub>1</sub>&ndash;S<sub>4</sub>) with selectable device fidelity and rectifier topology.</td>
+    <td>Higher-power full-bridge LLC design and loss analysis</td>
+  </tr>
+</table>
+
+<h3>Rectifier topology (<code>rectifierOption</code>)</h3>
+<p>Selects the secondary rectifier. Honored for the two Detailed models; the Simplified Half-Bridge model always uses the centre-tap rectifier.</p>
+<table class="variant-table">
+  <tr><th>Option</th><th>Description</th></tr>
+  <tr><td>Centre-Tap</td><td>Centre-tapped secondary winding with two rectifier diodes (D<sub>1</sub>, D<sub>2</sub>).</td></tr>
+  <tr><td>Full Bridge</td><td>Single secondary winding feeding a four-diode full-bridge rectifier (D<sub>1</sub>&ndash;D<sub>4</sub>).</td></tr>
+</table>
+
+<h3>Series resonant inductance (<code>seriesInductorOption</code>)</h3>
+<p>Selects how the series resonant inductance L<sub>r</sub> is realized.</p>
+<table class="variant-table">
+  <tr><th>Option</th><th>Description</th></tr>
+  <tr><td>Use external inductance</td><td>An explicit series inductor L<sub>r</sub> (with resistance R<sub>Lr</sub>) is placed in the resonant tank.</td></tr>
+  <tr><td>Use transformer leakage inductance</td><td>The transformer primary leakage inductance is used as the series resonant inductance; the explicit L<sub>r</sub> parameters are hidden.</td></tr>
+</table>
+
+<h3>Primary Switch Device (<code>primaryDeviceOption</code>)</h3>
+<p>Select the fidelity of the primary semiconductor switches.</p>
+
+<table class="variant-table">
+  <tr><th>Option</th><th>Description</th><th>Use Case</th></tr>
+  <tr>
+    <td>Ideal Semiconductor Switch</td>
+    <td>Piecewise-linear switch model with configurable R<sub>on</sub>, G<sub>off</sub>, and V<sub>th</sub>, plus body-diode parameters. Fast simulation.</td>
+    <td>System-level design, frequency sweep, controller tuning</td>
+  </tr>
+  <tr>
+    <td>MOSFET (Ideal, Switching) with Thermal</td>
+    <td>Simscape MOSFET with thermal port and parasitic output capacitance (C<sub>ds</sub>). Captures turn-off losses and ZVS transitions.</td>
+    <td>Loss estimation, thermal management design, Coss-related ZVS analysis</td>
+  </tr>
+</table>
+
+<p class="dep-note">When "MOSFET (Ideal, Switching) with Thermal" is selected, the parasitic-capacitance parameter <code>Cdsparasitic</code> becomes visible.</p>
+
+<h3>Secondary Diode Device (<code>secondaryDeviceOption</code>)</h3>
+<p>Select the fidelity of the secondary rectifier diodes.</p>
+
+<table class="variant-table">
+  <tr><th>Option</th><th>Description</th><th>Use Case</th></tr>
+  <tr>
+    <td>Ideal Diode</td>
+    <td>Piecewise-linear diode with configurable forward voltage, on-resistance, and off-conductance.</td>
+    <td>System-level design, fast simulation</td>
+  </tr>
+  <tr>
+    <td>Tabulated Diode</td>
+    <td>Datasheet-based I-V characteristics. Use the "Open Diode block mask" button to import device data.</td>
+    <td>Accurate conduction loss estimation with specific diode part</td>
+  </tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 6. INTERNAL STRUCTURE -->
+<!-- ============================================================ -->
+<h2 id="topology">Internal Structure</h2>
+
+<p>Inside the mask the power stage is organized as two cascaded subsystems &mdash; <strong>LLC Primary Inverter and Resonant Tank</strong> &rarr; <strong>Rectifier</strong> &mdash; whose measurement signals are gathered by a Bus Creator into the <strong>meas</strong> output. This left-to-right decomposition mirrors the power flow shown in the circuit topologies above.</p>
+
+<h3>Block Hierarchy</h3>
+<pre style="background:#F5F5F5; padding:16px; border-radius:4px; font-size:12px; overflow-x:auto;">
+LLC Converter Plant (Masked Subsystem)
+ &#x251C; G (Inport &mdash; gate signal vector)
+ &#x251C; + , - (PMIOPort &mdash; DC input, left)
+ &#x251C; +1 , -1 (PMIOPort &mdash; DC output, right; labelled + / - on the icon)
+ &#x251C; meas (Outport &mdash; measurement bus)
+ &#x251C; LLC Primary Inverter and Resonant Tank
+ &#x2502;   &#x251C; LLC Simplified Model  (used by "Simplified Half-Bridge")
+ &#x2502;   &#x2514; LLC Detailed Model    (used by the two Detailed models)
+ &#x2502;         &#x251C; Inverter (half- or full-bridge; Ideal Switch | MOSFET with Thermal)
+ &#x2502;         &#x2514; Resonant Tank (Cr, Lr/leakage, Lm, transformer)
+ &#x2514; Rectifier (Centre-Tap or Full-Bridge; Ideal Diode | Tabulated Diode)
+</pre>
+
+<h3>LLC Primary Inverter and Resonant Tank</h3>
+<p>Wraps two mutually exclusive implementations: an <em>LLC Simplified Model</em> (a flat, HDL-generatable half-bridge) selected by the <em>Simplified Half-Bridge</em> model option, and an <em>LLC Detailed Model</em> selected by the two Detailed model options. The Detailed model contains the primary inverter (half- or full-bridge, per <code>llcConverterModel</code>) with the two switch-fidelity choices from <a href="#variants">Model Variants</a>, together with the resonant tank (series capacitor C<sub>r</sub>, series inductance L<sub>r</sub> as an explicit inductor or transformer leakage per <code>seriesInductorOption</code>, magnetizing inductance L<sub>m</sub>, and the isolation transformer). It emits the inverter sensors (V<sub>in</sub>, I<sub>in</sub>) and tank sensors (I<sub>p</sub>, V<sub>p</sub>, I<sub>s</sub>, V<sub>s</sub>).</p>
+
+<h3>Rectifier</h3>
+<p>Contains the secondary rectifier &mdash; a centre-tap pair (D<sub>1</sub>, D<sub>2</sub>) or a four-diode full bridge (D<sub>1</sub>&ndash;D<sub>4</sub>) per <code>rectifierOption</code>, each with an Ideal-Diode or Tabulated-Diode fidelity choice &mdash; plus the output filter capacitor C<sub>o</sub> and the output sensors (I<sub>out</sub>, I<sub>L</sub>, V<sub>out</sub>, V<sub>ac</sub>).</p>
+
+<!-- ============================================================ -->
+<!-- 7. EQUATIONS -->
+<!-- ============================================================ -->
+<h2 id="equations">Equations</h2>
+
+<p>The LLC resonant converter is characterized by the following key relationships:</p>
+
+<h4>Resonant Frequency</h4>
+<div class="equation">
+  f<sub>r</sub> = 1 / (2&pi; &radic;(L<sub>r</sub> &middot; C<sub>r</sub>))
+</div>
+<p>where L<sub>r</sub> = L<sub>lk1</sub> (primary leakage inductance used as resonant inductor).</p>
+
+<h4>Characteristic Impedance</h4>
+<div class="equation">
+  Z<sub>0</sub> = &radic;(L<sub>r</sub> / C<sub>r</sub>)
+</div>
+
+<h4>Inductance Ratio</h4>
+<div class="equation">
+  k = L<sub>m</sub> / L<sub>r</sub>
+</div>
+
+<h4>Quality Factor</h4>
+<div class="equation">
+  Q = Z<sub>0</sub> / R<sub>ac</sub>
+</div>
+<p>where R<sub>ac</sub> = (8/&pi;&sup2;) &middot; n&sup2; &middot; R<sub>load</sub> is the reflected AC-equivalent load resistance.</p>
+
+<h4>DC Voltage Gain (at resonance)</h4>
+<div class="equation">
+  M = V<sub>out</sub> / (V<sub>in</sub> / (2n)) = 1 &emsp; (at f<sub>sw</sub> = f<sub>r</sub>)
+</div>
+<p>where n = N<sub>1</sub>/N<sub>2</sub> is the transformer turns ratio.</p>
+
+<h4>Normalized Switching Frequency</h4>
+<div class="equation">
+  f<sub>n</sub> = f<sub>sw</sub> / f<sub>r</sub>
+</div>
+
+<!-- ============================================================ -->
+<!-- 8. PORTS -->
+<!-- ============================================================ -->
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports (Electrical)</h3>
+<p class="dep-note">The mask labels the left input terminals <strong>+</strong> / <strong>&minus;</strong> and the right output terminals <strong>+</strong> / <strong>&minus;</strong>. (Internally the output PMIO ports are named +1 / -1 to keep names unique.)</p>
+<table>
+  <tr><th>Port</th><th>Side</th><th>Description</th></tr>
+  <tr><td class="port-electrical">+</td><td>Left</td><td>Primary DC positive input terminal</td></tr>
+  <tr><td class="port-electrical">&minus;</td><td>Left</td><td>Primary DC negative input terminal</td></tr>
+  <tr><td class="port-electrical">+</td><td>Right</td><td>Secondary DC positive output terminal</td></tr>
+  <tr><td class="port-electrical">&minus;</td><td>Right</td><td>Secondary DC negative output terminal</td></tr>
+</table>
+
+<h3>Input Signal Port</h3>
+<table>
+  <tr><th>Port</th><th>Side</th><th>Size</th><th>Description</th></tr>
+  <tr><td class="port-signal">G</td><td>Left (top)</td><td>4</td><td>Gate drive signals for the primary switches.</td></tr>
+</table>
+
+<p><strong>G</strong> is four elements wide in every model option, including the two half-bridge
+options. A half-bridge primary drives elements 1 and 2 and ignores elements 3 and 4, so the same
+connection serves all three model options.</p>
+
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>1</code></td><td>MOSFETA1, leg A high side</td><td>First diagonal.</td></tr>
+  <tr><td><code>2</code></td><td>MOSFETA2, leg A low side</td><td>Second diagonal.</td></tr>
+  <tr><td><code>3</code></td><td>MOSFETB1, leg B high side</td><td>Second diagonal. Unused by a half-bridge primary.</td></tr>
+  <tr><td><code>4</code></td><td>MOSFETB2, leg B low side</td><td>First diagonal. Unused by a half-bridge primary.</td></tr>
+</table>
+
+<p class="dep-note">Elements 1 and 4 form one conducting diagonal and elements 2 and 3 the other.
+Elements 1 and 2 are the two devices of one leg, so they are never on together. The
+<a href="../../../Controllers/PWMGenerators/documentation/LLCPWMGenerator.html">LLC PWM Generator</a>
+block produces this vector directly.</p>
+
+<h3>Output Measurement Bus</h3>
+<table>
+  <tr><th>Port</th><th>Side</th><th>Type</th><th>Description</th></tr>
+  <tr><td class="port-bus">meas</td><td>Right</td><td>Bus</td><td>Measurement bus assembled from the inverter, resonant-tank, and rectifier sensors.</td></tr>
+</table>
+
+<p>The bus holds three sub-buses, <code>Inverter</code>, <code>ResonantTank</code> and
+<code>Rectifier</code>. The element order below is the order a Bus Selector block lists them in. The
+element names are the ones the bus carries, so a name such as <code>Vs [A]</code> appears with that
+unit label even though the signal is a voltage.</p>
+
+<table>
+  <tr><th>Element</th><th>Bus element</th><th>Unit</th><th>Description</th></tr>
+  <tr><td><code>1</code></td><td><code>Inverter.VIn [V]</code></td><td>V</td><td>DC input bus voltage</td></tr>
+  <tr><td><code>2</code></td><td><code>Inverter.Iin [A]</code></td><td>A</td><td>DC input bus current</td></tr>
+  <tr><td><code>3</code></td><td><code>ResonantTank.Ip [A]</code></td><td>A</td><td>Primary resonant tank current</td></tr>
+  <tr><td><code>4</code></td><td><code>ResonantTank.Vp [V]</code></td><td>V</td><td>Primary tank voltage</td></tr>
+  <tr><td><code>5</code></td><td><code>ResonantTank.Vs [A]</code></td><td>V</td><td>Secondary transformer voltage</td></tr>
+  <tr><td><code>6</code></td><td><code>Rectifier.Iout [A]</code></td><td>A</td><td>DC output current</td></tr>
+  <tr><td><code>7</code></td><td><code>Rectifier.IL [A]</code></td><td>A</td><td>Rectifier output inductor current</td></tr>
+  <tr><td><code>8</code></td><td><code>Rectifier.Vout [V]</code></td><td>V</td><td>DC output voltage</td></tr>
+  <tr><td><code>9</code></td><td><code>Rectifier.Vac [V]</code></td><td>V</td><td>Rectifier AC-side voltage</td></tr>
+  <tr><td><code>10</code></td><td><code>Rectifier.Is [A]</code></td><td>A</td><td>Secondary transformer winding current</td></tr>
+</table>
+
+<p class="dep-note">The <strong>Simplified Half-Bridge</strong> model adds an eleventh element,
+<code>ResonantTank.Is [A]</code>, at position 5, which shifts every element after it by one. Select a
+measurement by name rather than by index if you switch model options.</p>
+
+<!-- ============================================================ -->
+<!-- 9. PARAMETERS -->
+<!-- ============================================================ -->
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the current dropdown
+selections. The <strong>Shown when</strong> column gives the selections that reveal each one. The
+two Detailed options are abbreviated to <em>Detailed</em>.</p>
+
+
+<h3>Resonant tank parameters</h3>
+<table>
+  <tr><th>Parameter</th><th>Variable</th><th>Default</th><th>Unit</th><th>Description</th><th>Shown when</th></tr>
+  <tr><td>LLC Converter model</td><td><code>llcConverterModel</code></td><td>Detailed Full-Bridge</td><td>-</td><td>Primary topology and model fidelity</td><td>Always</td></tr>
+  <tr><td>Rated power (P)</td><td><code>ratedPower</code></td><td>10e3</td><td>W</td><td>Nominal power rating of the converter</td><td>Always</td></tr>
+  <tr><td>Nominal input voltage (Vdc)</td><td><code>VIn</code></td><td>380</td><td>V</td><td>Nominal DC input bus voltage</td><td>Always</td></tr>
+  <tr><td>Resonant capacitance (Cr)</td><td><code>Cr</code></td><td>3.3703e-07</td><td>F</td><td>Series resonant capacitor value</td><td>Always</td></tr>
+  <tr><td>Series resonant inductance</td><td><code>seriesInductorOption</code></td><td>Use transformer leakage inductance</td><td>-</td><td>How L<sub>r</sub> is realized</td><td><em>Detailed</em></td></tr>
+  <tr><td>Series resonant inductance (Lr)</td><td><code>Lr</code></td><td>30</td><td>&mu;H</td><td>Explicit series resonant inductor</td><td><em>Detailed</em> and <code>seriesInductorOption</code> = Use external inductance</td></tr>
+  <tr><td>Series inductance resistance</td><td><code>RLr</code></td><td>0</td><td>m&Omega;</td><td>Series resonant inductor ESR</td><td><em>Detailed</em> and <code>seriesInductorOption</code> = Use external inductance</td></tr>
+  <tr><td>Primary leakage inductance (Lr)</td><td><code>Llk1</code></td><td>7.14e-06</td><td>H</td><td>Transformer primary leakage inductance</td><td>Always</td></tr>
+  <tr><td>Primary resistance (R1)</td><td><code>R1</code></td><td>0.01</td><td>&Omega;</td><td>Primary winding resistance</td><td>Always</td></tr>
+  <tr><td>Secondary leakage inductance (Llk2)</td><td><code>Llk2</code></td><td>4.0645e-07</td><td>H</td><td>Transformer secondary leakage inductance</td><td>Always</td></tr>
+  <tr><td>Secondary resistance (R2)</td><td><code>R2</code></td><td>0.01</td><td>&Omega;</td><td>Secondary winding resistance</td><td>Always</td></tr>
+  <tr><td>Magnetizing inductance (Lm)</td><td><code>Lm</code></td><td>9.7705e-05</td><td>H</td><td>Transformer magnetizing inductance, parallel with the primary</td><td>Always</td></tr>
+  <tr><td>Transformer turns ratio (n)</td><td><code>n</code></td><td>0.96154</td><td>-</td><td>Primary-to-secondary turns ratio n = N<sub>1</sub>/N<sub>2</sub></td><td>Always</td></tr>
+  <tr><td>Output filter capacitance (Co)</td><td><code>Cf</code></td><td>0.00071111</td><td>F</td><td>Output DC filter capacitor</td><td>Always</td></tr>
+  <tr><td>Output filter capacitor ESR (Rco)</td><td><code>Esr</code></td><td>0.02</td><td>&Omega;</td><td>Equivalent series resistance of the output capacitor</td><td>Always</td></tr>
+  <tr><td>Initial output capacitor voltage</td><td><code>Vco</code></td><td>350</td><td>V</td><td>Initial condition for C<sub>o</sub></td><td>Always</td></tr>
+</table>
+
+<h3>Primary Inverter</h3>
+<table>
+  <tr><th>Parameter</th><th>Variable</th><th>Default</th><th>Unit</th><th>Description</th><th>Shown when</th></tr>
+  <tr><td>Select the primary switching device</td><td><code>primaryDeviceOption</code></td><td>MOSFET (Ideal, Switching) with Thermal</td><td>-</td><td>Device fidelity selection</td><td><em>Detailed</em></td></tr>
+  <tr><td>On-state resistance</td><td><code>RdsOn</code></td><td>0.001</td><td>&Omega;</td><td>Switch on-resistance</td><td>Simplified Half-Bridge, or <code>primaryDeviceOption</code> = Ideal Semiconductor Switch</td></tr>
+  <tr><td>Off-state conductance</td><td><code>GdsOff</code></td><td>1e-5</td><td>1/&Omega;</td><td>Switch off-state leakage</td><td>Simplified Half-Bridge, or <code>primaryDeviceOption</code> = Ideal Semiconductor Switch</td></tr>
+  <tr><td>Threshold voltage</td><td><code>Vth</code></td><td>2.5</td><td>V</td><td>Gate threshold voltage</td><td>Simplified Half-Bridge, or <code>primaryDeviceOption</code> = Ideal Semiconductor Switch</td></tr>
+  <tr><td>Body diode forward voltage</td><td><code>VfBody</code></td><td>0.6</td><td>V</td><td>Body diode V<sub>f</sub></td><td>Simplified Half-Bridge, or <code>primaryDeviceOption</code> = Ideal Semiconductor Switch</td></tr>
+  <tr><td>Body diode on-resistance</td><td><code>RdBody</code></td><td>0.001</td><td>&Omega;</td><td>Body diode series resistance</td><td>Simplified Half-Bridge, or <code>primaryDeviceOption</code> = Ideal Semiconductor Switch</td></tr>
+  <tr><td>Body diode off-conductance</td><td><code>GdBody</code></td><td>1e-5</td><td>1/&Omega;</td><td>Body diode reverse leakage</td><td>Simplified Half-Bridge, or <code>primaryDeviceOption</code> = Ideal Semiconductor Switch</td></tr>
+  <tr><td>MOSFET parasitic capacitance</td><td><code>Cdsparasitic</code></td><td>2e-10</td><td>F</td><td>Drain-source output capacitance C<sub>ds</sub></td><td><em>Detailed</em> and <code>primaryDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+  <tr><td>Simulation temperature</td><td><code>simTempPri</code></td><td>25</td><td>degC</td><td>Junction temperature the primary devices are held at</td><td><code>primaryDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+</table>
+
+<h3>Secondary Rectifier</h3>
+<table>
+  <tr><th>Parameter</th><th>Variable</th><th>Default</th><th>Unit</th><th>Description</th><th>Shown when</th></tr>
+  <tr><td>Select the rectifier topology</td><td><code>rectifierOption</code></td><td>Full Bridge</td><td>-</td><td>Secondary rectifier topology</td><td><em>Detailed</em></td></tr>
+  <tr><td>Select the secondary diode</td><td><code>secondaryDeviceOption</code></td><td>Tabulated Diode</td><td>-</td><td>Diode fidelity selection</td><td><em>Detailed</em></td></tr>
+  <tr><td>Forward voltage</td><td><code>VfSec</code></td><td>0.6</td><td>V</td><td>Diode forward voltage drop</td><td>Simplified Half-Bridge, or <code>secondaryDeviceOption</code> = Ideal Diode</td></tr>
+  <tr><td>On resistance</td><td><code>RdSec</code></td><td>0.001</td><td>&Omega;</td><td>Diode on-state series resistance</td><td>Simplified Half-Bridge, or <code>secondaryDeviceOption</code> = Ideal Diode</td></tr>
+  <tr><td>Off conductance</td><td><code>GdSec</code></td><td>1e-5</td><td>1/&Omega;</td><td>Diode reverse leakage conductance</td><td>Simplified Half-Bridge, or <code>secondaryDeviceOption</code> = Ideal Diode</td></tr>
+  <tr><td>Simulation temperature</td><td><code>simTempSec</code></td><td>25</td><td>degC</td><td>Temperature the tabulated diode I-V table is interpolated at</td><td><code>secondaryDeviceOption</code> = Tabulated Diode</td></tr>
+</table>
+
+<p><span class="btn-label">Open Diode block mask</span> &mdash; Available when Tabulated Diode is selected. Opens the Simscape Diode block mask for importing device characteristics.</p>
+
+<!-- ============================================================ -->
+<!-- 10. EXPORT TO UNMASKED SUBSYSTEM -->
+<!-- ============================================================ -->
+<h2 id="export">Export to Unmasked Subsystem</h2>
+
+<p>The block's mask dialog includes an <span class="btn-label">Export to Unmasked Subsystem</span>
+button that produces a standalone, fully editable copy of the block <em>as currently configured</em>.
+Use it when you want to customize the actual circuit (add a snubber, change a sensor, retune a device
+the mask does not expose) rather than only configure it through the mask dropdowns.</p>
+
+<p>Clicking the button writes two files to the current MATLAB folder:</p>
+<ul>
+  <li><code>LLC_exported_&lt;timestamp&gt;.slx</code> &mdash; a standalone model whose top level is a
+      single subsystem carrying the block icon. Inside is the circuit with <strong>no parameter
+      mask</strong>: every Simscape block is open and editable, and the ports are exposed for wiring
+      into your own test harness.</li>
+  <li><code>LLC_exported_&lt;timestamp&gt;_params.m</code> &mdash; a script that assigns every parameter
+      into a base-workspace struct (for example <code>LLC.Lr = 3e-5; % H</code>). The exported
+      model's <code>PreLoadFcn</code> runs this file automatically, so the struct is populated as soon
+      as the model opens. Parameter <em>formulas</em> are preserved (each mask variable is retargeted to
+      its struct field), so the parametric relationships stay editable through this file.</li>
+</ul>
+
+<p>Key properties of the exported model:</p>
+<ul>
+  <li><strong>Zero links back to the converter library</strong> &mdash; you fully own the copy; later
+      library changes never silently alter it. Product-library links (<code>fl_lib</code>,
+      <code>ee_lib</code>, <code>nesl_utility</code>, &hellip;) are kept, since those are the Simscape
+      component definitions.</li>
+  <li><strong>Layout matches the library block</strong> - block positions and wiring are
+      preserved, so the exported circuit is visually identical to the source block.</li>
+  <li><strong>No Solver Configuration inside</strong> &mdash; the solver belongs in your harness. The
+      exported subsystem exposes open ports and compiles once connected to your model's solver.</li>
+</ul>
+
+<div class="note">
+  <strong>Note:</strong> The export keeps the variant subsystems, so the exported model still holds
+  every device choice and still honors the choice the mask had when you exported it.
+</div>
+
+<!-- ============================================================ -->
+<!-- 11. PLANT TEST HARNESS -->
+<!-- ============================================================ -->
+<h2 id="harness">Plant Test Harness</h2>
+
+<p>The block has an open-loop test harness, <code>LLCTestHarnessFullBridge.slx</code>, in the
+<code>test</code> folder of <code>CombinedLLCConverterPlant</code>. The harness holds this block, the
+PWM generator that drives its <strong>G</strong> port, the input source, the load and a scope on the
+measurement bus. It carries no controller: a constant reference sets the operating point, so the
+harness exercises the power stage on its own.</p>
+
+<table class="variant-table">
+  <tr><th>Block</th><th>Role in the harness</th></tr>
+  <tr><td><code>LLC Converter Power Circuit</code></td><td>This block, configured <code>Detailed Full-Bridge</code> with a <code>Full Bridge</code> rectifier, the transformer leakage inductance as the series inductance, thermal switching MOSFETs on the primary and tabulated diodes on the secondary.</td></tr>
+  <tr><td><code>LLC PWM Generator</code></td><td><a href="../../../Controllers/PWMGenerators/documentation/LLCPWMGenerator.html">LLC PWM Generator</a> from <code>ConverterLibrary</code>, which produces the four-element gate vector directly. Base frequency, per-unit frequency limits and dead time from <code>llcCompensator</code>, pulse width 0.5, gate levels 15 V and 0 V.</td></tr>
+  <tr><td><code>Fref (pu)</code></td><td>Constant 1. The generator takes its commanded frequency per unit of <code>Fbase</code>, which is <code>llcCompensator.resonantFrequency</code>, so 1 runs the bridge at the resonant frequency.</td></tr>
+  <tr><td><code>Vin</code>, <code>Rload</code></td><td>DC voltage source at 385 V and a 20.48 Ohm load, the rated operating point of the shipped design.</td></tr>
+  <tr><td><code>Ref</code></td><td>A 100 kOhm resistance across the output, which gives the output node a path to the electrical reference before the rectifier conducts.</td></tr>
+  <tr><td><code>Measurement</code>, <code>Scope</code></td><td>Four traces off the measurement bus, <code>Vac</code>, <code>Iac</code>, <code>Idc</code> and <code>Vout</code>, one per scope axis.</td></tr>
+</table>
+
+<p>Opening the harness runs <code>LLCConverterDefaultInputParameters</code> through its
+<code>PreLoadFcn</code> unless <code>LLCDesign</code> is already in the base workspace, so the values
+the generator mask reads are there before the first simulation. The solver is <code>ode23t</code> and
+the stop time is 10 ms.</p>
+
+<div class="note">
+  <strong>Note:</strong> Every other plant block in this library has a harness of its own, built to
+  the same pattern and named <code>&lt;Converter&gt;TestHarnessPlant.slx</code>. See the
+  <strong>Plant Test Harness</strong> section of
+  <a href="../../DABConverterPlant/documentation/DABConverter.html#harness">DAB Converter</a>,
+  <a href="../../CLLCConverterPlant/documentation/CLLCPowerCircuit.html#harness">CLLC Converter</a>,
+  <a href="../../BoostPFCPlant/documentation/BoostPFC.html#harness">Boost PFC</a>,
+  <a href="../../InterleavedBoostPFCPlant/documentation/InterleavedBoostPFC.html#harness">Interleaved Boost PFC</a>,
+  <a href="../../TotemPoleBoostPFCPlant/documentation/TotemPoleBoostPFC.html#harness">Totem-Pole Boost PFC</a> or
+  <a href="../../NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html#harness">Non-Isolated DC-DC</a>.
+</div>
+
+<!-- ============================================================ -->
+<!-- 12. SEE ALSO -->
+<!-- ============================================================ -->
+<h2 id="seealso">See Also</h2>
+
+<h4>Related Blocks</h4>
+<ul>
+  <li><a href="../../DABConverterPlant/documentation/DABConverter.html">DAB Converter</a> &mdash; Dual Active Bridge isolated DC-DC converter</li>
+  <li><a href="../../BoostPFCPlant/documentation/BoostPFC.html">Boost PFC</a> &mdash; Single-phase AC-DC PFC front end</li>
+  <li><a href="../../NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html">Non-Isolated DC-DC</a> &mdash; Buck, Boost, Buck-Boost converter family</li>
+</ul>
+
+<h4>Related Topics</h4>
+<ul>
+  <li>LLC Controller &mdash; Frequency-control PWM generator for LLC resonant converters</li>
+  <li>Simscape Electrical &mdash; MOSFET, Diode block reference documentation</li>
+</ul>
+
+<!-- ============================================================ -->
+<!-- 13. VERSION HISTORY -->
+<!-- ============================================================ -->
+
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Totem-Pole Boost PFC - Bridgeless totem-pole boost PFC power stage with a fast and a slow leg</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Totem-Pole Boost PFC</h1>
+<p class="subtitle">Bridgeless totem-pole boost PFC power stage with a fast and a slow leg</p>
+<div class="library-path">ConverterLibrary / Power Converter Plant / Power Factor Correction Converters / Totem-Pole Boost PFC Converter</div>
+<div class="library-path">ConverterPlantLibrary / Power Factor Correction Converters / Totem-Pole Boost PFC Converter</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#export">Export to Unmasked Subsystem</a></li>
+    <li><a href="#harness">Plant Test Harness</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<div class="block-icon">
+  <img src="TotemPoleDiodeIcon.svg" alt="Totem-pole boost PFC power stage with a diode slow leg">
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>Totem-Pole Boost PFC</strong> block models a bridgeless power factor correction power
+stage: two half-bridge legs across the DC bus with the boost inductor in the AC line, and no input
+diode bridge. A four-element gate vector drives both legs.</p>
+
+<p>The circuit contains:</p>
+<ul>
+  <li><strong>Fast leg</strong> - Q<sub>1</sub> and Q<sub>2</sub>, switching at the converter
+      switching frequency.</li>
+  <li><strong>Slow leg</strong> - two devices commutating at the line frequency. Diodes, MOSFETs or
+      thyristors, selected by <code>slowLegDeviceOption</code>.</li>
+  <li><strong>Boost inductor</strong> L<sub>boost</sub> in the AC line, with its series
+      resistance.</li>
+  <li><strong>Output filter</strong> - the capacitor C<sub>o</sub> with its series resistance.</li>
+</ul>
+
+<p>The block icon follows the slow leg selection: <code>TotemPoleDiodeIcon.svg</code>,
+<code>TotemPoleMOSFETIcon.svg</code> or <code>TotemPoleThyristorIcon.svg</code>.</p>
+
+<div class="section-circuit">
+  <img src="TotemPoleDiodeIcon.svg" alt="Diode slow leg" style="max-width:270px;">
+  <img src="TotemPoleMOSFETIcon.svg" alt="MOSFET slow leg" style="max-width:270px;">
+  <img src="TotemPoleThyristorIcon.svg" alt="Thyristor slow leg" style="max-width:270px;">
+</div>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Conserving Ports</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Description</th></tr>
+  <tr><td><strong class="port-electrical">P</strong></td><td>AC line terminal, through the boost inductor.</td></tr>
+  <tr><td><strong class="port-electrical">N</strong></td><td>AC neutral terminal, at the slow leg midpoint.</td></tr>
+  <tr><td><strong class="port-electrical">+</strong></td><td>Positive DC output terminal.</td></tr>
+  <tr><td><strong class="port-electrical">-</strong></td><td>Negative DC output terminal.</td></tr>
+</table>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">G</strong></td><td>4</td><td>Gate vector for both legs. Four elements in every model option and for every slow leg device.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<div class="gate-map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 210" width="560" height="210" role="img" aria-label="Totem-pole gate vector element map">
+<rect x="0" y="0" width="560" height="210" fill="#FFFFFF"/>
+<line x1="20" y1="24" x2="540" y2="24" stroke="#333333" stroke-width="2"/>
+<line x1="20" y1="186" x2="540" y2="186" stroke="#333333" stroke-width="2"/>
+<text x="24" y="18" font-family="Segoe UI, Arial" font-size="11" fill="#666666">+</text>
+<text x="24" y="200" font-family="Segoe UI, Arial" font-size="11" fill="#666666">&#8722;</text>
+<line x1="160.0" y1="24" x2="160.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="117.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="160.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">Q1</text>
+<text x="160.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="226.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(1)</text>
+<rect x="117.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="160.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">Q2</text>
+<text x="160.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="226.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(2)</text>
+<text x="160.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Fast leg, switching frequency</text>
+<line x1="440.0" y1="24" x2="440.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="397.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="440.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">D1 / Q3 / T1</text>
+<text x="440.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="506.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(3)</text>
+<rect x="397.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="440.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">D2 / Q4 / T2</text>
+<text x="440.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="506.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(4)</text>
+<text x="440.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Slow leg, line frequency</text>
+</svg>
+</div>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>G(1)</code></td><td>Fast leg high-side device</td><td>Switching frequency.</td></tr>
+  <tr><td><code>G(2)</code></td><td>Fast leg low-side device</td><td>Switching frequency.</td></tr>
+  <tr><td><code>G(3)</code></td><td>Slow leg high-side device</td><td>Line frequency. MOSFET and Thyristor slow legs only.</td></tr>
+  <tr><td><code>G(4)</code></td><td>Slow leg low-side device</td><td>Line frequency. MOSFET and Thyristor slow legs only.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> <strong>G</strong> is four elements wide whichever slow leg you select. With
+  <code>slowLegDeviceOption</code> set to <em>Diode</em>, elements 3 and 4 are terminated inside the
+  block and have no effect. Supply a four-element signal in all cases.
+</div>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">meas</strong></td><td>bus, 4 elements</td><td>Measurement bus.</td></tr>
+</table>
+
+<h4>Measurement Bus Order</h4>
+<table class="port-table">
+  <tr><th>Element</th><th>Bus element</th><th>Measurement</th></tr>
+  <tr><td>1</td><td><code>IL [A]</code></td><td>Boost inductor current, which is the line current.</td></tr>
+  <tr><td>2</td><td><code>Vout [V]</code></td><td>DC output voltage.</td></tr>
+  <tr><td>3</td><td><code>Vin [V]</code></td><td>AC input voltage.</td></tr>
+  <tr><td>4</td><td><code>Iout [A]</code></td><td>DC output current.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> Select an element by name with a Bus Selector block. The element order
+  above is the order a Bus to Vector conversion produces, so read it before indexing the signal
+  numerically.
+</div>
+
+<div class="note">
+  <strong>Note:</strong> This bus carries no separate <code>Iin</code> element. The boost inductor is
+  in series with the AC line, so <code>IL</code> is the line current.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3>Totem-Pole Boost PFC model option</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Circuit used</th></tr>
+  <tr><td>Simplified</td><td>Flat circuit with four Ideal Semiconductor Switch blocks. The leg dropdowns are hidden and the mask edit fields parameterize every device.</td></tr>
+  <tr><td>Detailed</td><td>Variant subsystems for the fast leg and the slow leg, each with its own device dropdown.</td></tr>
+</table>
+
+<h3>Fast leg device, Detailed only</h3>
+<table class="variant-table">
+  <tr><th><code>fastLegDeviceOption</code></th><th>Configured through</th></tr>
+  <tr><td>Ideal Switch</td><td>Mask edit fields <code>RdsOnFast</code> and its neighbors.</td></tr>
+  <tr><td>MOSFET (Ideal, Switching) with Thermal</td><td>Set one device on its own dialog, then use <span class="btn-label">Apply Fast MOSFET Params</span>.</td></tr>
+</table>
+
+<h3>Slow leg device, Detailed only</h3>
+<p><code>slowLegDeviceOption</code> selects the device family; two of the three families have a
+second dropdown for fidelity.</p>
+<table class="variant-table">
+  <tr><th><code>slowLegDeviceOption</code></th><th>Second dropdown</th><th>Configured through</th></tr>
+  <tr><td>Diode</td><td><code>slowDiodeDeviceOption</code>: Ideal Diode, Tabulated Diode</td><td>Mask edit fields for the ideal diode; the device dialog and <span class="btn-label">Apply Slow Diode Params</span> for the tabulated diode.</td></tr>
+  <tr><td>MOSFET</td><td><code>slowMOSFETDeviceOption</code>: Ideal Switch, MOSFET (Ideal, Switching) with Thermal</td><td>Mask edit fields for the ideal switch; the device dialog and <span class="btn-label">Apply Slow MOSFET Params</span> for the MOSFET.</td></tr>
+  <tr><td>Thyristor</td><td>None</td><td>Mask edit fields, including the holding current <code>IhSlow</code>.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the current dropdown
+selections. The <strong>Shown when</strong> column gives the selections that reveal each one.</p>
+
+<h3>Totem-Pole Boost PFC Converter Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>modelOption</code></td><td>Totem-Pole Boost PFC Model Option</td><td>Simplified (default) | Detailed</td><td>Always</td></tr>
+<tr><td><code>ratedPower</code></td><td>Rated Power</td><td><code>3000</code> W</td><td>Always</td></tr>
+<tr><td><code>VIn</code></td><td>AC Input Voltage (RMS)</td><td><code>230</code> V</td><td>Always</td></tr>
+<tr><td><code>FRated</code></td><td>Line Frequency</td><td><code>50</code> Hz</td><td>Always</td></tr>
+<tr><td><code>VOut</code></td><td>DC Output Voltage</td><td><code>400</code> V</td><td>Always</td></tr>
+<tr><td><code>Fsw</code></td><td>Switching Frequency</td><td><code>100000</code> Hz</td><td>Always</td></tr>
+<tr><td><code>LBoost</code></td><td>Boost Inductance</td><td><code>2.0742e-4</code> H</td><td>Always</td></tr>
+<tr><td><code>RLboost</code></td><td>Inductor resistance</td><td><code>0.02</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>CBoost</code></td><td>Output Capacitance</td><td><code>1.1937e-3</code> F</td><td>Always</td></tr>
+<tr><td><code>Rco</code></td><td>Capacitor ESR</td><td><code>0.01</code> Ohm</td><td>Always</td></tr>
+<tr><td><code>Vco</code></td><td>Initial Output Capacitor Voltage</td><td><code>400</code> V</td><td>Always</td></tr>
+</table>
+
+<h3>Fast Leg Device</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>fastLegDeviceOption</code></td><td>Fast Leg Device</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>RdsOnFast</code></td><td>On-State Resistance</td><td><code>0.04</code> Ohm</td><td><code>fastLegDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>GdsOffFast</code></td><td>Off-State Conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>fastLegDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>VthFast</code></td><td>Threshold Voltage</td><td><code>3</code> V</td><td><code>fastLegDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>simTempFast</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>modelOption</code> = Detailed and <code>fastLegDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>VfFast</code></td><td>Forward Voltage (Body Diode)</td><td><code>0.8</code> V</td><td><code>fastLegDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>RdFast</code></td><td>On Resistance (Body Diode)</td><td><code>0.001</code> Ohm</td><td><code>fastLegDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+<tr><td><code>GdFast</code></td><td>Off Conductance (Body Diode)</td><td><code>1e-5</code> 1/Ohm</td><td><code>fastLegDeviceOption</code> = Ideal Switch<br>or <code>modelOption</code> = Simplified</td></tr>
+</table>
+
+<h3>Slow Leg Device</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>slowLegDeviceOption</code></td><td>Slow Leg Device</td><td>Diode | MOSFET (default) | Thyristor</td><td><code>modelOption</code> = Detailed</td></tr>
+<tr><td><code>slowMOSFETDeviceOption</code></td><td>MOSFET Device</td><td>Ideal Switch | MOSFET (Ideal, Switching) with Thermal (default)</td><td><code>modelOption</code> = Detailed and <code>slowLegDeviceOption</code> = MOSFET</td></tr>
+<tr><td><code>slowDiodeDeviceOption</code></td><td>Diode Device</td><td>Ideal Diode (default) | Tabulated Diode</td><td><code>modelOption</code> = Detailed and <code>slowLegDeviceOption</code> = Diode</td></tr>
+<tr><td><code>RdsOnSlow</code></td><td>On-State Resistance (MOSFET)</td><td><code>0.05</code> Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>slowLegDeviceOption</code> = MOSFET and <code>slowMOSFETDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>GdsOffSlow</code></td><td>Off-State Conductance</td><td><code>1e-5</code> 1/Ohm</td><td><code>modelOption</code> = Simplified<br>or <code>slowLegDeviceOption</code> = MOSFET and <code>slowMOSFETDeviceOption</code> = Ideal Switch</td></tr>
+<tr><td><code>VthSlow</code></td><td>Threshold Voltage</td><td><code>3</code> V</td><td><code>modelOption</code> = Simplified<br>or <code>slowLegDeviceOption</code> = MOSFET and <code>slowMOSFETDeviceOption</code> = Ideal Switch<br>or <code>slowLegDeviceOption</code> = Thyristor</td></tr>
+<tr><td><code>simTempSlow</code></td><td>Simulation temperature</td><td><code>25</code> degC</td><td><code>modelOption</code> = Detailed, and any of:<br><code>slowLegDeviceOption</code> = Diode and <code>slowDiodeDeviceOption</code> = Tabulated Diode<br><code>slowLegDeviceOption</code> = MOSFET and <code>slowMOSFETDeviceOption</code> = MOSFET (Ideal, Switching) with Thermal</td></tr>
+<tr><td><code>VfSlow</code></td><td>Forward Voltage (Diode)</td><td><code>0.6</code> V</td><td><code>modelOption</code> = Detailed, and any of:<br><code>slowLegDeviceOption</code> = Diode and <code>slowDiodeDeviceOption</code> = Ideal Diode<br><code>slowLegDeviceOption</code> = Thyristor</td></tr>
+<tr><td><code>RdSlow</code></td><td>On Resistance (Diode)</td><td><code>0.01</code> Ohm</td><td><code>modelOption</code> = Detailed, and any of:<br><code>slowLegDeviceOption</code> = Diode and <code>slowDiodeDeviceOption</code> = Ideal Diode<br><code>slowLegDeviceOption</code> = Thyristor</td></tr>
+<tr><td><code>GdSlow</code></td><td>Off Conductance (Diode)</td><td><code>1e-8</code> 1/Ohm</td><td><code>modelOption</code> = Detailed, and any of:<br><code>slowLegDeviceOption</code> = Diode and <code>slowDiodeDeviceOption</code> = Ideal Diode<br><code>slowLegDeviceOption</code> = Thyristor</td></tr>
+<tr><td><code>IhSlow</code></td><td>Holding current (Ih)</td><td><code>1</code> A</td><td><code>modelOption</code> = Detailed and <code>slowLegDeviceOption</code> = Thyristor</td></tr>
+</table>
+
+<h2 id="export">Export to Unmasked Subsystem</h2>
+
+<p>The <span class="btn-label">Export to Unmasked Subsystem</span> button writes the
+Totem-Pole Boost PFC circuit to a new model with no mask, alongside a parameter file that reproduces
+every mask value. Use it to inspect or edit the circuit beyond what the mask exposes.</p>
+
+<table>
+  <tr><th>File written to the current folder</th><th>Contents</th></tr>
+  <tr><td><code>TotemPoleBoostPFC_exported_&lt;timestamp&gt;.slx</code></td><td>The unmasked circuit. Its <code>PreLoadFcn</code> runs the parameter file.</td></tr>
+  <tr><td><code>TotemPoleBoostPFC_exported_&lt;timestamp&gt;_params.m</code></td><td>Assigns the structure <code>TotemPoleBoostPFC</code> in the base workspace. Every block parameter of the exported model references a field of this structure.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> The export keeps the variant subsystems, so the exported model still holds
+  every device choice and still honors the choice the mask had when you exported it.
+</div>
+
+<h2 id="harness">Plant Test Harness</h2>
+
+<p>The <strong>Totem-Pole Boost PFC</strong> block has an open-loop test harness,
+<code>TotemPoleBoostPFCTestHarnessPlant.slx</code>, in the <code>test</code> folder of <code>TotemPoleBoostPFCPlant</code>. The harness holds this
+block, the PWM generator blocks that drive its gate port, the input source, the load and a scope on
+the measurement bus. It carries no controller: constant reference blocks set the operating point, so
+the harness exercises the power stage on its own.</p>
+
+<table class="variant-table">
+  <tr><th>Block</th><th>Role in the harness</th></tr>
+  <tr><td><code>Totem-Pole Boost PFC</code></td><td>This block, taken from <code>ConverterPlantLibrary</code>, with <code>slowLegDeviceOption</code> set to <code>MOSFET</code> and both MOSFET dropdowns set to <code>MOSFET (Ideal, Switching) with Thermal</code>, so that all four positions are MOSFETs.</td></tr>
+  <tr><td><code>Fast Leg PWM Generator</code></td><td>Half Bridge PWM Generator from <code>ConverterLibrary</code>. Switching frequency from <code>totemPoleDesign</code>, dead time <code>totemPoleController.fastLegDeadTime</code>.</td></tr>
+  <tr><td><code>Slow Leg PWM Generator</code></td><td>Complementary PWM Generator from <code>ConverterLibrary</code>, turn-on delay <code>totemPoleController.slowLegTurnOnDelay</code> and logic threshold 0, so the slow leg follows the sign of the line voltage.</td></tr>
+  <tr><td><code>Line Voltage Select</code>, <code>Line Voltage Delay</code></td><td><code>Vin [V]</code> off the measurement bus, delayed one major step by a Memory block. The slow leg gate is derived from a plant measurement, so the delay is what keeps the gate path out of an algebraic loop.</td></tr>
+  <tr><td><code>Duty Scale</code>, <code>Duty Offset</code>, <code>Duty Limit</code></td><td>Feedforward fast-leg duty <code>1 - |Vin|/totemPoleDesign.outputVoltage</code>, saturated to <code>totemPoleController.dutyMin</code> and <code>dutyMax</code>.</td></tr>
+  <tr><td><code>Fast Leg Gate Order</code>, <code>Slow Leg Gate Order</code></td><td>Selectors placing the commanded duty on the fast-leg low-side switch and the line polarity on the slow-leg low-side switch, which are the active devices for a positive line half cycle.</td></tr>
+  <tr><td><code>Positive Half Gates</code>, <code>Negative Half Gates</code>, <code>Line Polarity</code></td><td>The four gates in the order the <strong>G</strong> port takes them, and the Switch that exchanges the two fast-leg elements on the negative line half cycle, where the two fast-leg switches exchange roles.</td></tr>
+  <tr><td><code>Vac</code>, <code>Rload</code></td><td>AC voltage source of amplitude <code>VacAmp</code> at <code>Fline</code>, and the load resistance <code>Rload_R</code>, both from the defaults script.</td></tr>
+  <tr><td><code>Bus Selector</code>, <code>Scope</code></td><td><code>Vin [V]</code>, <code>IL [A]</code>, <code>Iout [A]</code> and <code>Vout [V]</code> off the measurement bus.</td></tr>
+</table>
+
+<p>Opening the harness runs <code>TotemPoleBoostPFCDefaultInputParameters</code> through its <code>PreLoadFcn</code>, so every
+design and controller structure the generator masks read is in the base workspace before the first
+simulation. The solver is <code>ode23t</code>, as in the converter model the harness was taken
+from.</p>
+
+<div class="note">
+  <strong>Note:</strong> The fast-leg duty is a feedforward term rather than a constant. The power
+  stage is bridgeless and synchronous, so nothing in it blocks reverse inductor current, and a duty
+  held at its peak-line value leaves the inductor with a negative average voltage near the line zero
+  crossing. The feedforward duty holds the average inductor voltage near zero across the whole line
+  cycle. It shapes no current: the inductor current peak is above the design value, which is what an
+  open-loop excitation gives.
+</div>
+
+<p>The stop time is <code>2/totemPoleDesign.lineFrequency.value</code>, two cycles of the 50 Hz line.</p>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../BoostPFCPlant/documentation/BoostPFC.html">Boost PFC</a> |
+  <a href="../../InterleavedBoostPFCPlant/documentation/InterleavedBoostPFC.html">Interleaved Boost PFC</a> |
+  <a href="../../NonIsolatedDCDCPlant/documentation/NonIsolatedDCDC.html">Non-Isolated DC-DC</a> |
+  <a href="../../../Controllers/TotemPoleBoostPFCController/documentation/TotemPoleBoostPFCController.html">Totem-Pole Boost PFC Controller</a>
+</p>
+
+</body>
+</html>

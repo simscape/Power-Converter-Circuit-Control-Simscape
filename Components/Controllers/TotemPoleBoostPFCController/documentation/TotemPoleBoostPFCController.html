@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Totem-Pole Boost PFC Controller - Average current mode control with fast and slow leg gate signals</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Totem-Pole Boost PFC Controller</h1>
+<p class="subtitle">Average current mode control with fast and slow leg gate signals</p>
+<div class="library-path">ConverterLibrary / Controller / Power Factor Correction Converters / Totem-Pole Boost PFC Controller</div>
+<div class="library-path">ControllerLibrary / Power Factor Correction Converters / Totem-Pole Boost PFC Controller</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#ports">Ports</a></li>
+    <li><a href="#options">Model Options</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="description">Description</h2>
+
+<p>The <strong>Totem-Pole Boost PFC Controller</strong> block regulates the DC bus of the
+<a href="../../../ConverterPlants/TotemPoleBoostPFCPlant/documentation/TotemPoleBoostPFC.html">Totem-Pole Boost PFC</a> plant and shapes the line current. The
+cascade is the one the <a href="../../BoostPFCController/documentation/BoostPFCController.html">Boost PFC Controller</a> uses. What differs
+is the output: this block drives two legs, a fast leg at <code>Fsw</code> and a slow leg that
+commutates with the line voltage polarity.</p>
+
+<p>The fast leg pair is separated by <code>fastLegDeadTime</code>. The slow leg device turns on
+<code>slowLegTurnOnDelay</code> after the line voltage crosses zero, which keeps the two slow leg
+devices apart across the crossing.</p>
+
+<h2 id="ports">Ports</h2>
+
+<h3>Input</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">Vref</strong></td><td>1</td><td>DC bus voltage reference, in volts.</td></tr>
+  <tr><td><strong class="port-signal">Vmeas</strong></td><td>1</td><td>Measured DC bus voltage, in volts.</td></tr>
+  <tr><td><strong class="port-signal">Imeas</strong></td><td>1</td><td>Measured boost inductor current, in amperes.</td></tr>
+  <tr><td><strong class="port-signal">Vac</strong></td><td>1</td><td>Measured AC input voltage, in volts. Sets the current reference shape and the slow leg polarity.</td></tr>
+</table>
+
+<h3>Output</h3>
+<table class="port-table">
+  <tr><th>Port</th><th>Size</th><th>Description</th></tr>
+  <tr><td><strong class="port-signal">G</strong></td><td>4</td><td>Gate vector for both legs.</td></tr>
+</table>
+
+<h4>Gate Vector Order</h4>
+<div class="gate-map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 210" width="560" height="210" role="img" aria-label="Totem-pole gate vector element map">
+<rect x="0" y="0" width="560" height="210" fill="#FFFFFF"/>
+<line x1="20" y1="24" x2="540" y2="24" stroke="#333333" stroke-width="2"/>
+<line x1="20" y1="186" x2="540" y2="186" stroke="#333333" stroke-width="2"/>
+<text x="24" y="18" font-family="Segoe UI, Arial" font-size="11" fill="#666666">+</text>
+<text x="24" y="200" font-family="Segoe UI, Arial" font-size="11" fill="#666666">&#8722;</text>
+<line x1="160.0" y1="24" x2="160.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="117.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="160.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">Q1</text>
+<text x="160.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="226.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(1)</text>
+<rect x="117.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="160.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">Q2</text>
+<text x="160.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="226.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(2)</text>
+<text x="160.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Fast leg, switching frequency</text>
+<line x1="440.0" y1="24" x2="440.0" y2="186" stroke="#CCCCCC" stroke-width="1"/>
+<rect x="397.0" y="44" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="440.0" y="62" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">high device</text>
+<text x="440.0" y="77" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">high side</text>
+<text x="506.0" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(3)</text>
+<rect x="397.0" y="122" width="86" height="44" rx="4" fill="#E8F4FD" stroke="#0076A8" stroke-width="1.5"/>
+<text x="440.0" y="140" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0076A8">low device</text>
+<text x="440.0" y="155" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#555555">low side</text>
+<text x="506.0" y="148" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="700" fill="#D95319">G(4)</text>
+<text x="440.0" y="112" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" fill="#333333">Slow leg, line frequency</text>
+</svg>
+</div>
+<table>
+  <tr><th>Element</th><th>Drives</th><th>Role</th></tr>
+  <tr><td><code>1</code></td><td>Fast leg high-side device</td><td>Switching frequency.</td></tr>
+  <tr><td><code>2</code></td><td>Fast leg low-side device</td><td>Switching frequency.</td></tr>
+  <tr><td><code>3</code></td><td>Slow leg high-side device</td><td>Line frequency. On for the half cycle that needs it.</td></tr>
+  <tr><td><code>4</code></td><td>Slow leg low-side device</td><td>Line frequency. On for the other half cycle.</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> <strong>G</strong> is four elements wide, which matches the plant input
+  whichever slow leg device the plant uses. With a diode slow leg the plant terminates elements 3
+  and 4, so the same connection serves all three slow leg choices.
+</div>
+
+<h2 id="options">Model Options</h2>
+
+<h3><code>outputSelect</code> - Output mode</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>PWM Signal</td><td>The block carries both modulators and outputs the four-element gate vector at the gate voltage levels.</td></tr>
+  <tr><td>Duty Cycle</td><td>Not supported in this release. Selecting it stops the model from updating, so use <strong>PWM Signal</strong>.</td></tr>
+</table>
+
+<h3><code>cntrlSelect</code> - Controller type</h3>
+<table class="variant-table">
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>PI controller (Continuous)</td><td>Continuous-time PI blocks. The modulator uses the variable-step carrier.</td></tr>
+  <tr><td>PI controller (Discrete)</td><td>Discrete-time PI blocks. The modulator uses the fixed-step carrier.</td></tr>
+</table>
+
+<h2 id="parameters">Parameters</h2>
+
+<p>The tables below list every mask parameter, including the ones hidden by the
+current dropdown selections. The <strong>Shown when</strong> column gives the selections that reveal
+each one.</p>
+
+<h3>Totem-Pole Boost PFC Controller Parameters</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>outputSelect</code></td><td>Output mode</td><td>Duty Cycle | PWM Signal (default)</td><td>Always</td></tr>
+<tr><td><code>cntrlSelect</code></td><td>Controller type</td><td>PI controller (Continuous) (default) | PI controller (Discrete)</td><td>Always</td></tr>
+<tr><td><code>VacRMS</code></td><td>Nominal AC voltage (V RMS)</td><td><code>230</code></td><td>Always</td></tr>
+<tr><td><code>VbaseDC</code></td><td>Nominal DC voltage (V)</td><td><code>400</code></td><td>Always</td></tr>
+<tr><td><code>Pbase</code></td><td>Nominal power (W)</td><td><code>3000</code></td><td>Always</td></tr>
+<tr><td><code>Fsw</code></td><td>Switching frequency (Hz)</td><td><code>100000</code></td><td><code>outputSelect</code> = PWM Signal</td></tr>
+<tr><td><code>Fline</code></td><td>Line frequency (Hz)</td><td><code>50</code></td><td>Always</td></tr>
+<tr><td><code>fastLegDeadTime</code></td><td>Fast-leg dead time (s)</td><td><code>1e-07</code></td><td><code>outputSelect</code> = PWM Signal</td></tr>
+<tr><td><code>slowLegTurnOnDelay</code></td><td>Slow-leg turn-on delay (s)</td><td><code>0.0001</code></td><td>Always</td></tr>
+<tr><td><code>PrefPu</code></td><td>Feedforward power (pu)</td><td><code>0.5</code></td><td>Always</td></tr>
+<tr><td><code>iRefPeakMaxPu</code></td><td>Peak current limit (pu)</td><td><code>1.2</code></td><td>Always</td></tr>
+<tr><td><code>gateVoltageOn</code></td><td>Gate ON voltage (V)</td><td><code>15</code></td><td>Always</td></tr>
+<tr><td><code>gateVoltageOff</code></td><td>Gate OFF voltage (V)</td><td><code>0</code></td><td>Always</td></tr>
+</table>
+
+<h3>Voltage Controller</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>KpVoltage</code></td><td>Proportional gain (pu)</td><td><code>1.0392</code></td><td>Always</td></tr>
+<tr><td><code>KiVoltage</code></td><td>Integral gain (pu/s)</td><td><code>11.3097</code></td><td>Always</td></tr>
+<tr><td><code>TsVoltage</code></td><td>Sample time (s)</td><td><code>5e-06</code></td><td>Always</td></tr>
+</table>
+
+<h3>Current Controller</h3>
+<table class="param-table">
+<tr><th>Parameter</th><th>Prompt</th><th>Default</th><th>Shown when</th></tr>
+<tr><td><code>KpCurrent</code></td><td>Proportional gain (pu)</td><td><code>0.2602</code></td><td>Always</td></tr>
+<tr><td><code>KiCurrent</code></td><td>Integral gain (pu/s)</td><td><code>4720.2456</code></td><td>Always</td></tr>
+<tr><td><code>dutyMax</code></td><td>Maximum duty cycle</td><td><code>1</code></td><td>Always</td></tr>
+<tr><td><code>dutyMin</code></td><td>Minimum duty cycle</td><td><code>0</code></td><td>Always</td></tr>
+<tr><td><code>TsCurrent</code></td><td>Sample time (s)</td><td><code>1e-06</code></td><td>Always</td></tr>
+</table>
+
+<div class="note">
+  <strong>Note:</strong> A gain whose prompt ends in <em>(pu)</em> or <em>(pu/s)</em> acts on per-unit
+  signals. The base values in the first group set that scaling, so change a base value and the loops
+  are rescaled with it.
+</div>
+
+<h2 id="seealso">See Also</h2>
+
+<p>
+  <a href="../../../ConverterPlants/TotemPoleBoostPFCPlant/documentation/TotemPoleBoostPFC.html">Totem-Pole Boost PFC</a> |
+  <a href="../../BoostPFCController/documentation/BoostPFCController.html">Boost PFC Controller</a> |
+  <a href="../../InterleavedBoostPFCController/documentation/InterleavedBoostPFCController.html">Interleaved Boost PFC Controller</a> |
+  <a href="../../PWMGenerators/documentation/ComplementaryPWMGenerator.html">Complementary PWM Generator</a>
+</p>
+
+</body>
+</html>

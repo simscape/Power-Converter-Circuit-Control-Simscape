@@ -77,6 +77,13 @@
         .collapse-body { display: none; padding-left: 18px; }
         .collapse-body.open { display: block; }
 
+        /* Library folder sub-headings nested inside a collapsible section */
+        h3.group-title {
+            font-size: 13px; font-weight: 600; color: #212121;
+            margin: 16px 0 6px; scroll-margin-top: 90px;
+        }
+        .collapse-body .collapse-body { padding-left: 14px; }
+
         /* Example cards - 3 column grid with fixed-width cards */
         .example-grid {
             display: grid;
@@ -155,6 +162,12 @@
         .btn-load.btn-secondary:hover {
             background: #e8f4f8;
         }
+        /* Library block snapshots sit on the white canvas they were printed on */
+        .block-image {
+            width: 100%; height: 110px; object-fit: contain;
+            background: #fff; border-bottom: 1px solid #e0e0e0; padding: 8px;
+            box-sizing: border-box;
+        }
         .card-code {
             margin-top: 0.5rem; padding: 0.4rem 0.6rem;
             background: #f5f5f5; border: 1px solid #e0e0e0;
@@ -184,9 +197,19 @@
         <li><a href="#Workflow">Workflow</a></li>
         <li class="sub"><a href="#app-GridFormingConverter">Grid-Forming Converter</a></li>
         <li class="sub"><a href="#app-LLCConverter">LLC Converter</a></li>
+        <li class="sub"><a href="#app-CLLCConverter">Bi-Directional CLLC Converter</a></li>
+        <li class="sub"><a href="#app-DABConverter">Dual Active Bridge Converter</a></li>
+        <li class="sub"><a href="#app-DABThermalAnalysis">DAB Thermal Analysis</a></li>
+        <li class="sub"><a href="#app-TotemPoleConverter">Totem-Pole Boost PFC</a></li>
+        <li class="sub"><a href="#app-BoostPFCConverter">Boost PFC</a></li>
+        <li class="sub"><a href="#app-InterleavedBoostPFCConverter">Interleaved Boost PFC</a></li>
+        <li class="sub"><a href="#app-NonIsolatedDCDCConverter">Non-Isolated DC-DC</a></li>
         <li><a href="#components">Components</a></li>
+        <li class="sub"><a href="#app-PowerCircuitComponents">Power Converter Plant</a></li>
         <li class="sub"><a href="#app-ControllerComponents">Controller</a></li>
-        <li class="sub"><a href="#app-PowerCircuitComponents">Power Circuit</a></li>
+        <li class="sub"><a href="#app-DeviceComponents">Semiconductor Devices</a></li>
+        <li><a href="#analysis-functions">Analysis Functions</a></li>
+        <li><a href="#test">Testing</a></li>
         <li><a href="#requirements">Requirements</a></li>
     </ul>
 </nav>
@@ -199,27 +222,30 @@
     <!-- Section: Overview -->
     <h1 id="overview">Overview</h1>
     <p>
-        In this project, you learn how to design power converter circuits and
-        their control systems using Simscape. The project includes workflows
-        for designing LLC resonant converters and grid-forming converter
-        controllers. You will learn how to estimate resonant tank parameters,
-        select converter components, tune compensator controllers, and design
-        grid-forming inverter control strategies.
+        In this project, you design power converter circuits and their control
+        systems using Simscape. The project includes workflows for designing LLC
+        resonant converters, bi-directional CLLC resonant converters, dual active
+        bridge converters, totem-pole, boost, and interleaved boost PFC
+        converters, non-isolated buck, boost, and buck-boost converters, and
+        grid-forming converter controllers. Use these workflows
+        to estimate resonant tank parameters, size the power stage, select
+        converter components, tune compensator controllers, measure input current
+        harmonics, and design grid-forming inverter control strategies.
     </p>
 
     <!-- Section: Get Started -->
     <h1 id="get-started">Get Started</h1>
     <p>
-        Double-click on the <a href="matlab:openProject('PowerConverterCircuitControlSimscape.prj')">
-        PowerConverterCircuitControlSimscape PRJ</a> file (in the root folder) to setup the
+        Double-click the <a href="matlab:openProject(fullfile(fileparts(which('PowerConverterCircuitAndControlDesignCoverPage.html')),'..','PowerConverterCircuitAndControlDesignWithSimscape.prj'))">
+        PowerConverterCircuitAndControlDesignWithSimscape PRJ</a> file (in the root folder) to set up the
         project and get started.
     </p>
 
     <!-- Section: Workflow -->
     <h1 id="Workflow">Workflow</h1>
     <p>
-        Click on the hyperlinks to navigate to the application workflows or
-        live-scripts.
+        Click the links to open the application workflows or
+        Live Scripts.
     </p>
 
     <!-- Sub-section: Grid-Forming Converter -->
@@ -231,10 +257,10 @@
                 <img class="card-image" src="Images/GridFormingConverter.png" alt="Grid-Forming Converter">
                 <div class="card-content">
                     <h3>Grid-Forming Converter Design</h3>
-                    <p>Learn how to design and simulate a grid-forming converter for various grid conditions to meet GC0137 grid standard.</p>
+                    <p>To design and simulate a grid-forming converter for various grid conditions to meet GC0137 grid standard.</p>
                     <div class="card-actions">
                         <a href="matlab:edit('GridFormingConverterMain.m')" class="btn-load btn-primary">Open Live Script</a>
-                        <button class="btn-load btn-secondary" onclick="copyCommand(this, &quot;edit('GridFormingConverterMain.m')&quot;)">Copy Command</button>
+                        <a href="matlab:open_system('GridFormingConverter')" class="btn-load btn-secondary">Open Model</a>
                     </div>
                 </div>
             </div>
@@ -250,10 +276,10 @@
                 <img class="card-image" src="Images/LLCConverterModel.png" alt="LLC Resonant Converter">
                 <div class="card-content">
                     <h3>Design of LLC Resonant Converter</h3>
-                    <p>Learn how to design a full-bridge LLC resonant converter and simulate its operation under various load conditions.</p>
+                    <p>To design a full-bridge LLC resonant converter and simulate its operation under various load conditions.</p>
                     <div class="card-actions">
                         <a href="matlab:edit('LLCResonantConverterFullBridgeMain.m')" class="btn-load btn-primary">Open Live Script</a>
-                        <button class="btn-load btn-secondary" onclick="copyCommand(this, &quot;edit('LLCResonantConverterFullBridgeMain.m')&quot;)">Copy Command</button>
+                        <a href="matlab:open_system('LLCResonantConverterFullBridge')" class="btn-load btn-secondary">Open Model</a>
                     </div>
                 </div>
             </div>
@@ -262,34 +288,322 @@
                 <img class="card-image" src="Images/LLCGainCurve.png" alt="LLC Resonant Tank">
                 <div class="card-content">
                     <h3>Estimate LLC Resonant Tank Parameters</h3>
-                    <p>Learn how to estimate the resonant tank parameters (Lr, Cr, Lm) for an LLC converter based on gain and load requirements.</p>
+                    <p>To estimate the resonant tank parameters (Lr, Cr, Lm) for an LLC converter based on gain and load requirements.</p>
                     <div class="card-actions">
                         <a href="matlab:edit('EstimateLLCConverterResonantTankParameters.m')" class="btn-load btn-primary">Open Live Script</a>
-                        <button class="btn-load btn-secondary" onclick="copyCommand(this, &quot;edit('EstimateLLCConverterResonantTankParameters.m')&quot;)">Copy Command</button>
+                        <a href="matlab:open_system('GainCurveLLCConverter')" class="btn-load btn-secondary">Open Model</a>
                     </div>
                 </div>
             </div>
             <div class="model-card">
                 <div class="card-header-bar"></div>
-                <img class="card-image" src="Images/LLCControllerComponent.png" alt="LLC Component Selection">
+                <img class="card-image" src="Images/LLCConverterLibrary.png" alt="LLC Component Selection">
                 <div class="card-content">
-                    <h3>Select LLC Component and Controller</h3>
-                    <p>Learn how to select the power circuit components and controller architecture for the LLC converter.</p>
+                    <h3>Select LLC Converter Components</h3>
+                    <p>To select the primary MOSFETs and secondary diodes of the LLC converter, and to apply catalog parts that meet the required ratings.</p>
                     <div class="card-actions">
                         <a href="matlab:edit('SelectLLCConverterComponents.m')" class="btn-load btn-primary">Open Live Script</a>
-                        <button class="btn-load btn-secondary" onclick="copyCommand(this, &quot;edit('SelectLLCConverterComponents.m')&quot;)">Copy Command</button>
+                        <a href="matlab:open_system('LLCResonantConverterFullBridge')" class="btn-load btn-secondary">Open Model</a>
                     </div>
                 </div>
             </div>
             <div class="model-card">
                 <div class="card-header-bar"></div>
-                <img class="card-image" src="Images/LLCControllerBode.png" alt="LLC Controller Tuning">
+                <img class="card-image" src="Images/LLCControllerComponent.png" alt="LLC Controller Design">
                 <div class="card-content">
-                    <h3>Tune LLC 2P2Z Compensator Controller</h3>
-                    <p>Learn how to tune the 2P2Z compensator for the LLC converter output voltage regulation loop.</p>
+                    <h3>Design LLC Converter Controller</h3>
+                    <p>To review the controller options of the LLC converter, estimate the plant frequency response, and tune the output voltage regulation loop.</p>
                     <div class="card-actions">
-                        <a href="matlab:edit('LLCResonantConvertersControllerDesign.m')" class="btn-load btn-primary">Open Live Script</a>
-                        <button class="btn-load btn-secondary" onclick="copyCommand(this, &quot;edit('LLCResonantConvertersControllerDesign.m')&quot;)">Copy Command</button>
+                        <a href="matlab:edit('LLCResonantConverterControllerDesign.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('EstimateFrequencyResponse')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-section: Bi-Directional CLLC Converter -->
+    <h2 id="app-CLLCConverter" class="collapsible" onclick="toggle(this)">Bi-Directional CLLC Converter</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/CLLCConverterModel.png" alt="Bi-Directional CLLC Resonant Converter">
+                <div class="card-content">
+                    <h3>Design of Bi-Directional CLLC Resonant Converter</h3>
+                    <p>To design a bi-directional full-bridge CLLC resonant converter and simulate its operation in both forward and reverse power flow.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('CLLCBiDirectionalResonantConverterMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('CLLCResonantConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/CLLCGainCurve.png" alt="CLLC Resonant Tank">
+                <div class="card-content">
+                    <h3>Estimate CLLC Resonant Tank Parameters</h3>
+                    <p>To estimate the resonant tank parameters (Lr, C1, C2, Lm) so that the forward and reverse gain curves both cover the required operating range.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('EstimateCLLCConverterResonantTankParameters.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('GainCurveCLLCConverterForward');open_system('GainCurveCLLCConverterReverse')" class="btn-load btn-secondary">Open Models</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/CLLCConverterLibrary.png" alt="CLLC Component Selection">
+                <div class="card-content">
+                    <h3>Select CLLC Converter Components</h3>
+                    <p>To select the primary and secondary bridge MOSFETs of the CLLC converter, and to apply catalog parts that meet the required ratings.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('SelectCLLCConverterComponents.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('CLLCResonantConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/CLLCControllerComponent.png" alt="CLLC Controller Design">
+                <div class="card-content">
+                    <h3>Design CLLC Converter Controller</h3>
+                    <p>To review the controller options of the CLLC converter, estimate the plant frequency response, and tune the output voltage regulation loop.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('CLLCResonantConverterControllerDesign.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('EstimateCLLCPlantFrequencyResponse')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-section: Dual Active Bridge Converter -->
+    <h2 id="app-DABConverter" class="collapsible" onclick="toggle(this)">Dual Active Bridge Converter</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/DABConverterModel.png" alt="Dual Active Bridge Converter">
+                <div class="card-content">
+                    <h3>Design and Analyze a DAB Converter</h3>
+                    <p>To design and simulate an isolated bidirectional dual active bridge DC-DC converter with single-phase-shift control, and to estimate its IV curves, power loss, and efficiency.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('DualActiveBridgeConverterMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('DualActiveBridgeConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/DABPowerTransferCurve.png" alt="DAB Power Transfer and Soft Switching">
+                <div class="card-content">
+                    <h3>Estimate DAB Converter Parameters</h3>
+                    <p>To size the DAB power stage (turns ratio, series inductance, magnetizing inductance, dead time), and to verify soft switching across the operating envelope.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('EstimateDABConverterParameters.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('DualActiveBridgeConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/DABConverterLibrary.png" alt="DAB Converter Component Selection">
+                <div class="card-content">
+                    <h3>Select DAB Converter Components</h3>
+                    <p>To select the primary and secondary bridge MOSFETs of the DAB converter, and to apply catalog parts that meet the required ratings.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('SelectDABConverterComponents.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('DualActiveBridgeConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-section: DAB Thermal Analysis with Custom MOSFET Model -->
+    <h2 id="app-DABThermalAnalysis" class="collapsible" onclick="toggle(this)">DAB Thermal Analysis</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/DABTemperatureRise.png" alt="DAB Device Junction Temperature">
+                <div class="card-content">
+                    <h3>DAB Temperature Rise Simulation</h3>
+                    <p>To simulate the junction temperature of every bridge device of a DAB converter that uses the custom MOSFET model, and to estimate the device loss and the efficiency.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('DABThermalAnalysisWithCustomMOSFETMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('DABThermalAnalysisWithCustomMOSFET')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-section: Totem-Pole Boost PFC Converter -->
+    <h2 id="app-TotemPoleConverter" class="collapsible" onclick="toggle(this)">Totem-Pole Boost PFC</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/TotemPoleConverterModel.png" alt="Totem-Pole Boost PFC Converter">
+                <div class="card-content">
+                    <h3>Design and Analyze a Totem-Pole Boost PFC Converter</h3>
+                    <p>To design and simulate a bridgeless totem-pole boost power factor correction converter with cascaded voltage and current control, and to estimate its input current harmonics, THD, power loss, and efficiency.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('TotemPoleBoostPFCMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('TotemPoleBoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/TotemPoleInductorRipple.png" alt="Totem-Pole Boost PFC Inductor Current Ripple">
+                <div class="card-content">
+                    <h3>Estimate Totem-Pole Boost PFC Parameters</h3>
+                    <p>To size the boost inductor and the output capacitor from the allowed current ripple and the output hold-up requirement, and to verify the peak current and continuous conduction across the input voltage range.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('EstimateTotemPoleBoostPFCParameters.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('TotemPoleBoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/TotemPoleConverterLibrary.png" alt="Totem-Pole Boost PFC Component Selection">
+                <div class="card-content">
+                    <h3>Select Totem-Pole Boost PFC Components</h3>
+                    <p>To select the fast-leg and slow-leg devices of the totem-pole boost PFC converter, and to apply catalog parts that meet the required ratings.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('SelectTotemPoleBoostPFCComponents.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('TotemPoleBoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-section: Boost PFC Converter -->
+    <h2 id="app-BoostPFCConverter" class="collapsible" onclick="toggle(this)">Boost PFC</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/BoostPFCConverterModel.png" alt="Boost PFC Converter">
+                <div class="card-content">
+                    <h3>Design and Analyze a Boost PFC Converter</h3>
+                    <p>To design and simulate a single-phase boost power factor correction converter with average-current-mode control, and to estimate its input current harmonics, THD, power loss, and efficiency.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('BoostPFCMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('BoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/BoostPFCInductorRipple.png" alt="Boost PFC Inductor Current Ripple">
+                <div class="card-content">
+                    <h3>Estimate Boost PFC Parameters</h3>
+                    <p>To size the boost inductor and the DC-bus capacitor from the allowed current ripple and the output hold-up requirement, and to verify the peak inductor current and continuous conduction across the input voltage range.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('EstimateBoostPFCParameters.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('BoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/BoostPFCConverterLibrary.png" alt="Boost PFC Component Selection">
+                <div class="card-content">
+                    <h3>Select Boost PFC Components</h3>
+                    <p>To select the boost-leg and rectifier-bridge devices of the boost PFC converter, and to apply catalog parts that meet the required ratings.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('SelectBoostPFCComponents.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('BoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sub-section: Interleaved Boost PFC Converter -->
+    <h2 id="app-InterleavedBoostPFCConverter" class="collapsible" onclick="toggle(this)">Interleaved Boost PFC</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/InterleavedBoostPFCConverterModel.png" alt="Interleaved Boost PFC Converter">
+                <div class="card-content">
+                    <h3>Design and Analyze an Interleaved Boost PFC Converter</h3>
+                    <p>To design and simulate a two-leg interleaved boost power factor correction converter with phase-shifted carriers and leg-current balancing, and to estimate its input current harmonics, THD, power loss, and efficiency.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('InterleavedBoostPFCMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('InterleavedBoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/InterleavedBoostPFCInductorRipple.png" alt="Interleaved Boost PFC Inductor Current Ripple">
+                <div class="card-content">
+                    <h3>Estimate Interleaved Boost PFC Parameters</h3>
+                    <p>To size the per-leg boost inductors and the DC-bus capacitor, and to verify how interleaving cancels the input current ripple across the input voltage range.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('EstimateInterleavedBoostPFCParameters.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('InterleavedBoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/InterleavedBoostPFCConverterLibrary.png" alt="Interleaved Boost PFC Component Selection">
+                <div class="card-content">
+                    <h3>Select Interleaved Boost PFC Components</h3>
+                    <p>To select the per-leg boost devices and the shared rectifier bridge, and to apply catalog parts that meet the required ratings.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('SelectInterleavedBoostPFCComponents.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('InterleavedBoostPFCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 id="app-NonIsolatedDCDCConverter" class="collapsible" onclick="toggle(this)">Non-Isolated DC-DC</h2>
+    <div class="collapse-body">
+        <div class="card-grid">
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/NonIsolatedDCDCConverterModel.png" alt="Non-Isolated DC-DC Converter">
+                <div class="card-content">
+                    <h3>Design and Analyze a Non-Isolated DC-DC Converter</h3>
+                    <p>To design and simulate a synchronous boost converter with a cascaded voltage and current controller, and to estimate its IV characteristics, power loss, and efficiency across the input voltage range.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('NonIsolatedDCDCMain.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('NonIsolatedDCDCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/NonIsolatedDCDCInductorRipple.png" alt="Non-Isolated DC-DC Inductor Current Ripple">
+                <div class="card-content">
+                    <h3>Estimate Non-Isolated DC-DC Parameters</h3>
+                    <p>To size the inductor and the output capacitor for any of the six buck, boost, and buck-boost topologies, and to check the continuous-conduction boundary across the input voltage range.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('EstimateNonIsolatedDCDCParameters.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('NonIsolatedDCDCConverter')" class="btn-load btn-secondary">Open Model</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="card-image" src="Images/NonIsolatedDCDCConverterLibrary.png" alt="Non-Isolated DC-DC Component Selection">
+                <div class="card-content">
+                    <h3>Select Non-Isolated DC-DC Components</h3>
+                    <p>To select the switch and freewheeling diode devices for the specified topology, and to apply catalog parts that meet the required ratings.</p>
+                    <div class="card-actions">
+                        <a href="matlab:edit('SelectNonIsolatedDCDCConverterComponents.m')" class="btn-load btn-primary">Open Live Script</a>
+                        <a href="matlab:open_system('NonIsolatedDCDCConverter')" class="btn-load btn-secondary">Open Model</a>
                     </div>
                 </div>
             </div>
@@ -299,67 +613,390 @@
     <!-- Section: Components -->
     <h1 id="components">Components</h1>
     <p>
-        The project utilizes library components available in Simscape&trade; and Simscape Electrical&trade;
-        libraries. There are custom Simscape components used in this project for power converter
-        circuits and controllers. All such custom components, their documentation, source code,
-        and test harness can be viewed by navigating to the <b>Components</b> folder in the project root
-        directory. The combined library (<b>ConverterLibrary</b>) is in the
-        <code>Components/Utilities</code> folder.
+        This project uses blocks from Simscape&trade; and Simscape Electrical&trade;, and adds custom
+        blocks for converter power stages, controllers and semiconductor devices. Each custom block,
+        its documentation and its test harness are in the <b>Components</b> folder. The library
+        <b>ConverterLibrary</b>, <code>Components/ConverterLibrary.slx</code>, holds every block listed
+        below.
     </p>
     <p>
-        Click <a href="matlab:web('ListOfComponents.html')">Component Documentation</a>
-        to view the full component list with documentation and test harness links.
+        To view the full component list with documentation and test harness links, see
+        <a href="matlab:web('ListOfComponents.html')">Component Documentation</a>.
     </p>
+
+    <!-- Sub-section: Power Converter Plant -->
+    <h2 id="app-PowerCircuitComponents" class="collapsible" onclick="toggle(this)">Power Converter Plant</h2>
+    <div class="collapse-body">
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Non-Isolated DC-DC Converters</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/NonIsolatedDCDCConverter.png" alt="Non-Isolated DC-DC Converter">
+                    <div class="card-content">
+                        <h3>Non-Isolated DC-DC Converter</h3>
+                        <p>Buck, boost or buck-boost power stage, with optional synchronous rectification.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('NonIsolatedDCDC.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('NonIsolatedDCDCTestHarnessPlant')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Power Factor Correction Converters</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/BoostPFCConverter.png" alt="Boost PFC Converter">
+                    <div class="card-content">
+                        <h3>Boost PFC Converter</h3>
+                        <p>Single-phase diode bridge and single-leg boost power stage.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('BoostPFC.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('BoostPFCTestHarnessPlant')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/InterleavedBoostPFCConverter.png" alt="Interleaved Boost PFC Converter">
+                    <div class="card-content">
+                        <h3>Interleaved Boost PFC Converter</h3>
+                        <p>Single-phase diode bridge and two-phase interleaved boost power stage.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('InterleavedBoostPFC.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('InterleavedBoostPFCTestHarnessPlant')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/TotemPoleBoostPFCConverter.png" alt="Totem-Pole Boost PFC Converter">
+                    <div class="card-content">
+                        <h3>Totem-Pole Boost PFC Converter</h3>
+                        <p>Bridgeless totem-pole boost power stage with a fast leg and a slow leg.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('TotemPoleBoostPFC.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('TotemPoleBoostPFCTestHarnessPlant')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Soft-Switching Converters</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/CLLCConverter.png" alt="CLLC Converter">
+                    <div class="card-content">
+                        <h3>CLLC Converter</h3>
+                        <p>Bidirectional CLLC resonant power stage with a full bridge and a resonant capacitor on each side.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('CLLCPowerCircuit.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('CLLCTestHarnessPlant')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/DABConverter.png" alt="DAB Converter">
+                    <div class="card-content">
+                        <h3>DAB Converter</h3>
+                        <p>Dual active bridge power stage with a high-frequency transformer and a series inductor.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('DABConverter.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('DABTestHarnessPlant')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/LLCConverter.png" alt="LLC Converter">
+                    <div class="card-content">
+                        <h3>LLC Converter</h3>
+                        <p>Full-bridge LLC resonant power stage with a transformer and an output rectifier.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('LLCConverterPlant.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('LLCTestHarnessFullBridge')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Sub-section: Controller -->
     <h2 id="app-ControllerComponents" class="collapsible" onclick="toggle(this)">Controller</h2>
     <div class="collapse-body">
-        <div class="card-grid">
-            <div class="model-card">
-                <div class="card-header-bar"></div>
-                <img class="card-image" src="Images/GFMControllerLib.png" alt="Grid-Forming Converter Controller">
-                <div class="card-content">
-                    <h3>Grid-Forming Converter Controller</h3>
-                    <p>Grid-forming converter controller with virtual synchronous machine emulation and current limiting.</p>
-                    <div class="card-actions">
-                        <a href="matlab:web('GFMController.html')" class="btn-load btn-primary">Open Documentation</a>
-                        <a href="matlab:open_system('ModelGridFormingController')" class="btn-load btn-secondary">Open Test Harness</a>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Inverter-Based Resources</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/GridFormingConverterController.png" alt="Grid-Forming Converter Controller">
+                    <div class="card-content">
+                        <h3>Grid-Forming Converter Controller</h3>
+                        <p>Grid-forming converter controller with virtual synchronous machine emulation and fault ride-through.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('GFMController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelGridFormingController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="model-card">
-                <div class="card-header-bar"></div>
-                <img class="card-image" src="Images/LLCControllerLib.png" alt="LLC Controller">
-                <div class="card-content">
-                    <h3>LLC Controller</h3>
-                    <p>2P2Z compensator-based controller for LLC resonant converter output voltage regulation.</p>
-                    <div class="card-actions">
-                        <a href="matlab:web('LLCController.html')" class="btn-load btn-primary">Open Documentation</a>
-                        <a href="matlab:open_system('ModelLLCResonantControllerAndPowerCircuit')" class="btn-load btn-secondary">Open Test Harness</a>
+        </div>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Non-Isolated DC-DC Converters</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/NonIsolatedDCDCController.png" alt="Non-Isolated DC-DC Controller">
+                    <div class="card-content">
+                        <h3>Non-Isolated DC-DC Controller</h3>
+                        <p>Cascaded average-current-mode controller covering all six non-isolated DC-DC topologies.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('NonIsolatedDCDCController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelNonIsolatedDCDCController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">PWM Generators</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/CLLCPWMGenerator.png" alt="CLLC PWM Generator">
+                    <div class="card-content">
+                        <h3>CLLC PWM Generator</h3>
+                        <p>Full-bridge gate signals from a commanded switching frequency, plus synchronous rectifier gating.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('CLLCPWMGenerator.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelPWMGenerators')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/ComplementaryPWMGenerator.png" alt="Complementary PWM Generator">
+                    <div class="card-content">
+                        <h3>Complementary PWM Generator</h3>
+                        <p>One PWM signal split into a complementary gate pair with a dead time.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('ComplementaryPWMGenerator.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelPWMGenerators')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/DABPWMGenerator.png" alt="DAB PWM Generator">
+                    <div class="card-content">
+                        <h3>DAB PWM Generator</h3>
+                        <p>Gate signals for both bridges of a dual active bridge from a commanded phase shift.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('DABPWMGenerator.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelPWMGenerators')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/FullBridgePWMGenerator.png" alt="Full Bridge PWM Generator">
+                    <div class="card-content">
+                        <h3>Full Bridge PWM Generator</h3>
+                        <p>Full-bridge gate signals with a dead time from a commanded duty cycle.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('FullBridgePWMGenerator.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelPWMGenerators')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/HalfBridgePWMGenerator.png" alt="Half Bridge PWM Generator">
+                    <div class="card-content">
+                        <h3>Half Bridge PWM Generator</h3>
+                        <p>Half-bridge gate signals with a dead time from a commanded duty cycle.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('HalfBridgePWMGenerator.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelPWMGenerators')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/LLCPWMGenerator.png" alt="LLC PWM Generator">
+                    <div class="card-content">
+                        <h3>LLC PWM Generator</h3>
+                        <p>Full-bridge gate signals with a dead time from a commanded switching frequency.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('LLCPWMGenerator.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelPWMGenerators')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Power Factor Correction Converters</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/BoostPFCController.png" alt="Boost PFC Controller">
+                    <div class="card-content">
+                        <h3>Boost PFC Controller</h3>
+                        <p>Average-current-mode controller for the single-leg boost PFC power stage.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('BoostPFCController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelBoostPFCController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/InterleavedBoostPFCController.png" alt="Interleaved Boost PFC Controller">
+                    <div class="card-content">
+                        <h3>Interleaved Boost PFC Controller</h3>
+                        <p>Average-current-mode controller for the interleaved boost PFC power stage, with per-leg current loops.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('InterleavedBoostPFCController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelInterleavedBoostPFCController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/TotemPoleBoostPFCController.png" alt="Totem-Pole Boost PFC Controller">
+                    <div class="card-content">
+                        <h3>Totem-Pole Boost PFC Controller</h3>
+                        <p>Average-current-mode controller for the totem-pole boost PFC power stage, with fast and slow leg gating.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('TotemPoleBoostPFCController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelTotemPoleBoostPFCController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="group-title collapsible" onclick="toggle(this)">Soft-Switching Converters</h3>
+        <div class="collapse-body">
+            <div class="card-grid">
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/CLLCController.png" alt="CLLC Controller">
+                    <div class="card-content">
+                        <h3>CLLC Controller</h3>
+                        <p>Output voltage controller for the CLLC converter, with a 2P2Z or PI compensator in continuous or discrete form.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('CLLCController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelCLLCController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/DABControllerSPS.png" alt="DAB Controller (SPS)">
+                    <div class="card-content">
+                        <h3>DAB Controller (SPS)</h3>
+                        <p>Single-phase-shift controller for the dual active bridge, in constant-current or constant-voltage mode.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('DABController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelDABController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-card">
+                    <div class="card-header-bar"></div>
+                    <img class="block-image" src="Images/blocks/LLCVoltageController.png" alt="LLC Voltage Controller">
+                    <div class="card-content">
+                        <h3>LLC Voltage Controller</h3>
+                        <p>Output voltage controller for the LLC converter, with a 2P2Z or PI compensator in continuous or discrete form.</p>
+                        <div class="card-actions">
+                            <a href="matlab:web('LLCController.html')" class="btn-load btn-primary">Open Documentation</a>
+                            <a href="matlab:open_system('ModelLLCController')" class="btn-load btn-secondary">Open Test Harness</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sub-section: Power Converter Power Circuit -->
-    <h2 id="app-PowerCircuitComponents" class="collapsible" onclick="toggle(this)">Power Converter Power Circuit</h2>
+    <!-- Sub-section: Semiconductor Devices -->
+    <h2 id="app-DeviceComponents" class="collapsible" onclick="toggle(this)">Semiconductor Devices</h2>
     <div class="collapse-body">
+        <p>
+            These blocks are in the <b>Components</b> folder of <b>ConverterLibrary</b>. Each one
+            models a switching device with a thermal port through a Simulink&reg; interface.
+        </p>
         <div class="card-grid">
             <div class="model-card">
                 <div class="card-header-bar"></div>
-                <img class="card-image" src="Images/LLCConverterLib.png" alt="LLC Converter Power Circuit">
+                <img class="block-image" src="Images/blocks/DiodeModel.png" alt="Diode Model">
                 <div class="card-content">
-                    <h3>LLC Converter Power Circuit</h3>
-                    <p>Full-bridge LLC resonant converter power stage with transformer and rectifier.</p>
+                    <h3>Diode Model</h3>
+                    <p>Diode with a thermal port, built with a Simulink interface for simulation performance.</p>
                     <div class="card-actions">
-                        <a href="matlab:web('LLCPowerCircuit.html')" class="btn-load btn-primary">Open Documentation</a>
-                        <a href="matlab:open_system('ModelLLCResonantControllerAndPowerCircuit')" class="btn-load btn-secondary">Open Test Harness</a>
+                        <a href="matlab:web('DiodeModel.html')" class="btn-load btn-primary">Open Documentation</a>
+                        <a href="matlab:open_system('DiodeBuckSimulinkDevice')" class="btn-load btn-secondary">Open Test Harness</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="block-image" src="Images/blocks/IGBTModel.png" alt="IGBT Model">
+                <div class="card-content">
+                    <h3>IGBT Model</h3>
+                    <p>Ideal switching IGBT with a thermal port, built with a Simulink interface for simulation performance.</p>
+                    <div class="card-actions">
+                        <a href="matlab:web('IGBTModel.html')" class="btn-load btn-primary">Open Documentation</a>
+                        <a href="matlab:open_system('IGBTBuckSimulinkDevice')" class="btn-load btn-secondary">Open Test Harness</a>
+                    </div>
+                </div>
+            </div>
+            <div class="model-card">
+                <div class="card-header-bar"></div>
+                <img class="block-image" src="Images/blocks/MOSFETModel.png" alt="MOSFET Model">
+                <div class="card-content">
+                    <h3>MOSFET Model</h3>
+                    <p>Ideal switching MOSFET with a thermal port, built with a Simulink interface for simulation performance.</p>
+                    <div class="card-actions">
+                        <a href="matlab:web('MOSFET_Thermal_Model.html')" class="btn-load btn-primary">Open Documentation</a>
+                        <a href="matlab:open_system('MOSFETBuckSimulinkDevice')" class="btn-load btn-secondary">Open Test Harness</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Section: Analysis Functions -->
+    <h1 id="analysis-functions">Analysis Functions</h1>
+    <p>
+        The functions in <a href="matlab:web('PowerConverterUtilities.html')">PowerConverterUtilities</a>
+        simulate a converter model and analyze its waveforms, power loss, efficiency and harmonics.
+        They also select catalog parts and apply them to the plant.
+    </p>
+
+    <!-- Section: Testing -->
+    <h1 id="test">Testing</h1>
+    <p>
+        The <a href="matlab:web('TestFrameworkHome.html')">Test Framework Documentation</a> describes
+        the tests for the components and for the design solution of each converter. To run the code
+        checks, on the toolstrip, click <b>Run Build</b>. To run the tests of one converter, enter its
+        task name at the command prompt, for example <code>buildtool BoostPFC:AllTest</code>.
+    </p>
 
     <!-- Section: Requirements -->
     <h1 id="requirements">Requirements</h1>
@@ -385,14 +1022,6 @@
 function toggle(el) {
     el.classList.toggle('open');
     el.nextElementSibling.classList.toggle('open');
-}
-
-function copyCommand(btn, cmd) {
-    navigator.clipboard.writeText(cmd).then(function() {
-        var original = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(function() { btn.textContent = original; }, 1500);
-    });
 }
 </script>
 

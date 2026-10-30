@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>getConverterWaveforms - Simulate converter and plot its voltage and current waveforms</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  
+    pre.example {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 10px 14px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .syntax code { display: block; margin: 2px 0; }
+    .argument-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+<h1>getConverterWaveforms</h1>
+
+<p class="subtitle">Simulate converter and plot its voltage and current waveforms</p>
+
+<div class="library-path">PowerConverterUtilities / Waveforms</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#syntax">Syntax</a></li>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#examples">Examples</a></li>
+    <li><a href="#inputs">Input Arguments</a></li>
+    <li><a href="#outputs">Output Arguments</a></li>
+    <li><a href="#tips">Tips</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="syntax"><code>ivData = getConverterWaveforms(modelName,Converter=key)</code><code>[ivData,simulationLog] = getConverterWaveforms(___)</code></div>
+
+<h2 id="description">Description</h2>
+
+<p><code>ivData = getConverterWaveforms(modelName,Converter=key)</code> simulates the converter model <code>modelName</code> with ideal devices at the operating point you set by name-value arguments, and plots the voltage and current waveforms that the converter registry lists for key. The function restores the device options of the plant block when it finishes.</p>
+
+<p><code>[ivData,simulationLog] = getConverterWaveforms(___)</code> also returns the signal-logging data of the run.</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3>Plot Boost PFC Waveforms over Two Line Cycles</h3>
+
+<p>Simulate the boost PFC model at a 400 V bus and 1000 W load, and plot the last two 50 Hz line cycles.</p>
+
+<pre class="example">ivData = getConverterWaveforms(&quot;BoostPFCConverter&quot;,Converter=&quot;BoostPFC&quot;, ...
+    Vref=simscape.Value(400,&quot;V&quot;),Pload=simscape.Value(1000,&quot;W&quot;), ...
+    SimTime=simscape.Value(60e-3,&quot;s&quot;),FrequencyHz=50,FocusCycles=2);</pre>
+
+<p>The example produces this figure.</p>
+<p><img src="images/getConverterWaveforms_example1.png" alt="getConverterWaveforms example output" style="max-width: 100%;"></p>
+
+<h2 id="inputs">Input Arguments</h2>
+
+<h3 class="argument-title"><code>modelName</code> - Name of converter model</h3>
+<p>Name of the converter model to simulate, specified as a character vector or string scalar. The model must contain the plant block that the registry entry names.</p>
+
+<h3>Name-Value Arguments</h3>
+
+<h3 class="argument-title"><code>Converter</code> - Converter registry key</h3>
+<p>Key of the converter in the converter registry, specified as a character vector or string scalar, for example "BoostPFC". This argument is required. Default: none</p>
+<h3 class="argument-title"><code>Vin</code> - Input voltage</h3>
+<p>Input voltage of the operating point, specified as a simscape.Value object with a unit of voltage or as a numeric scalar in volts. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>Vout</code> - Output voltage</h3>
+<p>Output voltage of the operating point, specified as a simscape.Value object with a unit of voltage or as a numeric scalar in volts. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>Vref</code> - Reference voltage</h3>
+<p>Reference voltage of the controller, specified as a simscape.Value object with a unit of voltage or as a numeric scalar in volts. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>Iref</code> - Reference current</h3>
+<p>Reference current of the controller, specified as a simscape.Value object with a unit of current or as a numeric scalar in amperes. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>Iin</code> - Input current</h3>
+<p>Input current of the operating point, specified as a simscape.Value object with a unit of current or as a numeric scalar in amperes. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>Iout</code> - Output current</h3>
+<p>Output current of the operating point, specified as a simscape.Value object with a unit of current or as a numeric scalar in amperes. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>Pload</code> - Load power</h3>
+<p>Load power of the operating point, specified as a simscape.Value object with a unit of power or as a numeric scalar in watts. Default: [], which keeps the value saved in the model</p>
+<h3 class="argument-title"><code>ControlMode</code> - Control mode</h3>
+<p>Control mode of the controller, specified as "voltage" or "current". Default: '', which keeps the mode saved in the model</p>
+<h3 class="argument-title"><code>PowerFlowDirection</code> - Power flow direction</h3>
+<p>Direction of power flow for a bidirectional converter, specified as "forward" or "reverse". Default: '', which keeps the direction saved in the model</p>
+<h3 class="argument-title"><code>SimTime</code> - Simulation stop time</h3>
+<p>Stop time of the simulation, specified as a simscape.Value object with a unit of time. Default: simscape.Value(0.015,"s")</p>
+<h3 class="argument-title"><code>FocusCycles</code> - Number of displayed cycles</h3>
+<p>Number of cycles at the end of the run to display, specified as a positive scalar. The function uses this value only when you set <code>FrequencyHz</code>. Default: 5</p>
+<h3 class="argument-title"><code>FrequencyHz</code> - Frequency of displayed cycle</h3>
+<p>Frequency of one displayed cycle, in hertz, specified as a positive scalar. When this value is empty, the function displays the last 5% of the run. Default: []</p>
+<h3 class="argument-title"><code>MaxStep</code> - Maximum solver step</h3>
+<p>Maximum step size of the solver, in seconds, specified as a positive scalar. Default: [], which keeps the setting saved in the model</p>
+<h3 class="argument-title"><code>Interactions</code> - Keep axes interactions</h3>
+<p>Option to keep the default axes interactions and the axes toolbar, specified as a numeric or logical 0 (false) or 1 (true). Default: false</p>
+
+<h2 id="outputs">Output Arguments</h2>
+
+<h3 class="argument-title"><code>ivData</code> - Plotted signal data</h3>
+<p>Plotted signal data, returned as a structure with one field per signal. Each field contains the Data and Time of that signal.</p>
+<h3 class="argument-title"><code>simulationLog</code> - Signal-logging data of the run</h3>
+<p>Signal-logging data of the run, returned as a Simulink&reg;.SimulationData.Dataset object.</p>
+
+<h2 id="tips">Tips</h2>
+
+<ul>
+  <li>The function sets only the operating-point quantities that the converter uses and ignores the others. When you do not set a quantity that the converter requires, the function returns an error.</li>
+  <li>To resolve the switching ripple in <code>simulationLog</code> for a harmonic analysis, set <code>MaxStep</code> to a value smaller than one switching period.</li>
+</ul>
+
+<h2 id="seealso">See Also</h2>
+
+<p><code>plotLoggedSignals</code> | <a href="estimateConverterHarmonics.html">estimateConverterHarmonics</a> | <a href="getConverterPowerLoss.html">getConverterPowerLoss</a> | <a href="converterRegistry.html">converterRegistry</a> | <code>setConverterFidelity</code> | <a href="PowerConverterUtilities.html">Power Converter Utilities</a></p>
+</body>
+</html>

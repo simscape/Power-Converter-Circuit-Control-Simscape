@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:d="http://www.mathworks.com/blockgraphics" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg_5" width="1150" height="600" viewBox="0 0 1150 600" d:options="Background:Transparent">
+	<title>
+		Diode with a thermal port	</title>
+	<g id="layer_4" title="layer_0">
+		<g id="group_14">
+			<title>
+				Layer 1			</title>
+			<path id="path_35" fill="none" stroke="#3369C9" stroke-width="12" d=" M 270,80 L 270,520 L 710,300 L 270,80 Z"/>
+			<path id="svg_4" fill="none" stroke="#3369C9" stroke-width="12" d=" M 710,80 L 710,520"/>
+			<path id="svg_3" fill="none" stroke="#3369C9" stroke-width="12" d=" M 0,300 L 270,300"/>
+			<path id="svg_9" fill="none" stroke="#3369C9" stroke-width="12" d=" M 710,300 L 820,300 L 820,150 L 1150,150"/>
+			<g id="svg_14" d:options="Port:L1;">
+				<g id="Cylinder">
+					<path id="part_1" fill="none" stroke="#E9631E" stroke-width="12" d=" M 900,540 L 810,540 C 788,540 778,500 778,450 C 778,400 788,360 810,360 L 900,360"/>
+					<ellipse id="part_2" fill="none" stroke="#E9631E" stroke-width="12" cx="900" cy="450" rx="22" ry="90"/>
+				</g>
+				<path id="svg_10" fill="none" stroke="#E9631E" stroke-width="12" d=" M 1150,450 L 922,450"/>
+			</g>
+		</g>
+	</g>
+</svg>

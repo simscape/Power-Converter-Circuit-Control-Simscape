@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Converter Utilities</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  
+    pre.example {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 10px 14px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .syntax code { display: block; margin: 2px 0; }
+    .argument-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+<h1>Power Converter Utilities</h1>
+
+<p class="subtitle">Functions that simulate and analyze the converter models</p>
+
+<div class="library-path">PowerConverterUtilities</div>
+
+<p>These functions simulate a converter model and analyze its waveforms, power loss, efficiency and harmonics. They also select catalog parts and apply them to the plant. One set of functions serves every converter in this project: each function finds the plant, its device options and its operating-point blocks through <code>converterRegistry</code>.</p>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#Waveforms">Waveforms</a></li>
+    <li><a href="#LossAndEfficiency">Loss and Efficiency</a></li>
+    <li><a href="#Harmonics">Harmonics</a></li>
+    <li><a href="#PartSelection">Part Selection</a></li>
+    <li><a href="#Configuration">Configuration</a></li>
+  </ul>
+</div>
+
+<h2 id="Waveforms">Waveforms</h2>
+
+<p>Simulate a converter and plot its voltage and current waveforms.</p>
+
+<table>
+  <tr><th>Function</th><th>Purpose</th><th>Input</th></tr>
+  <tr><td><a href="getConverterWaveforms.html"><code>getConverterWaveforms</code></a></td><td>Simulate converter and plot its voltage and current waveforms</td><td>Model</td></tr>
+</table>
+
+<h2 id="LossAndEfficiency">Loss and Efficiency</h2>
+
+<p>Estimate the device power loss and the efficiency.</p>
+
+<table>
+  <tr><th>Function</th><th>Purpose</th><th>Input</th></tr>
+  <tr><td><a href="getConverterPowerLoss.html"><code>getConverterPowerLoss</code></a></td><td>Simulate converter and estimate power loss and efficiency</td><td>Model</td></tr>
+  <tr><td><a href="estimateConverterEfficiency.html"><code>estimateConverterEfficiency</code></a></td><td>Power loss and efficiency of Simscape&trade; model</td><td>Model, or Simscape log (<code>simlog</code>)</td></tr>
+</table>
+
+<h2 id="Harmonics">Harmonics</h2>
+
+<p>Analyze the AC-side harmonics and the total harmonic distortion (THD).</p>
+
+<table>
+  <tr><th>Function</th><th>Purpose</th><th>Input</th></tr>
+  <tr><td><a href="estimateConverterHarmonics.html"><code>estimateConverterHarmonics</code></a></td><td>AC harmonics and THD of converter from existing simulation log</td><td>Simulink signal log (<code>logsout</code>), or simulation output</td></tr>
+</table>
+
+<h2 id="PartSelection">Part Selection</h2>
+
+<p>List the catalog parts that meet the device ratings and apply them to the plant.</p>
+
+<table>
+  <tr><th>Function</th><th>Purpose</th><th>Input</th></tr>
+  <tr><td><a href="selectConverterParts.html"><code>selectConverterParts</code></a></td><td>Rank Simscape catalog parts against converter device rating</td><td>Device rating table</td></tr>
+  <tr><td><a href="applyConverterPart.html"><code>applyConverterPart</code></a></td><td>Apply catalog parts to converter plant in model</td><td>Model and parts table</td></tr>
+</table>
+
+<h2 id="Configuration">Configuration</h2>
+
+<p>Read the settings of each registered converter, and add a new converter.</p>
+
+<table>
+  <tr><th>Function</th><th>Purpose</th><th>Input</th></tr>
+  <tr><td><a href="converterRegistry.html"><code>converterRegistry</code></a></td><td>Settings of each converter for the analysis and part-selection functions</td><td>Converter key</td></tr>
+</table>
+</body>
+</html>

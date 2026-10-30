@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2600 1870" width="2600" height="1870">
+  <rect width="2600" height="1870" fill="#FFFFFF"/>
+  <rect x="80" y="80" width="2440" height="1710" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="12" rx="30"/>
+
+  <!-- Boost converter, drawn on a 260 x 187 block.
+       DC+ -> L1 -> switching node -> D1 -> C1 -> DC output, M1 from the node to DC-.
+       Both port pairs are dc, so each rail sits exactly on its own port row and all four power leads are
+       one straight segment: y = 480 for the two positive ports and y = 1430 for the two negative ports. -->
+
+  <!-- Both rails run the full width, each carrying its own pair of power leads -->
+  <polyline points="0,1430 2600,1430" fill="none" stroke="#3369C9" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Input inductor L1 on the high rail, ahead of the switching node -->
+  <line x1="0" y1="480" x2="200" y2="480" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <path d="M 200,480 C 239.6,597.333 307.067,597.333 346.667,480 C 386.267,597.333 453.733,597.333 493.333,480 C 532.933,597.333 600.4,597.333 640,480" fill="none" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="330" y="727.333" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">L</text>
+  <text x="377.658" y="736.693" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <line x1="640" y1="480" x2="1080" y2="480" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <!-- Switching node -->
+  <circle cx="1080" cy="480" r="15" fill="#3369C9"/>
+  <circle cx="1080" cy="1430" r="15" fill="#3369C9"/>
+  <!-- Device hanging from the switching node to the negative rail -->
+  <line x1="915" y1="850" x2="915" y2="1060" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="874" y1="850" x2="874" y2="1060" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="754" y1="955" x2="874" y2="955" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="915" y1="850" x2="1080" y2="850" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="915" y1="955" x2="1080" y2="955" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="915" y1="1060" x2="1080" y2="1060" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1080" y1="480" x2="1080" y2="850" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="1080" y1="955" x2="1080" y2="1430" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="987,927 987,983 915,955" fill="#3369C9" stroke="none"/>
+  <text x="1170" y="985" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">M</text>
+  <text x="1234.97" y="994.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <!-- Device between the switching node and the output, then the rail out to its port -->
+  <line x1="1080" y1="480" x2="2600" y2="480" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="1505,425 1505,535 1615,480" fill="#3369C9" stroke="#3369C9" stroke-width="24" stroke-linejoin="round"/>
+  <line x1="1615" y1="419.5" x2="1615" y2="540.5" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <text x="1500" y="630" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">D</text>
+  <text x="1556.32" y="639.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <!-- Output capacitor C1 across the two rails -->
+  <line x1="2280" y1="480" x2="2280" y2="925" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <line x1="2180" y1="925" x2="2380" y2="925" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2180" y1="985" x2="2380" y2="985" stroke="#3369C9" stroke-width="24" stroke-linecap="round"/>
+  <line x1="2280" y1="985" x2="2280" y2="1430" stroke="#3369C9" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="2280" cy="480" r="15" fill="#3369C9"/>
+  <circle cx="2280" cy="1430" r="15" fill="#3369C9"/>
+  <text x="2065.88" y="985" font-family="Arial" font-size="78" font-weight="bold" fill="#3369C9">C</text>
+  <text x="2122.2" y="994.36" font-family="Arial" font-size="50" font-weight="bold" fill="#3369C9">1</text>
+  <text x="126" y="423.2" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Vin+</text>
+  <text x="126" y="1571.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Vin-</text>
+  <text x="2145.7" y="423.2" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Vout+</text>
+  <text x="2175.07" y="1571.04" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">Vout-</text>
+  <text x="604.487" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">G</text>
+  <text x="1800.42" y="210.24" font-family="Arial" font-size="117" font-weight="bold" fill="#000000">meas</text>
+</svg>

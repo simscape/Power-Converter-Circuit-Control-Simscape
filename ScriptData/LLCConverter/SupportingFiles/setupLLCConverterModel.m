@@ -9,7 +9,7 @@ function simIn = setupLLCConverterModel(ModelName,options)
 %   - DiodeModel:   Desired diode component model.
 %   - Vref:         Reference voltage
 %   - Vin:          Input voltage
-%   - Pload:        Output voltage
+%   - Pload:        Output power
 %   - SimTime:      Simulation time
 %
 % The script ensures all required parameters are set before running simulations or analyses.
@@ -60,7 +60,7 @@ simIn = setModelParameter(simIn,"StopTime",string(simTime_s.value)); % Simulatio
 % Set the proper fidelity
 if numMaskParam==0
     if strcmp(options.MOSFETModel,'Ideal Semiconductor Switch')
-        error("Ideal semiconductor switch model option available only in LLC Power Circuit Masked Libary Block");
+        error("Ideal semiconductor switch model option available only in LLC Power Circuit Masked Library Block");
     end
 setPrimaryMOSFET(llcPowerCircuit{1},DeviceOption=options.MOSFETModel);
 setSecondaryDiode(llcPowerCircuit{1},DeviceOption=options.DiodeModel);

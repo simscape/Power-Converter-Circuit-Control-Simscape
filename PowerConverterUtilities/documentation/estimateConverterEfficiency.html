@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>estimateConverterEfficiency - Power loss and efficiency of Simscape model</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  
+    pre.example {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 10px 14px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .syntax code { display: block; margin: 2px 0; }
+    .argument-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+<h1>estimateConverterEfficiency</h1>
+
+<p class="subtitle">Power loss and efficiency of Simscape&trade; model</p>
+
+<div class="library-path">PowerConverterUtilities / LossAndEfficiency</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#syntax">Syntax</a></li>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#examples">Examples</a></li>
+    <li><a href="#inputs">Input Arguments</a></li>
+    <li><a href="#outputs">Output Arguments</a></li>
+    <li><a href="#tips">Tips</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="syntax"><code>lossData = estimateConverterEfficiency(source,loadBlocks)</code><code>lossData = estimateConverterEfficiency(source,loadBlocks,Name=Value)</code></div>
+
+<h2 id="description">Description</h2>
+
+<p><code>lossData = estimateConverterEfficiency(source,loadBlocks)</code> returns the device loss, the passive loss, the output power and the efficiency of the Simscape log or model source, with the output power taken from the load blocks <code>loadBlocks</code>. When source is a model name, the function simulates the model with Simscape logging on.</p>
+
+<p><code>lossData = estimateConverterEfficiency(source,loadBlocks,Name=Value)</code> specifies options using one or more name-value arguments.</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3>Estimate Efficiency of Boost PFC Converter</h3>
+
+<p>Run the boost PFC converter with its loss-capable devices and estimate the efficiency over the last 50 Hz line cycle of the 50 ms run. The model keeps the whole run in its Simscape log for this example.</p>
+
+<pre class="example">modelName = &quot;BoostPFCConverter&quot;;
+load_system(modelName);
+set_param(modelName,&quot;SimscapeLogLimitData&quot;,&quot;off&quot;);
+fidelity.BlockPath = modelName + &quot;/Boost PFC&quot;;
+fidelity.Popups = struct(&quot;modelOption&quot;,&quot;Detailed&quot;, ...
+    &quot;switchDeviceOption&quot;,&quot;MOSFET (Ideal, Switching) with Thermal&quot;, ...
+    &quot;diodeDeviceOption&quot;,&quot;Tabulated Diode&quot;,&quot;rectDiodeDeviceOption&quot;,&quot;Tabulated Diode&quot;);
+lossData = estimateConverterEfficiency(modelName,modelName + &quot;/Rload&quot;, ...
+    Fidelity=fidelity,TimeWindow=[0.6 1]);
+fprintf(&quot;Efficiency: %.2f%%\n&quot;,lossData.efficiency)</pre>
+
+<p>The example produces this figure.</p>
+<p><img src="images/estimateConverterEfficiency_example2.png" alt="estimateConverterEfficiency example output" style="max-width: 100%;"></p>
+<p>It also displays this result.</p>
+<pre class="example">Efficiency: 98.60%</pre>
+
+<h2 id="inputs">Input Arguments</h2>
+
+<h3 class="argument-title"><code>source</code> - Simscape log or model name</h3>
+<p>Simscape log to analyze or name of the model to simulate, specified as a simscape.logging.Node object, a character vector or a string scalar.</p>
+<h3 class="argument-title"><code>loadBlocks</code> - Load block paths</h3>
+<p>Paths of the load blocks that set the output power, specified as a character vector, a string array or a cell array of character vectors.</p>
+
+<h3>Name-Value Arguments</h3>
+
+<h3 class="argument-title"><code>TimeWindow</code> - Averaging window</h3>
+<p>Interval over which the loss is averaged, specified as a two-element vector of fractions of the log span or of start and end times in seconds. Default: [0.8 1]</p>
+<h3 class="argument-title"><code>SwitchingLossDetail</code> - Switching loss detail</h3>
+<p>Level of detail of the switching loss, specified as "lumped" for one switching loss per device, or "separated" for the turn-on, turn-off and reverse-recovery losses. Default: "lumped"</p>
+<h3 class="argument-title"><code>ShowPlots</code> - Loss plots</h3>
+<p>Option to plot the loss figures, specified as a numeric or logical 1 (true) or 0 (false). Default: true</p>
+<h3 class="argument-title"><code>Fidelity</code> - Device fidelity</h3>
+<p>Mask settings that apply during the run and are restored after it, specified as a structure with a BlockPath field and a Popups structure of mask parameter names and values. Default: []</p>
+<h3 class="argument-title"><code>SimlogVariable</code> - Simscape log variable</h3>
+<p>Name of the Simscape log in the simulation output, specified as a character vector or string scalar. When empty, the function uses the first Simscape log in the output. Default: ""</p>
+
+<h2 id="outputs">Output Arguments</h2>
+
+<h3 class="argument-title"><code>lossData</code> - Loss and efficiency results</h3>
+<p>Loss and efficiency results, returned as a structure with these fields: deviceTable, the loss of each semiconductor device in watts; groupTable, the loss of each device group; deviceTypeTable, the loss of each device class; passiveLoss, outputPower and totalLoss, in watts; efficiency, in percent; averagingWindow, the averaged interval in seconds; and percentageByGroup, the share of the loss in each group.</p>
+
+<h2 id="tips">Tips</h2>
+
+<ul>
+  <li>A <code>TimeWindow</code> value of 1 or less is a fraction of the logged time. For an AC-input converter, set it to whole line cycles, or use <code>powerLossFromSimscapeLog</code> with <code>FrequencyHz</code> and <code>MinCycles</code>.</li>
+  <li>The function averages over the data the Simscape log keeps. To keep the whole run, set the <code>SimscapeLogLimitData</code> model parameter to <code>&quot;off&quot;</code>.</li>
+</ul>
+
+<h2 id="seealso">See Also</h2>
+
+<p><code>powerLossFromSimscapeLog</code> | <a href="getConverterPowerLoss.html">getConverterPowerLoss</a> | <a href="PowerConverterUtilities.html">Power Converter Utilities</a></p>
+</body>
+</html>

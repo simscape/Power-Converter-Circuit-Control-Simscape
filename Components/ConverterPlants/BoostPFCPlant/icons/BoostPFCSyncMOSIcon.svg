@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 365 280" width="365" height="280">
+  <rect width="365" height="280" fill="#FFFFFF"/>
+  <rect x="30" y="25" width="305" height="232" fill="#E8E8EA" stroke="#B0B2B4" stroke-width="1.5" rx="4"/>
+
+  <!-- Boost PFC with Synchronous MOSFET:
+       AC input -> Diode Bridge -> L -> switching node (half-bridge midpoint)
+       Q2 high-side (switching node to DC+out), Q1 low-side (switching node to DC-)
+       Output: Co between DC+ and DC- -->
+
+  <!-- AC input terminals -->
+  <circle cx="15" cy="105" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="15" cy="175" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Wires to bridge -->
+  <line x1="15" y1="105" x2="62" y2="105" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Diode Bridge: Left leg x=62, Right leg x=108 -->
+  <line x1="62" y1="50" x2="62" y2="230" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="108" y1="50" x2="108" y2="230" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="62" y1="50" x2="108" y2="50" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="62" y1="230" x2="108" y2="230" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- D1: Left leg top -->
+  <polygon points="52,90 72,90 62,72" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="52" y1="72" x2="72" y2="72" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- D3: Left leg bottom -->
+  <polygon points="52,210 72,210 62,192" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="52" y1="192" x2="72" y2="192" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- D2: Right leg top -->
+  <polygon points="98,90 118,90 108,72" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="98" y1="72" x2="118" y2="72" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- D4: Right leg bottom -->
+  <polygon points="98,210 118,210 108,192" fill="#0072BD" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="98" y1="192" x2="118" y2="192" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- P input to left leg midpoint -->
+  <circle cx="62" cy="105" r="2" fill="#0072BD"/>
+
+  <!-- N input to right leg midpoint with hop -->
+  <line x1="15" y1="175" x2="55" y2="175" stroke="#0072BD" stroke-width="2.5"/>
+  <path d="M 55,175 A 7,7 0 0,1 69,175" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="69" y1="175" x2="108" y2="175" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="108" cy="175" r="2" fill="#0072BD"/>
+
+  <!-- DC+ from bridge to inductor -->
+  <line x1="108" y1="50" x2="145" y2="50" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Boost Inductor L -->
+  <path d="M 145,50 C 149,38 156,38 160,50 C 164,38 171,38 175,50 C 179,38 186,38 190,50" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="190" y1="50" x2="210" y2="50" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="210" y1="50" x2="210" y2="140" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="155" y="36" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">L</text>
+
+  <!-- Switching node (half-bridge midpoint y=140) -->
+  <circle cx="210" cy="140" r="2" fill="#0072BD"/>
+
+  <!-- Half-bridge vertical leg at x=210 -->
+  <!-- Q2 high-side: channel y=87-113, center y=100. Equidistant: 140-100=40, 100-50=50 — close enough -->
+  <line x1="210" y1="50" x2="210" y2="87" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Q2 High-Side MOSFET symbol (channel y=87-113, center y=100) -->
+  <line x1="175" y1="100" x2="190" y2="100" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="190" y1="87" x2="190" y2="113" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="194" y1="87" x2="194" y2="113" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="194" y1="89" x2="210" y2="89" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="194" y1="100" x2="210" y2="100" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="205,96.5 205,103.5 197,100" fill="#0072BD"/>
+  <line x1="194" y1="111" x2="210" y2="111" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- Middle stub (source) connects down to switching node -->
+  <line x1="210" y1="100" x2="210" y2="140" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="214" y="102" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">Q<tspan font-size="6" dy="1">2</tspan></text>
+
+  <!-- Q1 Low-Side: channel y=167-193, center y=180. Equidistant: 180-140=40, 230-180=50 -->
+  <line x1="210" y1="140" x2="210" y2="167" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Q1 Low-Side MOSFET symbol (channel y=167-193, center y=180) -->
+  <line x1="175" y1="180" x2="190" y2="180" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="190" y1="167" x2="190" y2="193" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="194" y1="167" x2="194" y2="193" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="194" y1="169" x2="210" y2="169" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="194" y1="180" x2="210" y2="180" stroke="#0072BD" stroke-width="2.5"/>
+  <polygon points="205,176.5 205,183.5 197,180" fill="#0072BD"/>
+  <line x1="194" y1="191" x2="210" y2="191" stroke="#0072BD" stroke-width="2.5"/>
+  <!-- Middle stub (source) connects down to DC- -->
+  <line x1="210" y1="180" x2="210" y2="230" stroke="#0072BD" stroke-width="2.5"/>
+  <text x="214" y="182" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">Q<tspan font-size="6" dy="1">1</tspan></text>
+
+  <!-- Junction at DC- under Q1 -->
+  <circle cx="210" cy="230" r="2" fill="#0072BD"/>
+
+  <!-- DC- rail -->
+  <line x1="108" y1="230" x2="320" y2="230" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- DC+ output rail from Q2 drain to output -->
+  <line x1="210" y1="50" x2="335" y2="50" stroke="#0072BD" stroke-width="2.5"/>
+
+  <!-- Output Capacitor Co -->
+  <circle cx="290" cy="50" r="2" fill="#0072BD"/>
+  <line x1="290" y1="50" x2="290" y2="100" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="280" y1="100" x2="300" y2="100" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="280" y1="106" x2="300" y2="106" stroke="#0072BD" stroke-width="2.5"/>
+  <line x1="290" y1="106" x2="290" y2="230" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="290" cy="230" r="2" fill="#0072BD"/>
+  <text x="304" y="106" font-family="Arial" font-size="9" font-weight="bold" fill="#0072BD">C<tspan font-size="6" dy="1">o</tspan></text>
+
+  <!-- Output terminals -->
+  <circle cx="348" cy="50" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+  <circle cx="348" cy="230" r="3" fill="none" stroke="#0072BD" stroke-width="2.5"/>
+</svg>

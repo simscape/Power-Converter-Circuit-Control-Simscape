@@ -1,7 +1,7 @@
 function [gridInverter, sampleTime] = setGFMConverterModelFidelity(options)
 % This function sets the model fidelity variant for the GridFormingConverter model.
 % You can input the fidelity option for the GFM converter.
-% It also set the suitable model sample time.
+% It also sets the suitable model sample time.
 
 % Copyright 2026 The MathWorks, Inc.
 arguments

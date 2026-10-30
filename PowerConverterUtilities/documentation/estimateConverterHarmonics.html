@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>estimateConverterHarmonics - AC harmonics and THD of converter from existing simulation log</title>
+  <style>
+    :root {
+      --mw-blue: #0076A8;
+      --mw-dark: #333333;
+      --mw-light-bg: #F5F5F5;
+      --mw-border: #E0E0E0;
+      --mw-orange: #D95319;
+      --mw-green: #77AC30;
+      --mw-purple: #7E2F8E;
+      --param-bg: #FAFAFA;
+      --port-electrical: #0072BD;
+      --port-signal: #EDB120;
+      --port-thermal: #A2142F;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mw-dark);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--mw-blue);
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      border-bottom: 2px solid var(--mw-border);
+      padding-bottom: 6px;
+      margin-top: 36px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 24px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--mw-dark);
+      margin-top: 16px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .library-path {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #666;
+      background: var(--mw-light-bg);
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .block-icon {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+
+    .block-icon img, .block-icon svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    th {
+      background: var(--mw-light-bg);
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--mw-border);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--param-bg);
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: var(--mw-light-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .equation {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 16px;
+      font-style: italic;
+      margin: 12px 0;
+      padding: 12px 20px;
+      background: var(--mw-light-bg);
+      border-left: 3px solid var(--mw-blue);
+      border-radius: 2px;
+    }
+
+    .note {
+      background: #FFF8E1;
+      border-left: 4px solid var(--mw-orange);
+      padding: 10px 16px;
+      margin: 12px 0;
+      border-radius: 2px;
+    }
+
+    .port-electrical { color: var(--port-electrical); font-weight: 600; }
+    .port-signal { color: var(--port-signal); font-weight: 600; }
+    .port-bus { color: var(--mw-purple); font-weight: 600; }
+
+    .toc {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 16px 24px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 4px 0;
+    }
+
+    .toc a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    a {
+      color: var(--mw-blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .variant-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dep-note {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .section-circuit {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn-label {
+      display: inline-block;
+      background: #E8F4FD;
+      border: 1px solid var(--mw-blue);
+      color: var(--mw-blue);
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .param-table td:first-child,
+    .port-table td:first-child {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .gate-map {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #FEFEFE;
+      border: 1px solid var(--mw-border);
+      border-radius: 6px;
+    }
+  
+    pre.example {
+      background: var(--mw-light-bg);
+      border: 1px solid var(--mw-border);
+      padding: 10px 14px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .syntax code { display: block; margin: 2px 0; }
+    .argument-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+<h1>estimateConverterHarmonics</h1>
+
+<p class="subtitle">AC harmonics and THD of converter from existing simulation log</p>
+
+<div class="library-path">PowerConverterUtilities / Harmonics</div>
+
+<div class="toc">
+  <strong>On this page:</strong>
+  <ul>
+    <li><a href="#syntax">Syntax</a></li>
+    <li><a href="#description">Description</a></li>
+    <li><a href="#examples">Examples</a></li>
+    <li><a href="#inputs">Input Arguments</a></li>
+    <li><a href="#outputs">Output Arguments</a></li>
+    <li><a href="#tips">Tips</a></li>
+    <li><a href="#seealso">See Also</a></li>
+  </ul>
+</div>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="syntax"><code>harmonicData = estimateConverterHarmonics(simulationLog,Converter=converterKey,FundamentalHz=f)</code><code>harmonicData = estimateConverterHarmonics(___,Name=Value)</code></div>
+
+<h2 id="description">Description</h2>
+
+<p><code>harmonicData = estimateConverterHarmonics(simulationLog,Converter=converterKey,FundamentalHz=f)</code> returns the harmonic spectrum and the total harmonic distortion (THD) of the AC signals of the converter <code>converterKey</code> in the logged data <code>simulationLog</code>, at the line frequency f, without simulating the model.</p>
+
+<p><code>harmonicData = estimateConverterHarmonics(___,Name=Value)</code> specifies options using one or more name-value arguments.</p>
+
+<h2 id="examples">Examples</h2>
+
+<h3>Analyze Harmonics from Waveform Run</h3>
+
+<p>Plot the waveforms of the boost PFC converter, then analyze the harmonics of the same run.</p>
+
+<pre class="example">[ivData,simulationLog] = getConverterWaveforms(&quot;BoostPFCConverter&quot;, ...
+    Converter=&quot;BoostPFC&quot;,Vref=simscape.Value(400,&quot;V&quot;),Pload=simscape.Value(1000,&quot;W&quot;), ...
+    SimTime=simscape.Value(150,&quot;ms&quot;),FrequencyHz=50,MaxStep=1/(2*10*65e3));
+harmonicData = estimateConverterHarmonics(simulationLog, ...
+    Converter=&quot;BoostPFC&quot;,FundamentalHz=50,SwitchingHz=65e3);
+harmonicData.signals(1).THD</pre>
+
+<p>The example produces this figure.</p>
+<p><img src="images/estimateConverterHarmonics_example2.png" alt="estimateConverterHarmonics example output" style="max-width: 100%;"></p>
+
+<h2 id="inputs">Input Arguments</h2>
+
+<h3 class="argument-title"><code>simulationLog</code> - Logged simulation data</h3>
+<p>Logged data of a converter run, specified as a Simulink&reg;.SimulationOutput object or a Simulink.SimulationData.Dataset object. A Simulink.SimulationOutput object requires the Converter argument.</p>
+
+<h3>Name-Value Arguments</h3>
+
+<h3 class="argument-title"><code>Converter</code> - Converter key</h3>
+<p>Converter registry key, specified as a character vector or string scalar, for example "BoostPFC". Without Signal, this argument is required. Default: ""</p>
+<h3 class="argument-title"><code>FundamentalHz</code> - Fundamental frequency</h3>
+<p>Line frequency of the analyzed signals, in Hz, specified as a positive scalar. This argument is required.</p>
+<h3 class="argument-title"><code>SwitchingHz</code> - Switching frequency</h3>
+<p>Switching frequency of the converter, in Hz, specified as a positive scalar. The ripple spectrum requires this value. Default: []</p>
+<h3 class="argument-title"><code>Signal</code> - Signal name</h3>
+<p>Name of a logged signal to analyze instead of the AC signals of the converter, specified as a string scalar. Default: string.empty</p>
+<h3 class="argument-title"><code>Quantity</code> - Signal quantity</h3>
+<p>Physical quantity of Signal, specified as "current" or "voltage". When empty, a name that starts with V is a voltage and any other name is a current. Default: ""</p>
+<h3 class="argument-title"><code>MaxHarmonic</code> - Highest plotted harmonic</h3>
+<p>Highest harmonic order in the harmonic plot and table, specified as a positive integer. Default: 10</p>
+<h3 class="argument-title"><code>THDMaxHarmonic</code> - Highest THD harmonic</h3>
+<p>Highest harmonic order summed into the total harmonic distortion (THD), specified as a positive integer. Default: 10</p>
+<h3 class="argument-title"><code>RippleSpectrum</code> - Ripple spectrum plot</h3>
+<p>Option to plot the switching-ripple spectrum, specified as a numeric or logical 1 (true) or 0 (false). Default: true</p>
+<h3 class="argument-title"><code>RippleSpanMultiple</code> - Ripple spectrum span</h3>
+<p>Highest frequency of the ripple spectrum, as a multiple of <code>SwitchingHz</code>, specified as a positive scalar. Default: 10</p>
+<h3 class="argument-title"><code>ShowHarmonicTable</code> - Harmonic table display</h3>
+<p>Option to print the magnitude of each harmonic in the Command Window, specified as a numeric or logical 1 (true) or 0 (false). Default: false</p>
+<h3 class="argument-title"><code>ShowStandardTable</code> - Standard THD table display</h3>
+<p>Option to print the THD by standard, IEEE 519 and IEC 61000, in the Command Window, specified as a numeric or logical 1 (true) or 0 (false). Default: true</p>
+<h3 class="argument-title"><code>CyclesToAnalyze</code> - Number of analyzed cycles</h3>
+<p>Exact number of whole fundamental cycles to analyze, specified as a positive integer. When empty, the function analyzes every whole cycle in the window. Default: []</p>
+<h3 class="argument-title"><code>TimeWindow</code> - Analysis time window</h3>
+<p>Start and end time of the analyzed interval, in seconds, specified as a two-element vector. When set, this argument overrides <code>WindowFraction</code>. Default: []</p>
+<h3 class="argument-title"><code>WindowFraction</code> - Analysis window fraction</h3>
+<p>Start and end of the analyzed interval, as fractions of the log, specified as a two-element vector of values from 0 to 1. Default: [0.6 1]</p>
+<h3 class="argument-title"><code>MinCycles</code> - Minimum number of cycles</h3>
+<p>Number of whole fundamental cycles below which the function issues a warning, specified as a positive scalar. Default: 3</p>
+<h3 class="argument-title"><code>ShowPlots</code> - Spectrum plots</h3>
+<p>Option to plot the spectra, specified as a numeric or logical 1 (true) or 0 (false). Default: true</p>
+<h3 class="argument-title"><code>FigureName</code> - Figure name</h3>
+<p>Name of the spectrum figure, specified as a character vector or string scalar. When empty, the name is the converter key followed by Harmonics. Default: ""</p>
+<h3 class="argument-title"><code>Interactions</code> - Axes interactions</h3>
+<p>Option to keep the default axes interactions and axes toolbar on the figures, specified as a numeric or logical 1 (true) or 0 (false). Default: false</p>
+
+<h2 id="outputs">Output Arguments</h2>
+
+<h3 class="argument-title"><code>harmonicData</code> - Harmonic analysis results</h3>
+<p>Harmonic analysis results, returned as a structure. The signals field holds one element per analyzed signal, with the harmonic orders, the magnitude of each harmonic and its percentage of the fundamental, the THD, the harmonic table, the THD-by-standard table, the ripple spectrum, the analysis window and the number of analyzed cycles. The structure also holds the sampleTime, reliableHarmonic, fundamentalHz, switchingHz, analysisWindow, cyclesAnalyzed and skippedReason fields. When a license that the analysis requires is unavailable, the function prints the reason and returns a structure with no signals, with skippedReason naming the missing license.</p>
+
+<h2 id="tips">Tips</h2>
+
+<ul>
+  <li>To analyze the switching ripple, log the run at a maximum step size of at most 1/(2*<code>RippleSpanMultiple</code>*<code>SwitchingHz</code>). A coarser log clips the ripple spectrum with a warning.</li>
+</ul>
+
+<h2 id="seealso">See Also</h2>
+
+<p><code>simulateConverterHarmonics</code> | <code>harmonicsFromSignalLog</code> | <a href="getConverterWaveforms.html">getConverterWaveforms</a> | <a href="PowerConverterUtilities.html">Power Converter Utilities</a></p>
+</body>
+</html>
