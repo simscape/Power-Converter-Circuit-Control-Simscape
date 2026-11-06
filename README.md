@@ -139,9 +139,9 @@ This design solution enables you to design and analyze a non-isolated DC-DC conv
 
 ---
 
-## 🛠️ Prerequisites
+## 🛠️ Requirements
 
-- MATLAB R2026a or later
+- MATLAB® release R2026a
 - Simscape and Simscape Electrical
 
 ---
